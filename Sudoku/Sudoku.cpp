@@ -7,23 +7,26 @@
 #include "Tools.hpp"
 #include "Square.hpp"
 #include "Board.hpp"
+#include "Cluster.hpp"
 
 #define INPUT_FILE "sudo-test1.txt"
 
 /* Unit Test Prototypes */
-void UT_State();
-void UT_Square();
-void UT_Board();
+void ut_state();
+void ut_square();
+void ut_board();
+void ut_cluster();
 
 int main() {
 	cout << "\t    ----SUDOKU----\n" << endl;
-	UT_State();
-	UT_Square();
-	UT_Board();
+	ut_state();
+	ut_square();
+	ut_board();
+	ut_cluster();
 }
 
-void UT_State() {
-	cerr << "\n\t\UNIT TEST: STATE" << endl;
+void ut_state() {
+	cerr << "\n\t\STATE TEST: MOVE" << endl;
 
 	State st1 = State();
 	st1.move('1'); // Valid.
@@ -46,7 +49,7 @@ void UT_State() {
 	cerr << endl;
 }
 
-void UT_Square() {
+void ut_square() {
 	cerr << "\n\t\tSQUARE TEST: COORDINATED PLACEMENT" << endl;
 
 	Square sq1 = Square('1', 1, 1);
@@ -58,9 +61,14 @@ void UT_Square() {
 	cerr << endl;
 }
 
-void UT_Board() {
+void ut_board() {
 	cerr << "\n\t\tBOARD TEST: INPUT FILE" << endl;
 	Board &board = Board(INPUT_FILE);
 	cerr << "\n\t\tBOARD TEST: PRINT" << endl;
 	&board.print(cout);
+}
+
+void ut_cluster() {
+	cerr << "\n\t\tCLUSTER TEST: CONSTRUCTION" << endl;
+	Cluster cl;
 }

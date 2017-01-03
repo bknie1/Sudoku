@@ -13,6 +13,9 @@
 #pragma once
 #include "Tools.hpp"
 #define MASK 0x7fe
+// Forward declaration for the Square/Cluster circular include.
+#include "Cluster.hpp"
+class Cluster;
 
 class State {
 protected:				// Only visible to Square.
@@ -31,6 +34,7 @@ class Square : public State {
 protected:
 	short int row;
 	short int col;
+	vector<Cluster*> clues;
 	short int poss_count; // Possibilities count.
 public:
 	Square();
@@ -38,6 +42,8 @@ public:
 	~Square();
 	ostream& print(ostream&);
 	void move(char ch); // Adjusts possibilities list.
+	void turnOff(int n);
+	inline void addCluster(Cluster* c) { clues.push_back(c); }
 	inline int getRow() { return row; }
 	inline int getCol() { return col; }
 };

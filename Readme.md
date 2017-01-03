@@ -12,6 +12,7 @@ new concepts; some of which may seem counter intuitive to a standard program for
 - Board
 
 ## Functionality
+- Git source control. This is a larger project and I needed to get more comfortable with git so I don't trip over myself.
 - State Unit Test
 - Square Unit Test
 - Board Unit Test
@@ -32,3 +33,9 @@ new concepts; some of which may seem counter intuitive to a standard program for
 ## Functionality
 - State data member visibility once testing is complete. Public should be protected?
 - Modifying the possibilities list (bit shifting/toggling) and the possibilities count.
+- Constructing each cluster to include an appropriate amount of Squares. How do you know which squares are to be selected for each? How do they interact?
+
+### Questions
+
+- I'm struggling with bit shifting the possibilities list and am unsure why we need a possibilities count given the list. Is it because the user will be able to see the count, but not the list?
+- Cluster: How do you know which squares to select? How do they interact? I'm having trouble visualizing this. The documentation says we need 27 clusters. Does that mean we section off 27 Squares and 'build' a cluster around them?

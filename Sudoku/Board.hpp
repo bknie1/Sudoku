@@ -1,3 +1,12 @@
+/*	Program: Sudoku
+Description: A simple, console-based C++ implementation of a
+9x9 Sudoku board game. See Sudoku.cpp or the Readme for more.
+*/
+
+/*	Class Description: Board is responsible for creating the 9x9 grid
+	on which each Square sits.
+*/
+
 #pragma once
 #include "tools.hpp"
 #include "Square.hpp"
