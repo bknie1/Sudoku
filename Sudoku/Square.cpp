@@ -54,6 +54,7 @@ Square::Square(char ch, short int row, short int col) : State() {
 	State::move(ch);
 	this->row = row;
 	this->col = col;
+	if (isdigit(ch)) { fixed = true; } // Only occurs on file read.
 }
 //-------------------------------------------------------------------------
 Square::Square() {

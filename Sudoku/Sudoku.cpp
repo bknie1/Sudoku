@@ -6,17 +6,20 @@
 */
 #include "Tools.hpp"
 #include "Square.hpp"
+#include "Board.hpp"
 
 #define INPUT_FILE "sudo-test1.txt"
 
 /* Unit Test Prototypes */
 void UT_State();
 void UT_Square();
+void UT_Board();
 
 int main() {
 	cout << "\t    ----SUDOKU----\n" << endl;
 	UT_State();
 	UT_Square();
+	UT_Board();
 }
 
 void UT_State() {
@@ -53,4 +56,11 @@ void UT_Square() {
 	Square sq2 = Square('2', 2, 2);
 	sq2.print(cout);
 	cerr << endl;
+}
+
+void UT_Board() {
+	cerr << "\n\t\tBOARD TEST: INPUT FILE" << endl;
+	Board &board = Board(INPUT_FILE);
+	cerr << "\n\t\tBOARD TEST: PRINT" << endl;
+	&board.print(cout);
 }

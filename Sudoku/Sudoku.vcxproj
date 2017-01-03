@@ -142,11 +142,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Board.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="Sudoku.cpp" />
     <ClCompile Include="Tools.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.hpp" />
     <ClInclude Include="Square.hpp" />
     <ClInclude Include="Tools.hpp" />
   </ItemGroup>
