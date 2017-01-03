@@ -11,10 +11,12 @@
 
 /* Unit Test Prototypes */
 void UT_State();
+void UT_Square();
 
 int main() {
 	cout << "\t    ----SUDOKU----\n" << endl;
 	UT_State();
+	UT_Square();
 }
 
 void UT_State() {
@@ -38,5 +40,17 @@ void UT_State() {
 	State st4 = State();
 	st4.move('0'); // Invalid. Replace w/ dash.
 	st4.print(cout);
+	cerr << endl;
+}
+
+void UT_Square() {
+	cerr << "\n\t\tSQUARE TEST: COORDINATED PLACEMENT" << endl;
+
+	Square sq1 = Square('1', 1, 1);
+	sq1.print(cout);
+	cerr << endl;
+
+	Square sq2 = Square('2', 2, 2);
+	sq2.print(cout);
 	cerr << endl;
 }

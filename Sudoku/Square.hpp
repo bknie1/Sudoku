@@ -26,3 +26,19 @@ public:
 	void erase();		// Erase the value of State.
 	ostream& print(ostream& out);	// Print possibilities in values/dashes.
 };
+//-------------------------------------------------------------------------
+class Square : public State {
+protected:
+	short int row;
+	short int col;
+	short int poss_count; // Possibilities count.
+public:
+	Square();
+	Square(char dd, short int row, short int col);	// Ctor into State.
+	~Square();
+	ostream& print(ostream&);
+	void move(char ch); // Adjusts possibilities list.
+	inline int getRow() { return row; }
+	inline int getCol() { return col; }
+};
+inline ostream& operator<< (ostream& out, Square& sq) { return out; }

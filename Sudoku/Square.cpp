@@ -44,3 +44,33 @@ ostream& State::print(ostream& out) {
 	cout << endl;
 	return out;
 }
+//-------------------------------------------------------------------------
+/*---------This is the end of State and the beginning of Square.---------*/
+//-------------------------------------------------------------------------
+// Square is the physical representation of the State/Square
+// relationship on the board. Board is comprised of 81 squares (9x9).
+Square::Square(char ch, short int row, short int col) : State() {
+	//cerr << "Square [" << row << ", " << col << "] constructed." << endl;
+	State::move(ch);
+	this->row = row;
+	this->col = col;
+}
+//-------------------------------------------------------------------------
+Square::Square() {
+	//cerr << "An empty Square was constructed." << endl;
+}
+//-------------------------------------------------------------------------
+Square::~Square() {
+	//cerr << "Destroying Square [" << row << ", " << col << "]" << endl;
+}
+//-------------------------------------------------------------------------
+ostream& Square::print(ostream& out) {
+	out << "[" << row << ", " << col << "]\t";
+	State::print(out);
+	return out;
+}
+//-------------------------------------------------------------------------
+void Square::move(char ch) {
+	State::move(ch);
+}
+//-------------------------------------------------------------------------
