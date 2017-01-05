@@ -5,37 +5,33 @@ Board::Board() {
 }
 //-------------------------------------------------------------------------
 Board::Board(const char* filename) {
-	char next;
+	char ch;
 	short row = 1;
 	short col = 1;
 
 	fIn.open(filename);
 	if (!fIn.is_open() ) { fatal("Error: Input file missing."); }
 	say("Input file found.");
+	// Read and construct a board based on a max board size.
 	for (short k = 0; k < MAX_SIZE; ++k) {
-		next = fIn.get();
+		ch = fIn.get();
 		if (fIn.eof() ) { break; }
-		bd[k] = Square(next, row, col);
+		bd[k] = Square(ch, row, col);
 		if (col == MAX_COL) { ++row; col = 1; } else { ++col; }
 	}
 }
 //-------------------------------------------------------------------------
-Square& Board::sub(int j, int k) {
-	short row; short col;
-	// (j - 1)  9 + (k - 1) ???
-	for (short k = 0; k < MAX_SIZE; ++k) {
-		row = bd[k].getRow(); col = bd[k].getCol();
-		if (j == row && k == col) { return bd[k]; }
-	}
+Board::~Board() {
+
 }
+//-------------------------------------------------------------------------
+//Square & Board::sub(int row, int col) {
+//	Square s = (row - 1) * 9 + (col - 1);
+//}
 //-------------------------------------------------------------------------
 ostream & Board::print(ostream& out) {
 	for (short k = 0; k < MAX_SIZE; ++k) {
 		bd[k].print(out);
 	}
 	return out;
-}
-//-------------------------------------------------------------------------
-Board::~Board() {
-
 }

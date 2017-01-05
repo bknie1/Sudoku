@@ -13,13 +13,16 @@ void State::move(char ch) {
 			if (!fixed) {
 				cout << "Placing " << ch << "." << endl;
 				value = ch;
+				cout << "This is the value: " << value << endl; // DEBUG
+				turn_off(value); // Remove new val. from poss. list.
 			}
 		}
 		else { cout << "Error: Input. Try again." << endl; }
 	}
-	if (value == '-') {
+	if (ch == '-') {
 		if (!fixed) {
 			cout << "Placing dash." << endl;
+			if (isdigit(value)) { turn_on(value); }// Add old val. back to poss. list.
 			value = '-';
 		}
 	}
@@ -27,15 +30,29 @@ void State::move(char ch) {
 //-------------------------------------------------------------------------
 void State::erase() {
 	if (fixed == false) {
+		turn_on(value); // Toggles the previous value back on.
 		say("Erasing input."); value = '-'; return;
 	}
 	say("Cannot erase fixed square.");
 }
 //-------------------------------------------------------------------------
+
+void State::turn_off(char n) {
+	cout << "Shifting " << n << " times." << endl; // DEBUG
+	possibilities = (~MASK) & possibilities;
+}
+//-------------------------------------------------------------------------
+
+void State::turn_on(char ch) {
+	//(~MASK) & possibilities |= << n;
+}
+//-------------------------------------------------------------------------
 ostream& State::print(ostream& out) {
 	out << "Value: " << value;
-	out << "  Fixed: " << fixed;
-	out << "  Poss. List: ";
+	if (fixed) { out << "  Fixed: true "; }
+	if (!fixed) { out << "  Fixed: false"; }
+	//out << "  Fixed: " << fixed;
+	out << "  Possibilities: ";
 	for (int k = 1; k <= 9; ++k) {
 		int bit = MASK & possibilities >> k;
 		if (bit) { cout << k; }
@@ -54,7 +71,10 @@ Square::Square(char ch, short int row, short int col) : State() {
 	State::move(ch);
 	this->row = row;
 	this->col = col;
-	if (isdigit(ch)) { fixed = true; } // Only occurs on file read.
+	if (isdigit(ch)) { 
+		fixed = true; // Only occurs on puzzle file read.
+
+	}
 }
 //-------------------------------------------------------------------------
 Square::Square() {
@@ -73,8 +93,5 @@ ostream& Square::print(ostream& out) {
 //-------------------------------------------------------------------------
 void Square::move(char ch) {
 	State::move(ch);
-}
-//-------------------------------------------------------------------------
-void Square::turnOff(int n) {
 }
 //-------------------------------------------------------------------------

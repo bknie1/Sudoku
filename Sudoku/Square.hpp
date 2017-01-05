@@ -12,7 +12,7 @@
 
 #pragma once
 #include "Tools.hpp"
-#define MASK 0x7fe
+#define MASK 0x7fe // 011111111110
 // Forward declaration for the Square/Cluster circular include.
 #include "Cluster.hpp"
 class Cluster;
@@ -26,7 +26,9 @@ public:
 	State() = default;
 	~State();
 	void move(char ch);	// Assign value to State.
+	void turn_off(char ch); // Turns a value off.
 	void erase();		// Erase the value of State.
+	void turn_on(char ch); // Turns a value on.
 	ostream& print(ostream& out);	// Print possibilities in values/dashes.
 };
 //-------------------------------------------------------------------------
@@ -41,8 +43,7 @@ public:
 	Square(char dd, short int row, short int col);	// Ctor into State.
 	~Square();
 	ostream& print(ostream&);
-	void move(char ch); // Adjusts possibilities list.
-	void turnOff(int n);
+	void move(char ch);  // Writes submission.
 	inline void addCluster(Cluster* c) { clues.push_back(c); }
 	inline int getRow() { return row; }
 	inline int getCol() { return col; }

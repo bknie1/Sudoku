@@ -70,5 +70,5 @@ void ut_board() {
 
 void ut_cluster() {
 	cerr << "\n\t\tCLUSTER TEST: CONSTRUCTION" << endl;
-	Cluster cl;
+	
 }
