@@ -13,13 +13,15 @@ void State::move(char ch) {
 			if (!fixed) {
 				cout << "Placing " << ch << "." << endl;
 				value = ch;
+				turn_off(value); // Remove new val. from poss. list.
 			}
 		}
 		else { cout << "Error: Input. Try again." << endl; }
 	}
-	if (value == '-') {
+	if (ch == '-') {
 		if (!fixed) {
 			cout << "Placing dash." << endl;
+			if (isdigit(value)) { turn_on(value); }// Add old val. back to poss. list.
 			value = '-';
 		}
 	}
@@ -27,18 +29,31 @@ void State::move(char ch) {
 //-------------------------------------------------------------------------
 void State::erase() {
 	if (fixed == false) {
+		turn_on(value); // Toggles the previous value back on.
 		say("Erasing input."); value = '-'; return;
 	}
 	say("Cannot erase fixed square.");
 }
 //-------------------------------------------------------------------------
+
+void State::turn_off(char ch) {
+	int n = ch - '0'; // Char to int.
+	poss_list[n] = 0;
+}
+//-------------------------------------------------------------------------
+
+void State::turn_on(char ch) {
+	//(~MASK) & possibilities |= << n;
+}
+//-------------------------------------------------------------------------
 ostream& State::print(ostream& out) {
 	out << "Value: " << value;
-	out << "  Fixed: " << fixed;
-	out << "  Poss. List: ";
+	if (fixed) { out << "  Fixed: true "; }
+	if (!fixed) { out << "  Fixed: false"; }
+	//out << "  Fixed: " << fixed;
+	out << "  Possibilities: ";
 	for (int k = 1; k <= 9; ++k) {
-		int bit = MASK & possibilities >> k;
-		if (bit) { cout << k; }
+		if (poss_list[k] == true) { cout << k; }
 		else { cout << '-'; }
 	}
 	cout << endl;
@@ -50,11 +65,13 @@ ostream& State::print(ostream& out) {
 // Square is the physical representation of the State/Square
 // relationship on the board. Board is comprised of 81 squares (9x9).
 Square::Square(char ch, short int row, short int col) : State() {
-	//cerr << "Square [" << row << ", " << col << "] constructed." << endl;
 	State::move(ch);
 	this->row = row;
 	this->col = col;
-	if (isdigit(ch)) { fixed = true; } // Only occurs on file read.
+	if (isdigit(ch)) { 
+		fixed = true; // Only occurs on puzzle file read.
+
+	}
 }
 //-------------------------------------------------------------------------
 Square::Square() {

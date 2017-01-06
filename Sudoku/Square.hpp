@@ -12,18 +12,23 @@
 
 #pragma once
 #include "Tools.hpp"
-#define MASK 0x7fe
+#include <bitset> // Debugging
+// Forward declaration for the Square/Cluster circular include.
+#include "Cluster.hpp"
+class Cluster;
 
 class State {
 protected:				// Only visible to Square.
 	char value = '-';	// Contents of the square at any given time.
-	short possibilities = MASK;	// Possibilities list.
 	bool fixed = false;	// T: Read from input file. F: Modifiable.
+	bool poss_list[10] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 public:
 	State() = default;
 	~State();
 	void move(char ch);	// Assign value to State.
+	void turn_off(char ch); // Turns a value off.
 	void erase();		// Erase the value of State.
+	void turn_on(char ch); // Turns a value on.
 	ostream& print(ostream& out);	// Print possibilities in values/dashes.
 };
 //-------------------------------------------------------------------------
@@ -31,13 +36,14 @@ class Square : public State {
 protected:
 	short int row;
 	short int col;
-	short int poss_count; // Possibilities count.
+	vector<Cluster*> clues;
 public:
 	Square();
 	Square(char dd, short int row, short int col);	// Ctor into State.
 	~Square();
 	ostream& print(ostream&);
-	void move(char ch); // Adjusts possibilities list.
+	void move(char ch);  // Writes submission.
+	inline void addCluster(Cluster* c) { clues.push_back(c); }
 	inline int getRow() { return row; }
 	inline int getCol() { return col; }
 };
