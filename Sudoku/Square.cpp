@@ -38,12 +38,7 @@ void State::erase() {
 
 void State::turn_off(char ch) {
 	int n = ch - '0'; // Char to int.
-	int mask = 0x3fe;
-	cout << "Shifting " << n << " times." << endl; // DEBUG
-	cout << bitset<10>(possibilities) << endl; // DEBUG
-	//possibilities ^=  (~mask) << (n - 1) & possibilities;
-	possibilities &= (~mask) & possibilities;
-	cout << bitset<10>(possibilities) << endl; // DEBUG
+	poss_list[n] = 0;
 }
 //-------------------------------------------------------------------------
 
@@ -58,8 +53,7 @@ ostream& State::print(ostream& out) {
 	//out << "  Fixed: " << fixed;
 	out << "  Possibilities: ";
 	for (int k = 1; k <= 9; ++k) {
-		int bit = 0x3 & possibilities >> k;
-		if (bit) { cout << k; }
+		if (poss_list[k] == true) { cout << k; }
 		else { cout << '-'; }
 	}
 	cout << endl;
@@ -71,7 +65,6 @@ ostream& State::print(ostream& out) {
 // Square is the physical representation of the State/Square
 // relationship on the board. Board is comprised of 81 squares (9x9).
 Square::Square(char ch, short int row, short int col) : State() {
-	//cerr << "Square [" << row << ", " << col << "] constructed." << endl;
 	State::move(ch);
 	this->row = row;
 	this->col = col;

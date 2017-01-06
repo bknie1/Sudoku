@@ -20,8 +20,8 @@ class Cluster;
 class State {
 protected:				// Only visible to Square.
 	char value = '-';	// Contents of the square at any given time.
-	short possibilities = 0x3fe;	// Possibilities list.
 	bool fixed = false;	// T: Read from input file. F: Modifiable.
+	bool poss_list[10] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
 public:
 	State() = default;
 	~State();
@@ -37,7 +37,6 @@ protected:
 	short int row;
 	short int col;
 	vector<Cluster*> clues;
-	short int poss_count; // Possibilities count.
 public:
 	Square();
 	Square(char dd, short int row, short int col);	// Ctor into State.
