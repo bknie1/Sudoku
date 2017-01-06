@@ -12,6 +12,7 @@ void State::move(char ch) {
 		if (ch != '0') {
 			if (!fixed) {
 				cout << "Placing " << ch << "." << endl;
+				previous_value = value;
 				value = ch;
 				turn_off(value); // Remove new val. from poss. list.
 			}
@@ -30,20 +31,30 @@ void State::move(char ch) {
 void State::erase() {
 	if (fixed == false) {
 		turn_on(value); // Toggles the previous value back on.
-		say("Erasing input."); value = '-'; return;
+		value = '-'; return;
 	}
 	say("Cannot erase fixed square.");
 }
 //-------------------------------------------------------------------------
 
 void State::turn_off(char ch) {
-	int n = ch - '0'; // Char to int.
-	poss_list[n] = 0;
+	int n = ch - '0';
+	possibilities = possibilities & ~(1 << n);
+	print_bin(possibilities); // Debugging
 }
 //-------------------------------------------------------------------------
 
 void State::turn_on(char ch) {
-	//(~MASK) & possibilities |= << n;
+	int n = ch - '0';
+	possibilities = possibilities | 1 << n;
+	print_bin(possibilities); // Debugging
+}
+//-------------------------------------------------------------------------
+void State::print_bin(unsigned short possibilities) {
+	for (int i = 9; i >= 0; i--) {
+		if (possibilities & (1 << i)) { cout << 1;} else { cout << 0; }
+	}
+	cout << endl;
 }
 //-------------------------------------------------------------------------
 ostream& State::print(ostream& out) {
@@ -52,8 +63,9 @@ ostream& State::print(ostream& out) {
 	if (!fixed) { out << "  Fixed: false"; }
 	//out << "  Fixed: " << fixed;
 	out << "  Possibilities: ";
-	for (int k = 1; k <= 9; ++k) {
-		if (poss_list[k] == true) { cout << k; }
+	for (int k = 9; k >= 1; k--) {
+		int bit = possibilities & 1 << k;
+		if (bit) { cout << k; }
 		else { cout << '-'; }
 	}
 	cout << endl;
