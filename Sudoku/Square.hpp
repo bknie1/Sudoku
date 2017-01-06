@@ -12,7 +12,7 @@
 
 #pragma once
 #include "Tools.hpp"
-#define MASK 0x7fe // 011111111110
+#include <bitset> // Debugging
 // Forward declaration for the Square/Cluster circular include.
 #include "Cluster.hpp"
 class Cluster;
@@ -20,7 +20,7 @@ class Cluster;
 class State {
 protected:				// Only visible to Square.
 	char value = '-';	// Contents of the square at any given time.
-	short possibilities = MASK;	// Possibilities list.
+	short possibilities = 0x3fe;	// Possibilities list.
 	bool fixed = false;	// T: Read from input file. F: Modifiable.
 public:
 	State() = default;

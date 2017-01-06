@@ -13,7 +13,6 @@ void State::move(char ch) {
 			if (!fixed) {
 				cout << "Placing " << ch << "." << endl;
 				value = ch;
-				cout << "This is the value: " << value << endl; // DEBUG
 				turn_off(value); // Remove new val. from poss. list.
 			}
 		}
@@ -37,9 +36,14 @@ void State::erase() {
 }
 //-------------------------------------------------------------------------
 
-void State::turn_off(char n) {
+void State::turn_off(char ch) {
+	int n = ch - '0'; // Char to int.
+	int mask = 0x3fe;
 	cout << "Shifting " << n << " times." << endl; // DEBUG
-	possibilities = (~MASK) & possibilities;
+	cout << bitset<10>(possibilities) << endl; // DEBUG
+	//possibilities ^=  (~mask) << (n - 1) & possibilities;
+	possibilities &= (~mask) & possibilities;
+	cout << bitset<10>(possibilities) << endl; // DEBUG
 }
 //-------------------------------------------------------------------------
 
@@ -54,7 +58,7 @@ ostream& State::print(ostream& out) {
 	//out << "  Fixed: " << fixed;
 	out << "  Possibilities: ";
 	for (int k = 1; k <= 9; ++k) {
-		int bit = MASK & possibilities >> k;
+		int bit = 0x3 & possibilities >> k;
 		if (bit) { cout << k; }
 		else { cout << '-'; }
 	}
