@@ -12,7 +12,6 @@
 
 #pragma once
 #include "Tools.hpp"
-#include <bitset> // Debugging
 // Forward declaration for the Square/Cluster circular include.
 #include "Cluster.hpp"
 class Cluster;
@@ -20,8 +19,10 @@ class Cluster;
 class State {
 protected:				// Only visible to Square.
 	char value = '-';	// Contents of the square at any given time.
+	char previous_value = '-';
 	bool fixed = false;	// T: Read from input file. F: Modifiable.
-	bool poss_list[10] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	unsigned short possibilities = ~0;
+	void print_bin(unsigned short possibilities);
 public:
 	State() = default;
 	~State();
