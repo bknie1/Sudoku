@@ -15,14 +15,12 @@
 void ut_state();
 void ut_square();
 void ut_board();
-void ut_cluster();
 
 int main() {
 	cout << "\t    ----SUDOKU----\n" << endl;
 	ut_state();
 	ut_square();
 	ut_board();
-	ut_cluster();
 }
 
 void ut_state() {
@@ -64,11 +62,6 @@ void ut_square() {
 void ut_board() {
 	cerr << "\n\t\tBOARD TEST: INPUT FILE" << endl;
 	Board &board = Board(INPUT_FILE);
-	cerr << "\n\t\tBOARD TEST: PRINT" << endl;
-	&board.print(cout);
-}
-
-void ut_cluster() {
-	cerr << "\n\t\tCLUSTER TEST: CONSTRUCTION" << endl;
-	
+	//cerr << "\n\t\tBOARD TEST: PRINT" << endl;
+	//&board.print(cout);
 }

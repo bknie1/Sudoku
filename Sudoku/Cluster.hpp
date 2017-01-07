@@ -13,9 +13,14 @@ Description: A simple, console-based C++ implementation of a
 #include "Square.hpp"
 class Square;
 
-class Cluster
-{
+enum clusterT;
+
+class Cluster {
+private:
+	clusterT name;
+	Square* cl_squares[9];
 public:
+	Cluster(clusterT type, Square* cl_squares[]);
 	Cluster();
 	~Cluster();
 	void shoop(char ch); // Removes possibility from each cluster.

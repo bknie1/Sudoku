@@ -1,5 +1,12 @@
 #include "Cluster.hpp"
 
+Cluster::Cluster(clusterT name, Square* cl_squares[]) {
+	this->name = name;
+	for (int k = 0; k < 9; ++k) {
+		this->cl_squares[k] = cl_squares[k];
+	}
+}
+
 Cluster::Cluster() {
 
 }
@@ -8,11 +15,22 @@ Cluster::~Cluster() {
 
 }
 
-void Cluster::shoop(char ch) {
-	cout << "Shooping " << ch << endl;
+void Cluster::shoop(char value) {
+	cout << "Shooping " << value << endl;
+	for (int k = 0; k < 9; ++k) {
+		cl_squares[k]->move(value);
+	}
 	// Call Square's turnOff();
 }
 
 void Cluster::print() {
-	cout << "Cluster Print\t" << endl;
+	// I wanted to use the printT from board but had to do this.
+	// Why wouldn't printT just exist here because Cluster is
+	// in charge of printing itself? Isn't it supposed to be?
+	string printT[] = { "Row", "Column", "Block" };
+	cout << "\Cluster Type: " << printT[name] << endl;
+	for (int k = 0; k < 9; ++k) {
+		cl_squares[k]->print(cout);
+	}
+	cout << endl;
 }

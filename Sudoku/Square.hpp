@@ -37,15 +37,14 @@ class Square : public State {
 protected:
 	short int row;
 	short int col;
-	vector<Cluster*> clues;
+	vector<Cluster*> clues; // Should contain 3 Clusters.
 public:
 	Square();
 	Square(char dd, short int row, short int col);	// Ctor into State.
 	~Square();
-	ostream& print(ostream&);
-	void move(char ch);  // Writes submission.
+	
+	void move(char value);  // Writes submission.
 	inline void addCluster(Cluster* c) { clues.push_back(c); }
-	inline int getRow() { return row; }
-	inline int getCol() { return col; }
+	ostream& print(ostream&);
 };
 inline ostream& operator<< (ostream& out, Square& sq) { return out; }
