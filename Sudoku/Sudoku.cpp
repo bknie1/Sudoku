@@ -64,4 +64,6 @@ void ut_board_and_cluster() {
 	Board &board = Board(INPUT_FILE);
 	//cerr << "\n\t\tBOARD TEST: PRINT" << endl;
 	//&board.print(cout);
+	//cout << "After Shoop." << endl; // Debugging
+	//board.draw_board();
 }

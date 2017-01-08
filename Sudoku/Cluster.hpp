@@ -11,6 +11,9 @@ Description: A simple, console-based C++ implementation of a
 #pragma once
 #include "tools.hpp"
 #include "Square.hpp"
+
+#define MAX_COL 9	// Max column/row size. Used to adjust coords.
+
 class Square;
 
 enum clusterT;
@@ -23,6 +26,6 @@ public:
 	Cluster(clusterT type, Square* cl_squares[]);
 	Cluster();
 	~Cluster();
-	void shoop(char ch); // Removes possibility from each cluster.
+	bool shoop(char ch); // Removes possibility from each cluster.
 	ostream& print(ostream& out);
 };

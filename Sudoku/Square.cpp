@@ -8,10 +8,10 @@ State::~State() {
 }
 //-------------------------------------------------------------------------
 void State::move(char ch) {
-	if (isdigit(ch))  {
+	if (isdigit(ch)) {
 		if (ch != '0') {
 			if (!fixed) {
-				cout << "Placing " << ch << "." << endl;
+				//cout << "Placing " << ch << "." << endl;
 				previous_value = value;
 				value = ch;
 				turn_off(value); // Remove new val. from poss. list.
@@ -21,7 +21,7 @@ void State::move(char ch) {
 	}
 	if (ch == '-') {
 		if (!fixed) {
-			cout << "Placing dash." << endl;
+			//cout << "Placing dash." << endl;
 			if (isdigit(value)) { turn_on(value); }// Add old val. back to poss. list.
 			value = '-';
 		}
@@ -50,14 +50,14 @@ void State::turn_off(char ch) {
 	*/
 	int n = ch - '0';
 	possibilities = possibilities & ~(1 << n);
-	print_bin(possibilities); // Debugging
+	//print_bin(possibilities); // Debugging
 }
 //-------------------------------------------------------------------------
 
 void State::turn_on(char ch) {
 	int n = ch - '0';
 	possibilities = possibilities | 1 << n;
-	print_bin(possibilities); // Debugging
+	//print_bin(possibilities); // Debugging
 	/*		111111011 <- '3' is toggled off.
 		|	000000100 <- Mask to isolate '3'. | to set it.
 			---------
@@ -67,7 +67,8 @@ void State::turn_on(char ch) {
 //-------------------------------------------------------------------------
 void State::print_bin(unsigned short possibilities) {
 	for (int i = 9; i >= 0; i--) {
-		if (possibilities & (1 << i)) { cout << 1;} else { cout << 0; }
+		if (possibilities & (1 << i)) { cout << 1; }
+		else { cout << 0; }
 	}
 	cout << endl;
 }
@@ -95,9 +96,8 @@ Square::Square(char ch, short int row, short int col) : State() {
 	State::move(ch);
 	this->row = row;
 	this->col = col;
-	if (isdigit(ch)) { 
+	if (isdigit(ch)) {
 		fixed = true; // Only occurs on puzzle file read.
-
 	}
 }
 //-------------------------------------------------------------------------
@@ -110,8 +110,11 @@ Square::~Square() {
 }
 //-------------------------------------------------------------------------
 void Square::move(char value) {
-	for (int k = 0; k < clues.size(); ++k) {	// Adjusts neighbors.
-		clues[k]->shoop(value);
+	// Adjusts neighbor Squares via Cluster's shoop. Must be a digit.
+	if (isdigit(value) ) {
+		for (int k = 0; k < clues.size(); ++k) {
+			if(!clues[k]->shoop(value)) break;
+		}
 	}
 }
 //-------------------------------------------------------------------------

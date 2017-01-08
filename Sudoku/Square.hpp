@@ -42,9 +42,10 @@ public:
 	Square();
 	Square(char dd, short int row, short int col);	// Ctor into State.
 	~Square();
-	
 	void move(char value);  // Writes submission.
 	inline void addCluster(Cluster* c) { clues.push_back(c); }
+	inline char getValue() { return value; }
+	inline vector<Cluster*> getClues() { return clues; }
 	ostream& print(ostream&);
 };
 inline ostream& operator<< (ostream& out, Square& sq) { return out; }
