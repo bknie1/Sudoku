@@ -3,25 +3,27 @@
 
 ### Description
 This is my term project for OOP at UNH. I'm a pretty average C++ programmer and this is an advanced course so I will be tackling
-new concepts; some of which may seem counter intuitive to a standard program for the sake of learning. See the documentation folder for more about each assignment.
+new concepts. See the documentation folder for more about each assignment.
 
-### DONE(?)
-## Class Assignments
+### DONE
+## Homework Assignments
 - State
 - Square
 - Board
+- Cluster?
 
 ## Functionality
-- Git source control. This is a larger project and I needed to get more comfortable with git so I don't trip over myself.
+- Git source control.
 - State Unit Test
 - Square Unit Test
-- Board Unit Test
+- Board Unit Test with Cluster functionality.
 - Fixed Square toggle. Was the square read from a file? Can't be modified! No? Modifiable.
+- Possibilities list is based on a short integer with bit ops to toggle on/off possibilities. Ex. If '3' is on/1 it can still be written.
+- Cluster construction. Finds appropriate Squares, creates a Cluster, let's each Square know what Cluster it's a part of.
 
 ### TODO
 
-## Class Assignments
-- Cluster
+## Homework Assignments
 - Game
 - Exceptions
 - Diagonal
@@ -31,11 +33,8 @@ new concepts; some of which may seem counter intuitive to a standard program for
 - Details & Documents
 
 ## Functionality
-- State data member visibility once testing is complete. Public should be protected?
-- Modifying the possibilities list (bit shifting/toggling) and the possibilities count.
-- Constructing each cluster to include an appropriate amount of Squares. How do you know which squares are to be selected for each? How do they interact?
+- shoop(): Toggling possibilities for each Square in the Cluster based on changes to any given Square.
 
 ### Questions
-
-- I'm struggling with bit shifting the possibilities list and am unsure why we need a possibilities count given the list. Is it because the user will be able to see the count, but not the list?
-- Cluster: How do you know which squares to select? How do they interact? I'm having trouble visualizing this. The documentation says we need 27 clusters. Does that mean we section off 27 Squares and 'build' a cluster around them?
+- I'm having trouble implementing shoop(). I probably just need to think about it for awhile.
+- I'm having trouble printing Cluster participation. I can't use the existing print functions because they come online and may be used before the clusters are created. I know the relationships exist but there isn't an obvious, printable way to demonstrate this.
