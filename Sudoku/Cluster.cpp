@@ -23,14 +23,15 @@ void Cluster::shoop(char value) {
 	// Call Square's turnOff();
 }
 
-void Cluster::print() {
+ostream& Cluster::print(ostream& out) {
 	// I wanted to use the printT from board but had to do this.
 	// Why wouldn't printT just exist here because Cluster is
 	// in charge of printing itself? Isn't it supposed to be?
 	string printT[] = { "Row", "Column", "Block" };
-	cout << "\Cluster Type: " << printT[name] << endl;
+	out << "\Cluster Type: " << printT[name] << endl;
 	for (int k = 0; k < 9; ++k) {
-		cl_squares[k]->print(cout);
+		cl_squares[k]->print(out);
 	}
-	cout << endl;
+	out << endl;
+	return out;
 }

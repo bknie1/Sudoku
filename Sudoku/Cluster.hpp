@@ -24,5 +24,5 @@ public:
 	Cluster();
 	~Cluster();
 	void shoop(char ch); // Removes possibility from each cluster.
-	void print();
+	ostream& print(ostream& out);
 };

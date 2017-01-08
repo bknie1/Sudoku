@@ -16,7 +16,7 @@ Board::Board(const char* filename) {
 	if (!fIn.is_open() ) { fatal("Error: Input file missing."); }
 	say("Input file found.");
 	// Read and construct a board based on a max board size.
-	for (short k = 0; k < MAX_SIZE; ++k) {
+	for (short k = 0; k < BOARD_SIZE; ++k) {
 		ch = fIn.get();
 		if (fIn.eof() ) { break; }
 		board[k] = Square(ch, row, col);
@@ -54,7 +54,13 @@ void Board::build_cl_row() {
 			cl_squares[k] = &board[board_i];
 		}
 		clusters[ci] = Cluster(ROW, cl_squares);
-		clusters[ci].print(); // DEBUG
+		
+		clusters[ci].print(cout); // DEBUG
+
+		say("Adding ROW cluster to Square's cluster array.");
+		for (int k = 0; k < MAX_COL; ++k) {
+			cl_squares[k]->addCluster(&clusters[ci]);
+		}
 	}
 }
 //-------------------------------------------------------------------------
@@ -73,7 +79,13 @@ void Board::build_cl_col() {
 		}
 		++col_start; // 1,1 -> 1,2 -> 1,3 etc. Change columns/starting point.
 		clusters[ci] = Cluster(COL, cl_squares);
-		clusters[ci].print(); // DEBUG
+
+		clusters[ci].print(cout); // DEBUG
+
+		say("Adding COL cluster to Square's cluster array.");
+		for (int k = 0; k < MAX_COL; ++k) {
+			cl_squares[k]->addCluster(&clusters[ci]);
+		}
 	}
 }
 //-------------------------------------------------------------------------
@@ -97,7 +109,13 @@ void Board::build_cl_blk() {
 		if (!((1 + ci) % BLK_WID)) { blk_start += BLK_WID * (BLK_WID * 2 + 1); }
 		else { blk_start += BLK_WID; }
 		clusters[ci] = Cluster(BLK, cl_squares);
-		clusters[ci].print(); // DEBUG
+
+		clusters[ci].print(cout); // DEBUG
+		
+		say("Adding BLK cluster to Square's cluster array.\n");
+		for (int k = 0; k < MAX_COL; ++k) {
+			cl_squares[k]->addCluster(&clusters[ci]);
+		}
 	}
 }
 //-------------------------------------------------------------------------
@@ -107,7 +125,7 @@ Square & Board::sub(int row, int col) {
 }
 //-------------------------------------------------------------------------
 ostream & Board::print(ostream& out) {
-	for (short k = 0; k < MAX_SIZE; ++k) {
+	for (short k = 0; k < BOARD_SIZE; ++k) {
 		board[k].print(out);
 	}
 	return out;
