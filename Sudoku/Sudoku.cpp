@@ -60,10 +60,11 @@ void ut_square() {
 }
 
 void ut_board_and_cluster() {
+	cerr << "========================================================" << endl;
 	cerr << "\n\t\tBOARD TEST: INPUT FILE" << endl;
 	Board &board = Board(INPUT_FILE);
-	//cerr << "\n\t\tBOARD TEST: PRINT" << endl;
-	//&board.print(cout);
-	//cout << "After Shoop." << endl; // Debugging
-	//board.draw_board();
+	cerr << "========================================================" << endl;
+	cerr << "\n\t\tBOARD TEST: AFTER SHOOP" << endl;
+	&board.print(cout);
+	board.draw_board();
 }

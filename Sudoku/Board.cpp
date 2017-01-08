@@ -21,10 +21,12 @@ Board::Board(const char* filename) {
 		if (col == MAX_COL) { ++row; col = 1; }
 		else { ++col; }
 	}
+
+	cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
+	print(cout);
 	create_clusters();
-	//cout << "Before shoop." << endl; // Debugging
-	//draw_board();
-	//initial_shoop();
+	draw_board();
+	initial_shoop();
 }
 //-------------------------------------------------------------------------
 Board::~Board() {
@@ -55,11 +57,11 @@ void Board::draw_board() {
 void Board::create_clusters() {
 	// clusters[27] - To store created clusters.
 	// board[81]. Use these to create clusters.
+	cerr << "========================================================" << endl;
 	cerr << "\n\t\tCLUSTER TEST: CREATE" << endl;
 	build_cl_row(); // Build Row Clusters: 0 - 8
 	build_cl_col();	// Build Column Clusters: 9 - 17
 	build_cl_blk();	// Build Block Clusters: 18 - 27
-	cerr << "Done." << endl;
 }
 //-------------------------------------------------------------------------
 void Board::build_cl_row() {
@@ -74,7 +76,7 @@ void Board::build_cl_row() {
 			cl_squares[k] = &board[board_i];
 		}
 		clusters[ci] = Cluster(ROW, cl_squares);
-		//clusters[ci].print(cout); // DEBUG
+		clusters[ci].print(cout); // DEBUG
 		for (int k = 0; k < MAX_COL; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
@@ -96,7 +98,7 @@ void Board::build_cl_col() {
 		}
 		++col_start; // 1,1 -> 1,2 -> 1,3 etc. Change columns/starting point.
 		clusters[ci] = Cluster(COL, cl_squares);
-		//clusters[ci].print(cout); // DEBUG
+		clusters[ci].print(cout); // DEBUG
 		for (int k = 0; k < MAX_COL; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
@@ -131,13 +133,13 @@ void Board::build_cl_blk() {
 void Board::initial_shoop() {
 	// Once the board has been constructed, use this to 'initialize'
 	// All of the possibilities lists in each Square by Cluster.
+	cerr << "========================================================" << endl;
 	cerr << "\n\tCLUSTER TEST: INITIAL SHOOP" << endl; // DEBUG
 	char value;
 	for (int k = 0; k < BOARD_SIZE; ++k) {
 		value = board[k].getValue();
 		if (isdigit(value) ) { board[k].move(value); }
 	}
-	print(cout);
 }
 //-------------------------------------------------------------------------
 Square & Board::sub(int row, int col) {
