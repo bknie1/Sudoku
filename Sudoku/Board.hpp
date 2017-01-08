@@ -13,6 +13,7 @@ Description: A simple, console-based C++ implementation of a
 #include "Cluster.hpp"
 #define MAX_SIZE 81 // 9 x 9 board size limit.
 #define MAX_COL 9	// Max column/row size. Used to adjust coords.
+#define BLK_WID 3
 
 enum clusterT { ROW, COL, BLK };
 static const char* printT[3];

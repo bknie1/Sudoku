@@ -26,7 +26,7 @@ Board::Board(const char* filename) {
 }
 //-------------------------------------------------------------------------
 Board::~Board() {
-
+	// cerr << "Board destroyed. << endl;
 }
 //-------------------------------------------------------------------------
 void Board::create_clusters() {
@@ -35,27 +35,11 @@ void Board::create_clusters() {
 
 	cerr << "\n\t\tCLUSTER TEST: CREATE" << endl;
 	build_cl_row(); // Build Row Clusters: 0 - 8
+	cout << "\t=========================================\n" << endl;
 	build_cl_col();	// Build Column Clusters: 9 - 17
+	cout << "\t=========================================\n" << endl;
 	build_cl_blk();	// Build Block Clusters: 18 - 27
-
-	//for (int k = 1; k < MAX_SIZE + 1; k++)
-
-		//if (k % 9 == 0 && k < 27) {
-		//	cluster[1] += board[k - 7];
-		//	cluster[1] += board[k - 8];
-		//	cluster[1] += board[k - 9];
-		//}
-		//if (!(k % 9) && k < 27) {
-		//	cluster[2] += board[k - 5];
-		//	cluster[2] += board[k - 6];
-		//	cluster[2] += board[k - 7];
-		//}
-		//
-		//if (!(k % 9) && k < 27) {
-		//	cluster[3] += board[k - 3];
-		//	cluster[3] += board[k - 2];
-		//	cluster[3] += board[k - 1];
-		//}
+	cout << "\t=========================================\n" << endl;
 }
 //-------------------------------------------------------------------------
 void Board::build_cl_row() {
@@ -76,11 +60,12 @@ void Board::build_cl_row() {
 //-------------------------------------------------------------------------
 void Board::build_cl_col() {
 	// See build_cl_row() for general description.
-	// col_start persists to iterate through columns.
-	// board_i will be init'd by col_start and change during the op.
+	// col_start persists to help iterate through columns.
+	// board_i will pick up where the previous inner op ended.
 	
 	Square* cl_squares[MAX_COL]; // Squares to be assigned to cluster.
 	int col_start = 0, board_i;
+
 	for (int ci = 0; ci < MAX_COL; ++ci) { // Creates Clusters
 		board_i = col_start;
 		for (int k = 0; k < MAX_COL; ++k, board_i += MAX_COL) {
@@ -93,7 +78,27 @@ void Board::build_cl_col() {
 }
 //-------------------------------------------------------------------------
 void Board::build_cl_blk() {
+	// See build_cl_row() for general description.
+	// Creates 3x3 block clusters starting with 1,1.
+	// Once it hits the last block in a row (ex. 3 out of 3 on size 9.
+	// It recognizes and increments the board index to skip the next two rows.
+	// Otherwise, there would be overlapping blocks.
+	Square* cl_squares[MAX_COL]; // To be assigned to cluster.
+	int blk_start = 0, board_i;
 
+	for (int ci = 0; ci < MAX_COL; ++ci) { // Creates Clusters.
+		board_i = blk_start;
+		for (int k = 0; k < MAX_COL; ++k) {
+			cl_squares[k] = &board[board_i];
+			if (!((board_i + 1) % BLK_WID)) { 
+				board_i += (MAX_COL + 1) - BLK_WID; } 
+			else { ++board_i; }
+		}
+		if (!((1 + ci) % BLK_WID)) { blk_start += BLK_WID * (BLK_WID * 2 + 1); }
+		else { blk_start += BLK_WID; }
+		clusters[ci] = Cluster(BLK, cl_squares);
+		clusters[ci].print(); // DEBUG
+	}
 }
 //-------------------------------------------------------------------------
 Square & Board::sub(int row, int col) {
