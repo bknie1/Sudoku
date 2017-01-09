@@ -14,15 +14,13 @@
 /* Unit Test Prototypes */
 void ut_state();
 void ut_square();
-void ut_board();
-void ut_cluster();
+void ut_board_and_cluster();
 
 int main() {
 	cout << "\t    ----SUDOKU----\n" << endl;
-	ut_state();
-	ut_square();
-	ut_board();
-	ut_cluster();
+	//ut_state();
+	//ut_square();
+	ut_board_and_cluster();
 }
 
 void ut_state() {
@@ -61,14 +59,12 @@ void ut_square() {
 	cerr << endl;
 }
 
-void ut_board() {
+void ut_board_and_cluster() {
+	cerr << "========================================================" << endl;
 	cerr << "\n\t\tBOARD TEST: INPUT FILE" << endl;
 	Board &board = Board(INPUT_FILE);
-	cerr << "\n\t\tBOARD TEST: PRINT" << endl;
+	cerr << "========================================================" << endl;
+	cerr << "\n\t\tBOARD TEST: AFTER SHOOP" << endl;
 	&board.print(cout);
-}
-
-void ut_cluster() {
-	cerr << "\n\t\tCLUSTER TEST: CONSTRUCTION" << endl;
-	
+	board.draw_board();
 }

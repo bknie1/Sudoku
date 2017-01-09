@@ -19,7 +19,6 @@ class Cluster;
 class State {
 protected:				// Only visible to Square.
 	char value = '-';	// Contents of the square at any given time.
-	char previous_value = '-';
 	bool fixed = false;	// T: Read from input file. F: Modifiable.
 	unsigned short possibilities = ~0;
 	void print_bin(unsigned short possibilities);
@@ -37,15 +36,15 @@ class Square : public State {
 protected:
 	short int row;
 	short int col;
-	vector<Cluster*> clues;
+	vector<Cluster*> clues; // Should contain 3 Clusters.
 public:
 	Square();
-	Square(char dd, short int row, short int col);	// Ctor into State.
+	Square(char ch, short int row, short int col);	// Ctor into State.
 	~Square();
-	ostream& print(ostream&);
-	void move(char ch);  // Writes submission.
+	void move(char value);  // Writes submission.
 	inline void addCluster(Cluster* c) { clues.push_back(c); }
-	inline int getRow() { return row; }
-	inline int getCol() { return col; }
+	inline char getValue() { return value; }
+	inline vector<Cluster*> getClues() { return clues; }
+	ostream& print(ostream&);
 };
 inline ostream& operator<< (ostream& out, Square& sq) { return out; }
