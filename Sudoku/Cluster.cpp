@@ -6,29 +6,34 @@ Cluster::Cluster(clusterT name, Square* cl_squares[]) {
 		this->cl_squares[k] = cl_squares[k];
 	}
 }
-
+//-------------------------------------------------------------------------
 Cluster::Cluster() {
 }
-
+//-------------------------------------------------------------------------
 Cluster::~Cluster() {
 }
-
-bool Cluster::shoop(char value) {
-	cout << "Shooping " << value << "." << endl;
-	// Does this value already exist in a neighbor Square?
+//-------------------------------------------------------------------------
+bool Cluster::check_cluster(char value) {
+	// Determines if there's a value conflict in the cluster.
 	for (int k = 0; k < MAX_COL; ++k) {
-		if (value == cl_squares[k]->getValue() ) {
-			cerr << "Error: Value exists in neighboring Square.\n";
-			return false;
+		cout << "Comparing " << value << " and " << cl_squares[k]->getValue() << endl;
+		if (value == cl_squares[k]->getValue()) {
+			cout << "Conflict between " << value << " and " << cl_squares[k]->getValue() << endl;
+			return true; // Conflict?
 		}
 	}
+	cerr << "Valid value for shoop()" << endl;
+	return false;
+}
+//-------------------------------------------------------------------------
+void Cluster::shoop(char value) {
+	cout << "Shooping " << value << "." << endl;
 	for (int k = 0; k < MAX_COL; ++k) {
-		cl_squares[k]->State::move(value);
-		return true;
+		cl_squares[k]->turn_off(value);
 	}
-	// Call Square's turnOff();
 }
 
+//-------------------------------------------------------------------------
 ostream& Cluster::print(ostream& out) {
 	// I wanted to use the printT from board but had to do this.
 	// Why wouldn't printT just exist here because Cluster is
@@ -41,3 +46,4 @@ ostream& Cluster::print(ostream& out) {
 	out << endl;
 	return out;
 }
+//-------------------------------------------------------------------------

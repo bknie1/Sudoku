@@ -130,6 +130,9 @@ void Board::build_cl_blk() {
 		else { blk_start += BLK_WID; }
 		clusters[ci] = Cluster(BLK, cl_squares);
 		//clusters[ci].print(cout); // DEBUG
+		for (int k = 0; k < MAX_COL; ++k) {
+			cl_squares[k]->addCluster(&clusters[ci]);
+		} 
 	}
 }
 //-------------------------------------------------------------------------
@@ -142,6 +145,10 @@ void Board::initial_shoop() {
 	for (int k = 0; k < BOARD_SIZE; ++k) {
 		value = board[k].getValue();
 		if (isdigit(value) ) { board[k].move(value); }
+	}
+	for (int k = 0; k < BOARD_SIZE; ++k) {
+		value = board[k].getValue();
+		if (isdigit(value)) { board[k].move(value); }
 	}
 }
 //-------------------------------------------------------------------------

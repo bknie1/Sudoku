@@ -109,10 +109,30 @@ Square::~Square() {
 //-------------------------------------------------------------------------
 void Square::move(char value) {
 	// Adjusts neighbor Squares via Cluster's shoop. Must be a digit.
-	if (isdigit(value) ) {
+	// Is there a conflict in any of the 3 clusters?
+	// Cluster::check_cluster() detects a conflict.
+	// Cluster::shoop() does the work if all is well.
+	if (isdigit(value)) {
+		bool cluster_conflict;
 		for (int k = 0; k < clues.size(); ++k) {
-			if(!clues[k]->shoop(value)) break;
+			cluster_conflict = clues[k]->check_cluster(value);
+			if (cluster_conflict) { break; }
 		}
+		if (cluster_conflict) { cout << "Error: Breaking from conflict." << endl; }
+		// If no conflict... call shoop and turn off possibilities.
+		if (!cluster_conflict) {
+			for (int k = 0; k < clues.size(); ++k) {
+				clues[k]->shoop(value);
+			}
+		}
+		else { 
+			cout << 
+			"Error: Value conflicts with something in the cluster." 
+			<< endl; 
+		}
+	}
+	if (value == '-') {
+		// turn_on stuff
 	}
 }
 //-------------------------------------------------------------------------
