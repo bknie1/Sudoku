@@ -8,23 +8,18 @@ State::~State() {
 }
 //-------------------------------------------------------------------------
 void State::move(char ch) {
-	if (isdigit(ch)) {
+	if (isdigit(ch) && !fixed) {
 		if (ch != '0') {
-			if (!fixed) {
-				//cout << "Placing " << ch << "." << endl;
-				previous_value = value;
-				value = ch;
-				turn_off(value); // Remove new val. from poss. list.
-			}
+			//cout << "Placing " << ch << "." << endl;
+			value = ch;
+			turn_off(value); // Remove new val. from poss. list.
 		}
 		else { cout << "Error: Input. Try again." << endl; }
 	}
-	if (ch == '-') {
-		if (!fixed) {
-			//cout << "Placing dash." << endl;
-			if (isdigit(value)) { turn_on(value); }// Add old val. back to poss. list.
-			value = '-';
-		}
+	if (ch == '-' && !fixed) {
+		//cout << "Placing dash." << endl;
+		if (isdigit(value)) { turn_on(value); }// Add old val. back to poss. list.
+		value = '-';
 	}
 }
 //-------------------------------------------------------------------------
@@ -92,13 +87,16 @@ ostream& State::print(ostream& out) {
 //-------------------------------------------------------------------------
 // Square is the physical representation of the State/Square
 // relationship on the board. Board is comprised of 81 squares (9x9).
-Square::Square(char ch, short int row, short int col) : State() {
-	State::move(ch);
+Square::Square(char value, short int row, short int col) : State() {
+	if (isdigit(value)) {
+		this->value = value;
+		this->row = row;
+		this->col = col;
+		fixed = true; // Only occurs on puzzle file read.
+		possibilities = 0;
+	}
 	this->row = row;
 	this->col = col;
-	if (isdigit(ch)) {
-		fixed = true; // Only occurs on puzzle file read.
-	}
 }
 //-------------------------------------------------------------------------
 Square::Square() {

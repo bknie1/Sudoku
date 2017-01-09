@@ -6,7 +6,8 @@ Board::Board() {
 //-------------------------------------------------------------------------
 Board::Board(const char* filename) {
 	const char* printT[] = { "Row", "Column", "Block" };
-	char ch;
+	string new_value;
+	char value;
 	short row = 1;
 	short col = 1;
 
@@ -15,23 +16,25 @@ Board::Board(const char* filename) {
 	say("Input file found.");
 	// Read and construct a board based on a max board size.
 	for (short k = 0; k < BOARD_SIZE; ++k) {
-		ch = fIn.get();
+		fIn >> ws;
+		value = fIn.get();
 		if (fIn.eof()) { break; }
-		board[k] = Square(ch, row, col);
+		board[k] = Square(value, row, col);
 		if (col == MAX_COL) { ++row; col = 1; }
 		else { ++col; }
 	}
-
 	cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
 	print(cout);
 	create_clusters();
 	draw_board();
 	initial_shoop();
+	fIn.close();
 }
 //-------------------------------------------------------------------------
 Board::~Board() {
 	// cerr << "Board destroyed. << endl;
 }
+//-------------------------------------------------------------------------
 void Board::draw_board() {
 	cout << "\tASCII Sudoku Board Print" << endl;
 	char value;
@@ -58,7 +61,7 @@ void Board::create_clusters() {
 	// clusters[27] - To store created clusters.
 	// board[81]. Use these to create clusters.
 	cerr << "========================================================" << endl;
-	cerr << "\n\t\tCLUSTER TEST: CREATE" << endl;
+	cerr << "\n\t\tCLUSTER TEST: CREATE\n" << endl;
 	build_cl_row(); // Build Row Clusters: 0 - 8
 	build_cl_col();	// Build Column Clusters: 9 - 17
 	build_cl_blk();	// Build Block Clusters: 18 - 27
@@ -76,7 +79,7 @@ void Board::build_cl_row() {
 			cl_squares[k] = &board[board_i];
 		}
 		clusters[ci] = Cluster(ROW, cl_squares);
-		clusters[ci].print(cout); // DEBUG
+		//clusters[ci].print(cout); // DEBUG
 		for (int k = 0; k < MAX_COL; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
@@ -98,7 +101,7 @@ void Board::build_cl_col() {
 		}
 		++col_start; // 1,1 -> 1,2 -> 1,3 etc. Change columns/starting point.
 		clusters[ci] = Cluster(COL, cl_squares);
-		clusters[ci].print(cout); // DEBUG
+		//clusters[ci].print(cout); // DEBUG
 		for (int k = 0; k < MAX_COL; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
@@ -126,7 +129,7 @@ void Board::build_cl_blk() {
 		if (!((1 + ci) % 3)) { blk_start += BLK_WID * 7; }
 		else { blk_start += BLK_WID; }
 		clusters[ci] = Cluster(BLK, cl_squares);
-		clusters[ci].print(cout); // DEBUG
+		//clusters[ci].print(cout); // DEBUG
 	}
 }
 //-------------------------------------------------------------------------
@@ -143,7 +146,7 @@ void Board::initial_shoop() {
 }
 //-------------------------------------------------------------------------
 Square & Board::sub(int row, int col) {
-	Square s; // Placeholder.
+	Square s = Square(); // Placeholder.
 	return s; // Placeholder.
 }
 //-------------------------------------------------------------------------
