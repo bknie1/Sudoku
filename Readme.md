@@ -10,7 +10,7 @@ new concepts. See the documentation folder for more about each assignment.
 - State
 - Square
 - Board
-- Cluster?
+- Cluster
 
 ## Functionality
 - Git source control.
@@ -20,6 +20,7 @@ new concepts. See the documentation folder for more about each assignment.
 - Fixed Square toggle. Was the square read from a file? Can't be modified! No? Modifiable.
 - Possibilities list is based on a short integer with bit ops to toggle on/off possibilities. Ex. If '3' is on/1 it can still be written.
 - Cluster construction. Finds appropriate Squares, creates a Cluster, let's each Square know what Cluster it's a part of.
+- shoop() works. It will go through and update neighboring Square possibility lists thanks to these Clusters.
 
 ### TODO
 
@@ -33,8 +34,7 @@ new concepts. See the documentation folder for more about each assignment.
 - Details & Documents
 
 ## Functionality
-- shoop(): Toggling possibilities for each Square in the Cluster based on changes to any given Square.
+- Game is next.
 
 ### Questions
-- I'm having trouble implementing shoop(). I probably just need to think about it for awhile.
-- I'm having trouble printing Cluster participation. I can't use the existing print functions because they come online and may be used before the clusters are created. I know the relationships exist but there isn't an obvious, printable way to demonstrate this.
+- I think I'm okay for now.
