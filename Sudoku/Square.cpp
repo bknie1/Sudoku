@@ -16,7 +16,7 @@ void State::move(char value) {
 	else { cout << "Error: Input. Try again." << endl; }
 	if (value == '-') {
 		//cout << "Placing dash." << endl;
-		if (isdigit(value)) { turn_on(value); }// Add old val. back to poss. list.
+		if (isdigit(value)) { turn_on(value); }
 		value = '-';
 	}
 }
@@ -49,13 +49,15 @@ void State::turn_off(char ch) {
 
 void State::turn_on(char ch) {
 	int n = ch - '0';
-	possibilities = possibilities | 1 << n;
+	int previous = value - '0';
+	possibilities = possibilities | 1 << previous;
 	//print_bin(possibilities); // Debugging
 	/*		111111011 <- '3' is toggled off.
 		|	000000100 <- Mask to isolate '3'. | to set it.
 			---------
 			111111111 <- '3' is back on!
 	*/
+	value = '-';
 }
 //-------------------------------------------------------------------------
 void State::print_bin(unsigned short possibilities) {
@@ -108,16 +110,20 @@ Square::~Square() {
 void Square::move(char value) {
 	// Adjusts neighbor Squares via Cluster's shoop. Must be a digit.
 	// Check for a digit here or elsewhere.
-	//cout << clues.size() << endl; // DEBUG
-	//print_clues(cout); // DEBUG
 	if (isdigit(value)) {
+		this->value = value;
 		for (unsigned short k = 0; k < clues.size(); ++k) {
 			clues[k]->shoop(value);
 		}
 	}
 	if (value == '-') {
-		// turn_on stuff
+		turn_on(value);
 	}
+
+	//cout << clues.size() << endl; // DEBUG
+	//print_clues(cout); // DEBUG
+	//cout << "Considering " << value << endl; // DEBUG
+	//cout << "This is Square " << row << ", " << col << endl; // DEBUG
 }
 //-------------------------------------------------------------------------
 ostream & Square::print_clues(ostream & out) {

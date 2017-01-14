@@ -5,12 +5,13 @@
 	Board.hpp/cpp, Cluster.hpp/cpp
 */
 #include <windows.h>
-#include "Tools.hpp"
-#include "Square.hpp"
+#include "Game.hpp"
 #include "Board.hpp"
 #include "Cluster.hpp"
+#include "Square.hpp"
+#include "Tools.hpp"
 
-#define INPUT_FILE "sudo-test1.txt"
+// #define INPUT_FILE "sudo-test1.txt" // Game owns this now.
 
 /* Unit Test Prototypes */
 void music_for_fun();
@@ -19,15 +20,13 @@ void ut_square();
 void ut_board_and_cluster();
 
 int main() {
-	cout << "\t    ----SUDOKU----\n" << endl;
-	//music_for_fun();
-	//ut_state();
-	//ut_square();
-	ut_board_and_cluster();
+	cout << "\t    SUDOKU\n" << endl;
+	Game &g = Game();
+	//ut_board_and_cluster();
 }
 
 void ut_state() {
-	cerr << "\n\t\STATE TEST: MOVE" << endl;
+	cerr << "\n\tSTATE TEST: MOVE" << endl;
 
 	State st1 = State();
 	st1.move('1'); // Valid.

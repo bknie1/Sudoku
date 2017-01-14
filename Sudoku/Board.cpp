@@ -10,6 +10,7 @@ Board::Board(const char* filename) {
 	char value;
 	short row = 1;
 	short col = 1;
+	dash_count = 0;
 
 	fIn.open(filename);
 	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
@@ -21,6 +22,7 @@ Board::Board(const char* filename) {
 		value = fIn.get();
 		if (fIn.eof()) { break; }
 		board[k] = Square(value, row, col);
+		if (value == '-') { ++dash_count; }
 		if (col == MAX_COL) { ++row; col = 1; }
 		else { ++col; }
 	}
@@ -30,6 +32,8 @@ Board::Board(const char* filename) {
 	//draw_board();
 	initial_shoop();
 	fIn.close();
+	
+	//cout << "Dash Count: " << dash_count << endl; // DEBUG
 }
 //-------------------------------------------------------------------------
 Board::~Board() {
@@ -56,6 +60,14 @@ void Board::draw_board() {
 		else { cout << "\n|"; }
 	}
 	cout << "======================================|\n" << endl;
+}
+//-------------------------------------------------------------------------
+bool Board::is_done() {
+	// Returns true when all squares are filled.
+	// Check after each move?
+	//Based on Board's dash count.
+	if (!dash_count) { return true; }
+	else { return false; }
 }
 //-------------------------------------------------------------------------
 void Board::create_clusters() {
@@ -153,9 +165,26 @@ void Board::initial_shoop() {
 	}
 }
 //-------------------------------------------------------------------------
-Square & Board::sub(int row, int col) {
-	Square s = Square(); // Placeholder.
-	return s; // Placeholder.
+int Board::sub(int row, int col) {
+	// Algorithm that determines loc in array based on coordinates.
+	int loc = (row - 1) * 9 + (col - 1);
+	return loc;
+}
+//-------------------------------------------------------------------------
+void Board::move(int row, int col, char value) {
+	// If coordinates exceed the board:
+	if (row > MAX_COL || col > MAX_COL) { 
+		say("Error: Coordinate beyond Board scope."); return;
+	}
+	// If valid entry:
+	if (isdigit(value) || value == '-') {
+		int loc = sub(row, col);
+		board[loc].move(value);
+		--dash_count;
+	} // Invalid entry:
+	else {
+		say("Error: Value must be a number or dash."); return;
+	}
 }
 //-------------------------------------------------------------------------
 ostream & Board::print(ostream& out) {
