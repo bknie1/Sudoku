@@ -13,8 +13,9 @@ Board::Board(const char* filename) {
 
 	fIn.open(filename);
 	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
-	say("Input file found.");
-	// Read and construct a board based on a max board size.
+	else { say("Input file found."); } // Else unecessary, but due diligence.
+
+	// Read and construct a board using the passed file. Ex. 9x9 = 81 Sq's
 	for (short k = 0; k < BOARD_SIZE; ++k) {
 		fIn >> ws;
 		value = fIn.get();
@@ -24,9 +25,9 @@ Board::Board(const char* filename) {
 		else { ++col; }
 	}
 	cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
-	print(cout);
+	//print(cout);
 	create_clusters();
-	draw_board();
+	//draw_board();
 	initial_shoop();
 	fIn.close();
 }
@@ -36,9 +37,8 @@ Board::~Board() {
 }
 //-------------------------------------------------------------------------
 void Board::draw_board() {
-	cout << "\tASCII Sudoku Board Print" << endl;
 	char value;
-	cout << "|======================================|\n|";
+	cout << "\n|======================================|\n|";
 	for (int k = 0; k < BOARD_SIZE; ++k) {
 		value = board[k].getValue();
 		cout << " " << value << " |";
@@ -49,18 +49,18 @@ void Board::draw_board() {
 				cout << "--------------------------------------|\n|";
 			}
 			if (((k + 1) % 27) == 0) {
-				cout << "--------------------------------------|\n|";
+				//cout << "--------------------------------------|\n|"
+				cout << "======================================|\n|";;
 			}
 		}
 		else { cout << "\n|"; }
 	}
-	cout << "======================================|" << endl;
+	cout << "======================================|\n" << endl;
 }
 //-------------------------------------------------------------------------
 void Board::create_clusters() {
 	// clusters[27] - To store created clusters.
 	// board[81]. Use these to create clusters.
-	cerr << "========================================================" << endl;
 	cerr << "\n\t\tCLUSTER TEST: CREATE\n" << endl;
 	build_cl_row(); // Build Row Clusters: 0 - 8
 	build_cl_col();	// Build Column Clusters: 9 - 17
@@ -80,6 +80,7 @@ void Board::build_cl_row() {
 		}
 		clusters[ci] = Cluster(ROW, cl_squares);
 		//clusters[ci].print(cout); // DEBUG
+		// Each Square should get a ROW cluster added to clues[].
 		for (int k = 0; k < MAX_COL; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
@@ -94,7 +95,7 @@ void Board::build_cl_col() {
 	Square* cl_squares[MAX_COL]; // Squares to be assigned to cluster.
 	int col_start = 0, board_i;
 
-	for (int ci = 0; ci < MAX_COL; ++ci) { // Creates Clusters
+	for (int ci = MAX_COL; ci < MAX_COL * 2; ++ci) { // Creates Clusters
 		board_i = col_start;
 		for (int k = 0; k < MAX_COL; ++k, board_i += MAX_COL) {
 			cl_squares[k] = &board[board_i];
@@ -117,7 +118,7 @@ void Board::build_cl_blk() {
 	Square* cl_squares[MAX_COL]; // To be assigned to cluster.
 	int blk_start = 0, board_i;
 
-	for (int ci = 0; ci < MAX_COL; ++ci) { // Creates Clusters.
+	for (int ci = MAX_COL * 2; ci < MAX_COL * 3; ++ci) { // Creates Clusters.
 		board_i = blk_start;
 		for (int k = 0; k < MAX_COL; ++k) {
 			cl_squares[k] = &board[board_i];
@@ -132,23 +133,23 @@ void Board::build_cl_blk() {
 		//clusters[ci].print(cout); // DEBUG
 		for (int k = 0; k < MAX_COL; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
-		} 
+		}
+		// Debugging Create Print
+		//for (int k = 0; k < MAX_COL; ++k) {
+		//	cout << "Clue Clusters so far:\n" << endl;
+		//	cl_squares[k]->print_clues(cout);
+		//}
 	}
 }
 //-------------------------------------------------------------------------
 void Board::initial_shoop() {
 	// Once the board has been constructed, use this to 'initialize'
 	// All of the possibilities lists in each Square by Cluster.
-	cerr << "========================================================" << endl;
-	cerr << "\n\tCLUSTER TEST: INITIAL SHOOP" << endl; // DEBUG
+	cerr << "\t\tCLUSTER TEST: INITIAL SHOOP" << endl; // DEBUG
 	char value;
 	for (int k = 0; k < BOARD_SIZE; ++k) {
 		value = board[k].getValue();
 		if (isdigit(value) ) { board[k].move(value); }
-	}
-	for (int k = 0; k < BOARD_SIZE; ++k) {
-		value = board[k].getValue();
-		if (isdigit(value)) { board[k].move(value); }
 	}
 }
 //-------------------------------------------------------------------------

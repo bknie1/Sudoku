@@ -39,12 +39,15 @@ protected:
 	vector<Cluster*> clues; // Should contain 3 Clusters.
 public:
 	Square();
-	Square(char ch, short int row, short int col);	// Ctor into State.
+	Square(char ch, short row, short col);	// Ctor into State.
 	~Square();
 	void move(char value);  // Writes submission.
 	inline void addCluster(Cluster* c) { clues.push_back(c); }
 	inline char getValue() { return value; }
 	inline vector<Cluster*> getClues() { return clues; }
-	ostream& print(ostream&);
+	inline short getRow() { return row; }
+	inline short getCol() { return col; }
+	ostream& print_clues(ostream& out);
+	ostream& print(ostream& out);
 };
 inline ostream& operator<< (ostream& out, Square& sq) { return out; }

@@ -4,6 +4,7 @@
 	Header/Source Files: Sudoku.cpp, Tools.hpp/cpp, Square.hpp/cpp,
 	Board.hpp/cpp, Cluster.hpp/cpp
 */
+#include <windows.h>
 #include "Tools.hpp"
 #include "Square.hpp"
 #include "Board.hpp"
@@ -12,12 +13,14 @@
 #define INPUT_FILE "sudo-test1.txt"
 
 /* Unit Test Prototypes */
+void music_for_fun();
 void ut_state();
 void ut_square();
 void ut_board_and_cluster();
 
 int main() {
 	cout << "\t    ----SUDOKU----\n" << endl;
+	//music_for_fun();
 	//ut_state();
 	//ut_square();
 	ut_board_and_cluster();
@@ -63,8 +66,14 @@ void ut_board_and_cluster() {
 	cerr << "========================================================" << endl;
 	cerr << "\n\t\tBOARD TEST: INPUT FILE" << endl;
 	Board &board = Board(INPUT_FILE);
-	cerr << "========================================================" << endl;
-	cerr << "\n\t\tBOARD TEST: AFTER SHOOP" << endl;
+	cerr << "\n\t\tBOARD TEST: AFTER SHOOP\n" << endl;
 	&board.print(cout);
 	board.draw_board();
+}
+
+void music_for_fun() {
+	//ascending pitch beep
+	for (int i = 100; i < 1000; i += 200) {
+		Beep(i, 100);
+	}
 }

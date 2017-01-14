@@ -7,16 +7,14 @@ State::~State() {
 	//cerr << "State destroyed." << endl;
 }
 //-------------------------------------------------------------------------
-void State::move(char ch) {
-	if (isdigit(ch) && !fixed) {
-		if (ch != '0') {
-			//cout << "Placing " << ch << "." << endl;
-			value = ch;
-			turn_off(value); // Remove new val. from poss. list.
-		}
-		else { cout << "Error: Input. Try again." << endl; }
+void State::move(char value) {
+	if (isdigit(value) && value != 0) {
+		//cout << "Placing " << ch << "." << endl;
+		this->value = value;
+		turn_off(value); // Remove new val. from poss. list.
 	}
-	if (ch == '-' && !fixed) {
+	else { cout << "Error: Input. Try again." << endl; }
+	if (value == '-') {
 		//cout << "Placing dash." << endl;
 		if (isdigit(value)) { turn_on(value); }// Add old val. back to poss. list.
 		value = '-';
@@ -87,7 +85,7 @@ ostream& State::print(ostream& out) {
 //-------------------------------------------------------------------------
 // Square is the physical representation of the State/Square
 // relationship on the board. Board is comprised of 81 squares (9x9).
-Square::Square(char value, short int row, short int col) : State() {
+Square::Square(char value, short row, short col) : State() {
 	if (isdigit(value)) {
 		this->value = value;
 		this->row = row;
@@ -109,31 +107,24 @@ Square::~Square() {
 //-------------------------------------------------------------------------
 void Square::move(char value) {
 	// Adjusts neighbor Squares via Cluster's shoop. Must be a digit.
-	// Is there a conflict in any of the 3 clusters?
-	// Cluster::check_cluster() detects a conflict.
-	// Cluster::shoop() does the work if all is well.
+	// Check for a digit here or elsewhere.
+	//cout << clues.size() << endl; // DEBUG
+	//print_clues(cout); // DEBUG
 	if (isdigit(value)) {
-		bool cluster_conflict;
-		for (int k = 0; k < clues.size(); ++k) {
-			cluster_conflict = clues[k]->check_cluster(value);
-			if (cluster_conflict) { break; }
-		}
-		if (cluster_conflict) { cout << "Error: Breaking from conflict." << endl; }
-		// If no conflict... call shoop and turn off possibilities.
-		if (!cluster_conflict) {
-			for (int k = 0; k < clues.size(); ++k) {
-				clues[k]->shoop(value);
-			}
-		}
-		else { 
-			cout << 
-			"Error: Value conflicts with something in the cluster." 
-			<< endl; 
+		for (unsigned short k = 0; k < clues.size(); ++k) {
+			clues[k]->shoop(value);
 		}
 	}
 	if (value == '-') {
 		// turn_on stuff
 	}
+}
+//-------------------------------------------------------------------------
+ostream & Square::print_clues(ostream & out) {
+	for (unsigned short k = 0; k < clues.size(); ++k) {
+		clues[k]->print(out);
+	}
+	return out;
 }
 //-------------------------------------------------------------------------
 ostream& Square::print(ostream& out) {
