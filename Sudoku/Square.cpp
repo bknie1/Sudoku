@@ -8,16 +8,12 @@ State::~State() {
 }
 //-------------------------------------------------------------------------
 void State::move(char value) {
-	if (isdigit(value) && value != 0) {
-		//cout << "Placing " << ch << "." << endl;
-		this->value = value;
-		turn_off(value); // Remove new val. from poss. list.
-	}
-	else { cout << "Error: Input. Try again." << endl; }
-	if (value == '-') {
-		//cout << "Placing dash." << endl;
-		if (isdigit(value)) { turn_on(value); }
-		value = '-';
+	if (fixed == false) {
+		if (isdigit(value) ) {
+			this->value = value;
+			turn_off(value); // Remove new val. from poss. list.
+		}
+		else { cout << "Error: Input. Try again." << endl; }
 	}
 }
 //-------------------------------------------------------------------------
@@ -55,7 +51,20 @@ void State::turn_on(char old_value) {
 			---------
 			111111111 <- '3' is back on!
 	*/
-	value = '-';
+}
+//-------------------------------------------------------------------------
+bool State::validate_move(char ch) {
+	int value = ch - '0';
+	cout << "Entered: " << ch << endl;
+	for (int k = 9; k >= 1; k--) {
+		int bit = possibilities & 1 << k;
+		cout << "Iteration: " << k << endl;
+		cout << "Comparing to: ";
+		if (bit) { cout << "true" << endl; }
+		if (!bit) { cout << "false" << endl; }
+		if (!bit && k == value) { return true; }
+	}
+	return false;
 }
 //-------------------------------------------------------------------------
 void State::print_bin(unsigned short possibilities) {
@@ -108,24 +117,31 @@ void Square::move(char new_value) {
 	// Adjusts neighbor Squares via Cluster's shoop. Must be a digit.
 	char old_value = value;
 	value = new_value;
-
+	if (fixed) { possibilities = 0; }
 	for (unsigned short k = 0; k < clues.size(); ++k) {
 		if (isdigit(new_value)) {
 			clues[k]->shoop_off(new_value);
 		}
-		if (new_value == '-') {
-			clues[k]->shoop_on(old_value);
-		}
 	}
-	if(isdigit(new_value)) { possibilities = 0; }
 }
 	//cout << clues.size() << endl; // DEBUG
 	//print_clues(cout); // DEBUG
 	//cout << "Considering " << value << endl; // DEBUG
 	//cout << "This is Square " << row << ", " << col << endl; // DEBUG
 //-------------------------------------------------------------------------
+void Square::erase() {
+	// The user entered a dash indicating erasure.
+	// Turn old value back on for all neighboring Squares.
+	// This Square is assigned a dash.
+	for (int k = 0, s = clues.size(); k < s; ++k) {
+		clues[k]->shoop_on(value);
+	}
+	value = '-';
+}
+//-------------------------------------------------------------------------
 ostream & Square::print_clues(ostream & out) {
-	for (unsigned short k = 0; k < clues.size(); ++k) {
+	State::erase();
+	for (int k = 0, s = clues.size(); k < s; ++k) {
 		clues[k]->print(out);
 	}
 	return out;

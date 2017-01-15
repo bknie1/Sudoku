@@ -22,7 +22,6 @@ protected:				// Only visible to Square.
 	bool fixed = false;	// T: Read from input file. F: Modifiable.
 	unsigned short possibilities = ~0;
 	void print_bin(unsigned short possibilities);
-	bool check_poss(char value);
 public:
 	State() = default;
 	~State();
@@ -30,6 +29,7 @@ public:
 	void turn_off(char ch); // Turns a value off.
 	void erase();		// Erase the value of State.
 	void turn_on(char ch); // Turns a value on.
+	bool validate_move(char ch); // Is a move legal? Refer to poss list.
 	ostream& print(ostream& out);	// Print possibilities in values/dashes.
 
 	inline bool isFixed() {if(fixed) {return true;} else {return false;}}
@@ -50,6 +50,7 @@ public:
 	inline vector<Cluster*> getClues() { return clues; }
 	inline short getRow() { return row; }
 	inline short getCol() { return col; }
+	void erase();
 	ostream& print_clues(ostream& out);
 	ostream& print(ostream& out);
 };
