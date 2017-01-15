@@ -17,8 +17,8 @@ void Game::run(Board &board) {
 	// TODO Use Fischer's menu_c().
 	// Print the Board, Menu, and an actions menu.
 	char sel;
-	short row;
-	short column;
+	int row;
+	int column;
 	char value;
 	const char* menu[] = { 
 		"(M)ove", "(U)ndo", "(R)edo", "(S)ave", "(L)oad", "(Q)uit"
@@ -35,12 +35,8 @@ void Game::run(Board &board) {
 
 		switch (sel) {
 		case 'm': // Move
-			cout << "Input Row: ";
-			cin >> row;
-			cout << "Input Column: ";
-			cin >> column;
-			cout << "Input Value: ";
-			cin >> value;
+			cout << "Input (Row) (Column) (Value): ";
+			cin >> row; cin >> column; cin >> value;
 			board.move(row, column, value);
 			break;
 		case 'u': // Undo
