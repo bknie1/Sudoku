@@ -29,12 +29,15 @@ private:
 	void build_cl_col();	// Helper, called by create_clusters()
 	void build_cl_blk();	// Helper, called by create_clusters()
 	void initial_shoop();	// Board ready, so shoop all values.
-	Square& sub(int row, int col);
+	int sub(int row, int col);
+	short dash_count;
 public:
 	Board();
 	Board(const char* filename);
 	~Board();
+	void move(int row, int col, char val);
 	void draw_board(); // User friendly view.
+	bool is_done();
 
 	ostream& print(ostream&);
 };

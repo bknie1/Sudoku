@@ -4,27 +4,29 @@
 	Header/Source Files: Sudoku.cpp, Tools.hpp/cpp, Square.hpp/cpp,
 	Board.hpp/cpp, Cluster.hpp/cpp
 */
-#include "Tools.hpp"
-#include "Square.hpp"
+#include <windows.h>
+#include "Game.hpp"
 #include "Board.hpp"
 #include "Cluster.hpp"
+#include "Square.hpp"
+#include "Tools.hpp"
 
-#define INPUT_FILE "sudo-test1.txt"
+// #define INPUT_FILE "sudo-test1.txt" // Game owns this now.
 
 /* Unit Test Prototypes */
+void music_for_fun();
 void ut_state();
 void ut_square();
 void ut_board_and_cluster();
 
 int main() {
-	cout << "\t    ----SUDOKU----\n" << endl;
-	//ut_state();
-	//ut_square();
-	ut_board_and_cluster();
+	cout << "\t    SUDOKU\n" << endl;
+	Game &g = Game();
+	//ut_board_and_cluster();
 }
 
 void ut_state() {
-	cerr << "\n\t\STATE TEST: MOVE" << endl;
+	cerr << "\n\tSTATE TEST: MOVE" << endl;
 
 	State st1 = State();
 	st1.move('1'); // Valid.
@@ -63,8 +65,14 @@ void ut_board_and_cluster() {
 	cerr << "========================================================" << endl;
 	cerr << "\n\t\tBOARD TEST: INPUT FILE" << endl;
 	Board &board = Board(INPUT_FILE);
-	cerr << "========================================================" << endl;
-	cerr << "\n\t\tBOARD TEST: AFTER SHOOP" << endl;
+	cerr << "\n\t\tBOARD TEST: AFTER SHOOP\n" << endl;
 	&board.print(cout);
 	board.draw_board();
+}
+
+void music_for_fun() {
+	//ascending pitch beep
+	for (int i = 100; i < 1000; i += 200) {
+		Beep(i, 100);
+	}
 }

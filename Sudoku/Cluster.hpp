@@ -26,7 +26,7 @@ public:
 	Cluster(clusterT type, Square* cl_squares[]);
 	Cluster();
 	~Cluster();
-	bool check_cluster(char value);
-	void shoop(char ch); // Removes possibility from each cluster.
+	void shoop_off(char ch); // Removes possibility from each cluster.
+	void shoop_on(char ch); // Adds possibility from each cluster.
 	ostream& print(ostream& out);
 };

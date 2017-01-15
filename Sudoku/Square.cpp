@@ -7,18 +7,16 @@ State::~State() {
 	//cerr << "State destroyed." << endl;
 }
 //-------------------------------------------------------------------------
-void State::move(char ch) {
-	if (isdigit(ch) && !fixed) {
-		if (ch != '0') {
-			//cout << "Placing " << ch << "." << endl;
-			value = ch;
-			turn_off(value); // Remove new val. from poss. list.
-		}
-		else { cout << "Error: Input. Try again." << endl; }
+void State::move(char value) {
+	if (isdigit(value) && value != 0) {
+		//cout << "Placing " << ch << "." << endl;
+		this->value = value;
+		turn_off(value); // Remove new val. from poss. list.
 	}
-	if (ch == '-' && !fixed) {
+	else { cout << "Error: Input. Try again." << endl; }
+	if (value == '-') {
 		//cout << "Placing dash." << endl;
-		if (isdigit(value)) { turn_on(value); }// Add old val. back to poss. list.
+		if (isdigit(value)) { turn_on(value); }
 		value = '-';
 	}
 }
@@ -31,7 +29,6 @@ void State::erase() {
 	say("Cannot erase fixed square.");
 }
 //-------------------------------------------------------------------------
-
 void State::turn_off(char ch) {
 	/* We want to shift the third bit. Shift a single '1' over 3 bits:
 		000000100
@@ -48,16 +45,17 @@ void State::turn_off(char ch) {
 	//print_bin(possibilities); // Debugging
 }
 //-------------------------------------------------------------------------
-
-void State::turn_on(char ch) {
-	int n = ch - '0';
-	possibilities = possibilities | 1 << n;
+void State::turn_on(char old_value) {
+	// TODO use this and shoop() to turn back on all values.
+	int old = old_value - '0';
+	possibilities = possibilities | 1 << old;
 	//print_bin(possibilities); // Debugging
 	/*		111111011 <- '3' is toggled off.
 		|	000000100 <- Mask to isolate '3'. | to set it.
 			---------
 			111111111 <- '3' is back on!
 	*/
+	value = '-';
 }
 //-------------------------------------------------------------------------
 void State::print_bin(unsigned short possibilities) {
@@ -72,7 +70,6 @@ ostream& State::print(ostream& out) {
 	out << "Value: " << value;
 	if (fixed) { out << "  Fixed: true "; }
 	if (!fixed) { out << "  Fixed: false"; }
-	//out << "  Fixed: " << fixed;
 	out << "  Possibilities: ";
 	for (int k = 9; k >= 1; k--) {
 		int bit = possibilities & 1 << k;
@@ -87,7 +84,7 @@ ostream& State::print(ostream& out) {
 //-------------------------------------------------------------------------
 // Square is the physical representation of the State/Square
 // relationship on the board. Board is comprised of 81 squares (9x9).
-Square::Square(char value, short int row, short int col) : State() {
+Square::Square(char value, short row, short col) : State() {
 	if (isdigit(value)) {
 		this->value = value;
 		this->row = row;
@@ -107,33 +104,31 @@ Square::~Square() {
 	//cerr << "Destroying Square [" << row << ", " << col << "]" << endl;
 }
 //-------------------------------------------------------------------------
-void Square::move(char value) {
+void Square::move(char new_value) {
 	// Adjusts neighbor Squares via Cluster's shoop. Must be a digit.
-	// Is there a conflict in any of the 3 clusters?
-	// Cluster::check_cluster() detects a conflict.
-	// Cluster::shoop() does the work if all is well.
-	if (isdigit(value)) {
-		bool cluster_conflict;
-		for (int k = 0; k < clues.size(); ++k) {
-			cluster_conflict = clues[k]->check_cluster(value);
-			if (cluster_conflict) { break; }
+	char old_value = value;
+	value = new_value;
+
+	for (unsigned short k = 0; k < clues.size(); ++k) {
+		if (isdigit(new_value)) {
+			clues[k]->shoop_off(new_value);
 		}
-		if (cluster_conflict) { cout << "Error: Breaking from conflict." << endl; }
-		// If no conflict... call shoop and turn off possibilities.
-		if (!cluster_conflict) {
-			for (int k = 0; k < clues.size(); ++k) {
-				clues[k]->shoop(value);
-			}
-		}
-		else { 
-			cout << 
-			"Error: Value conflicts with something in the cluster." 
-			<< endl; 
+		if (new_value == '-') {
+			clues[k]->shoop_on(old_value);
 		}
 	}
-	if (value == '-') {
-		// turn_on stuff
+	if(isdigit(new_value)) { possibilities = 0; }
+}
+	//cout << clues.size() << endl; // DEBUG
+	//print_clues(cout); // DEBUG
+	//cout << "Considering " << value << endl; // DEBUG
+	//cout << "This is Square " << row << ", " << col << endl; // DEBUG
+//-------------------------------------------------------------------------
+ostream & Square::print_clues(ostream & out) {
+	for (unsigned short k = 0; k < clues.size(); ++k) {
+		clues[k]->print(out);
 	}
+	return out;
 }
 //-------------------------------------------------------------------------
 ostream& Square::print(ostream& out) {
