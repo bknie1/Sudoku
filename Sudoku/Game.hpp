@@ -10,4 +10,6 @@ public:
 	Game();
 	~Game();
 	void run(Board &board);
+	char menu_c(const char* title, int n, const char* menu[], 
+		const string valid);
 };

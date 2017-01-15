@@ -29,7 +29,6 @@ void State::erase() {
 	say("Cannot erase fixed square.");
 }
 //-------------------------------------------------------------------------
-
 void State::turn_off(char ch) {
 	/* We want to shift the third bit. Shift a single '1' over 3 bits:
 		000000100
@@ -46,11 +45,10 @@ void State::turn_off(char ch) {
 	//print_bin(possibilities); // Debugging
 }
 //-------------------------------------------------------------------------
-
-void State::turn_on(char ch) {
-	int n = ch - '0';
-	int previous = value - '0';
-	possibilities = possibilities | 1 << previous;
+void State::turn_on(char old_value) {
+	// TODO use this and shoop() to turn back on all values.
+	int old = old_value - '0';
+	possibilities = possibilities | 1 << old;
 	//print_bin(possibilities); // Debugging
 	/*		111111011 <- '3' is toggled off.
 		|	000000100 <- Mask to isolate '3'. | to set it.
@@ -72,7 +70,6 @@ ostream& State::print(ostream& out) {
 	out << "Value: " << value;
 	if (fixed) { out << "  Fixed: true "; }
 	if (!fixed) { out << "  Fixed: false"; }
-	//out << "  Fixed: " << fixed;
 	out << "  Possibilities: ";
 	for (int k = 9; k >= 1; k--) {
 		int bit = possibilities & 1 << k;
@@ -107,24 +104,25 @@ Square::~Square() {
 	//cerr << "Destroying Square [" << row << ", " << col << "]" << endl;
 }
 //-------------------------------------------------------------------------
-void Square::move(char value) {
+void Square::move(char new_value) {
 	// Adjusts neighbor Squares via Cluster's shoop. Must be a digit.
-	// Check for a digit here or elsewhere.
-	if (isdigit(value)) {
-		this->value = value;
-		for (unsigned short k = 0; k < clues.size(); ++k) {
-			clues[k]->shoop(value);
+	char old_value = value;
+	value = new_value;
+
+	for (unsigned short k = 0; k < clues.size(); ++k) {
+		if (isdigit(new_value)) {
+			clues[k]->shoop_off(new_value);
+		}
+		if (new_value == '-') {
+			clues[k]->shoop_on(old_value);
 		}
 	}
-	if (value == '-') {
-		turn_on(value);
-	}
-
+	if(isdigit(new_value)) { possibilities = 0; }
+}
 	//cout << clues.size() << endl; // DEBUG
 	//print_clues(cout); // DEBUG
 	//cout << "Considering " << value << endl; // DEBUG
 	//cout << "This is Square " << row << ", " << col << endl; // DEBUG
-}
 //-------------------------------------------------------------------------
 ostream & Square::print_clues(ostream & out) {
 	for (unsigned short k = 0; k < clues.size(); ++k) {

@@ -13,10 +13,17 @@ Cluster::Cluster() {
 Cluster::~Cluster() {
 }
 //-------------------------------------------------------------------------
-void Cluster::shoop(char value) {
+void Cluster::shoop_off(char new_value) {
 	//cout << "Shooping " << value << "." << endl; // DEBUG
 	for (int k = 0; k < MAX_COL; ++k) {
-		cl_squares[k]->turn_off(value);
+		cl_squares[k]->turn_off(new_value);
+	}
+}
+//-------------------------------------------------------------------------
+void Cluster::shoop_on(char old_value) {
+	//cout << "Shooping " << value << "." << endl; // DEBUG
+	for (int k = 0; k < MAX_COL; ++k) {
+		cl_squares[k]->turn_on(old_value);
 	}
 }
 //-------------------------------------------------------------------------

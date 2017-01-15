@@ -22,6 +22,7 @@ protected:				// Only visible to Square.
 	bool fixed = false;	// T: Read from input file. F: Modifiable.
 	unsigned short possibilities = ~0;
 	void print_bin(unsigned short possibilities);
+	bool check_poss(char value);
 public:
 	State() = default;
 	~State();
@@ -30,6 +31,8 @@ public:
 	void erase();		// Erase the value of State.
 	void turn_on(char ch); // Turns a value on.
 	ostream& print(ostream& out);	// Print possibilities in values/dashes.
+
+	inline bool isFixed() {if(fixed) {return true;} else {return false;}}
 };
 //-------------------------------------------------------------------------
 class Square : public State {

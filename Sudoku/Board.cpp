@@ -67,7 +67,7 @@ bool Board::is_done() {
 	// Check after each move?
 	//Based on Board's dash count.
 	if (!dash_count) { return true; }
-	else { return false; }
+	else { cout << dash_count << " dashes left." << endl; return false; }
 }
 //-------------------------------------------------------------------------
 void Board::create_clusters() {
@@ -172,19 +172,23 @@ int Board::sub(int row, int col) {
 }
 //-------------------------------------------------------------------------
 void Board::move(int row, int col, char value) {
+	int loc = sub(row, col);
 	// If coordinates exceed the board:
-	if (row > MAX_COL || col > MAX_COL) { 
-		say("Error: Coordinate beyond Board scope."); return;
+	if (row < MAX_COL || col < MAX_COL) { 
+		if (!board[loc].isFixed()) { // Is it a fixed Square?
+			if (isdigit(value)) {
+				board[loc].move(value);
+				--dash_count;
+			}
+			else if (value == '-') { // A dash entry?
+				board[loc].move('-'); // Hard pass. We know it's a dash.
+				++dash_count;
+			}
+			else { say("Error: Value must be a number or dash."); }
+		}
+		else { say("Error: Square is fixed. Cannot change values."); }
 	}
-	// If valid entry:
-	if (isdigit(value) || value == '-') {
-		int loc = sub(row, col);
-		board[loc].move(value);
-		--dash_count;
-	} // Invalid entry:
-	else {
-		say("Error: Value must be a number or dash."); return;
-	}
+	else { say("Error: Coordinates exceed board size."); }
 }
 //-------------------------------------------------------------------------
 ostream & Board::print(ostream& out) {
