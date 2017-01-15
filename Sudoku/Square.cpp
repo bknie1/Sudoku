@@ -53,6 +53,20 @@ void State::turn_on(char old_value) {
 	*/
 }
 //-------------------------------------------------------------------------
+bool State::validate_move(char ch) {
+	int value = ch - '0';
+	cout << "Entered: " << ch << endl;
+	for (int k = 9; k >= 1; k--) {
+		int bit = possibilities & 1 << k;
+		cout << "Iteration: " << k << endl;
+		cout << "Comparing to: ";
+		if (bit) { cout << "true" << endl; }
+		if (!bit) { cout << "false" << endl; }
+		if (!bit && k == value) { return true; }
+	}
+	return false;
+}
+//-------------------------------------------------------------------------
 void State::print_bin(unsigned short possibilities) {
 	for (int i = 9; i >= 0; i--) {
 		if (possibilities & (1 << i)) { cout << 1; }

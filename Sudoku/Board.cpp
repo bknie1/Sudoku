@@ -180,14 +180,17 @@ void Board::move(int row, int col, char value) {
 	}
 	if (!board[loc].isFixed()) { // Is it a fixed Square?
 		if (isdigit(value)) { // A numerical entry?
-			board[loc].move(value);
-			--dash_count;
-			initial_shoop();
+			if(!board[loc].validate_move(value)) { 
+				board[loc].move(value);
+				--dash_count;
+				//initial_shoop();
+			}
+			else { say("Error: Illegal move."); }
 		}
 		else if (value == '-') { // A dash entry?
 			board[loc].erase();
 			++dash_count;
-			initial_shoop();
+			//initial_shoop();
 		}
 		else { say("Error: Value must be a number or dash."); }
 	}

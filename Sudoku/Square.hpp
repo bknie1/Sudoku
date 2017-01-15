@@ -29,6 +29,7 @@ public:
 	void turn_off(char ch); // Turns a value off.
 	void erase();		// Erase the value of State.
 	void turn_on(char ch); // Turns a value on.
+	bool validate_move(char ch); // Is a move legal? Refer to poss list.
 	ostream& print(ostream& out);	// Print possibilities in values/dashes.
 
 	inline bool isFixed() {if(fixed) {return true;} else {return false;}}
