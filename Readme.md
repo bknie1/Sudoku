@@ -12,11 +12,11 @@ new concepts. See the documentation folder for more about each assignment.
 - Board
 - Cluster
 - Game
-- Exceptions
 
 ### TODO
 
 ## Homework Assignments
+- Exceptions
 - Diagonal
 - Interface
 - Undo
