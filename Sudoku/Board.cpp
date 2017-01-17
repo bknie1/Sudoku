@@ -1,8 +1,4 @@
 #include "Board.hpp"
-
-Board::Board() {
-	fatal("Error: Missing input file in constructor.");
-}
 //-------------------------------------------------------------------------
 Board::Board(const char* filename) {
 	const char* printT[] = { "Row", "Column", "Block" };
@@ -12,11 +8,15 @@ Board::Board(const char* filename) {
 	short col = 1;
 	dash_count = 0;
 
+	say("Creating Traditional Board");
+
 	fIn.open(filename);
 	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
 	else { say("Input file found."); } // Else unecessary, but due diligence.
 
 	// Read and construct a board using the passed file. Ex. 9x9 = 81 Sq's
+	// First line will feature the puzzle type. ( (t)raditional, (d)iagonal
+	// The following 9 are the puzzle.
 	for (short k = 0; k < BOARD_SIZE; ++k) {
 		fIn >> ws;
 		value = fIn.get();
@@ -34,10 +34,6 @@ Board::Board(const char* filename) {
 	fIn.close();
 	
 	//cout << "Dash Count: " << dash_count << endl; // DEBUG
-}
-//-------------------------------------------------------------------------
-Board::~Board() {
-	// cerr << "Board destroyed. << endl;
 }
 //-------------------------------------------------------------------------
 void Board::draw_board() {
@@ -201,3 +197,42 @@ ostream & Board::print(ostream& out) {
 	}
 	return out;
 }
+//-------------------------------------------------------------------------
+/*---------This is the end of Board and the beginning of Diag. Board------*/
+//-------------------------------------------------------------------------
+Diagonal_Board::Diagonal_Board(const char* filename) {
+	const char* printT[] = { "Row", "Column", "Block" };
+	string new_value;
+	char value;
+	short row = 1;
+	short col = 1;
+	dash_count = 0;
+
+	say("Creating Diagonal Board");
+
+	fIn.open(filename);
+	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
+	else { say("Input file found."); } // Else unecessary, but due diligence.
+
+									   // Read and construct a board using the passed file. Ex. 9x9 = 81 Sq's
+									   // First line will feature the puzzle type. ( (t)raditional, (d)iagonal
+									   // The following 9 are the puzzle.
+	for (short k = 0; k < BOARD_SIZE; ++k) {
+		fIn >> ws;
+		value = fIn.get();
+		if (fIn.eof()) { break; }
+		board[k] = Square(value, row, col);
+		if (value == '-') { ++dash_count; }
+		if (col == MAX_COL) { ++row; col = 1; }
+		else { ++col; }
+	}
+	cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
+	//print(cout);
+	Board::create_clusters();
+	//draw_board();
+	Board::initial_shoop();
+	fIn.close();
+
+	//cout << "Dash Count: " << dash_count << endl; // DEBUG
+}
+//-------------------------------------------------------------------------

@@ -19,8 +19,9 @@ Description: A simple, console-based C++ implementation of a
 enum clusterT { ROW, COL, BLK };
 static const char* printT[3];
 
+// 't'
 class Board {
-private:
+protected:
 	ifstream fIn;
 	Square board[BOARD_SIZE];
 	Cluster clusters[27];
@@ -32,13 +33,20 @@ private:
 	int sub(int row, int col);
 	short dash_count;
 public:
-	Board();
+	Board() = default;
 	Board(const char* filename);
-	~Board();
 	void move(int row, int col, char val);
 	void draw_board(); // User friendly view.
 	bool is_done();
 
 	ostream& print(ostream&);
 };
+
+// 'd'
+class Diagonal_Board : public Board {
+public:
+	Diagonal_Board() = default;
+	Diagonal_Board(const char* filename);
+};
+
 inline ostream& operator<< (ostream& out, Board& b) { return out; }
