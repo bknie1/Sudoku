@@ -1,8 +1,7 @@
 #pragma once
 #include "Board.hpp"
 #include "Tools.hpp"
-
-
+#include "Exceptions.hpp"
 
 class Game {
 private:

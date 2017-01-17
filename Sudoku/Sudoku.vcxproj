@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="Cluster.cpp" />
+    <ClCompile Include="Exceptions.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Square.cpp" />
     <ClCompile Include="Sudoku.cpp" />
@@ -152,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="Cluster.hpp" />
+    <ClInclude Include="Exceptions.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="Square.hpp" />
     <ClInclude Include="Tools.hpp" />

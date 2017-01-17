@@ -3,19 +3,37 @@
 Game::Game() {
 	// Creates a Board consisting of 'n' Squares.
 	// n = BOARD_SIZE / (BOARD_SIZE / 3), probably.
-	ifstream fIn;
-	fIn.open(diag_name);
-	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
-	else { say("Input file found."); } // Else unecessary, but due diligence.
-	char type = fIn.get();
-	fIn.close();
+	
+	try {
+		char type;
+		ifstream fIn;
+		fIn.open(file_name);
+		if (!fIn.is_open()) throw StreamException;
+		if (type == 't') {
+			Board board(file_name); run(board);
+		}
+		else if (type == 'd') {
+			Diagonal_Board board(file_name); run(board);
+		}
+		fIn.close();
+	}
+	catch (exception& e) {
+		cerr << "Error! " << e.what() << '\n';
+		return;
+	}
 
-	if (type == 't') {
-		Board board(file_name); run(board);
-	}
-	else if (type == 'd') { 
-		Diagonal_Board board(file_name); run(board);
-	}
+	//fIn.open(diag_name);
+	//if (!fIn.is_open()) { fatal("Error: Input file missing."); }
+	//else { say("Input file found."); } // Else unecessary, but due diligence.
+	//char type = fIn.get();
+	//fIn.close();
+
+	//if (type == 't') {
+	//	Board board(file_name); run(board);
+	//}
+	//else if (type == 'd') { 
+	//	Diagonal_Board board(file_name); run(board);
+	//}
 
 	//&board.print(cout); // DEBUG
 	//board.draw_board(); // DEBUG
