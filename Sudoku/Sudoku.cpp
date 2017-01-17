@@ -21,7 +21,7 @@ void ut_board_and_cluster();
 
 int main() {
 	cout << "\t    SUDOKU\n" << endl;
-	Game &g = Game();
+	Game g;
 	//ut_board_and_cluster();
 }
 
@@ -64,10 +64,10 @@ void ut_square() {
 void ut_board_and_cluster() {
 	cerr << "========================================================" << endl;
 	cerr << "\n\t\tBOARD TEST: INPUT FILE" << endl;
-	Board &board = Board(INPUT_FILE);
+	//Board &board = Board(INPUT_FILE);
 	cerr << "\n\t\tBOARD TEST: AFTER SHOOP\n" << endl;
-	&board.print(cout);
-	board.draw_board();
+	//&board.print(cout);
+	//board.draw_board();
 }
 
 void music_for_fun() {

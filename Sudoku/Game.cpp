@@ -3,14 +3,22 @@
 Game::Game() {
 	// Creates a Board consisting of 'n' Squares.
 	// n = BOARD_SIZE / (BOARD_SIZE / 3), probably.
-	Board &board = Board(INPUT_FILE);
+	ifstream fIn;
+	fIn.open(diag_name);
+	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
+	else { say("Input file found."); } // Else unecessary, but due diligence.
+	char type = fIn.get();
+	fIn.close();
+
+	if (type == 't') {
+		Board board(file_name); run(board);
+	}
+	else if (type == 'd') { 
+		Diagonal_Board board(file_name); run(board);
+	}
+
 	//&board.print(cout); // DEBUG
 	//board.draw_board(); // DEBUG
-	run(board);
-}
-//-------------------------------------------------------------------------
-Game::~Game() {
-
 }
 //-------------------------------------------------------------------------
 void Game::run(Board &board) {
