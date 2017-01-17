@@ -8,7 +8,8 @@ Game::Game() {
 		char type;
 		ifstream fIn;
 		fIn.open(file_name);
-		if (!fIn.is_open()) throw StreamException;
+		if (!fIn.is_open()) throw StreamException();
+		type = fIn.get();
 		if (type == 't') {
 			Board board(file_name); run(board);
 		}
@@ -17,8 +18,8 @@ Game::Game() {
 		}
 		fIn.close();
 	}
-	catch (exception& e) {
-		cerr << "Error! " << e.what() << '\n';
+	catch (StreamException& e) {
+		e.print(cerr);
 		return;
 	}
 

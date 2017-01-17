@@ -30,3 +30,5 @@ public:
 	void shoop_on(char ch); // Adds possibility from each cluster.
 	ostream& print(ostream& out);
 };
+
+inline ostream& operator<< (ostream& out, Cluster& c) { return out; }

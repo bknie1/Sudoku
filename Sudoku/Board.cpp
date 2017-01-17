@@ -214,9 +214,9 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
 	else { say("Input file found."); } // Else unecessary, but due diligence.
 
-									   // Read and construct a board using the passed file. Ex. 9x9 = 81 Sq's
-									   // First line will feature the puzzle type. ( (t)raditional, (d)iagonal
-									   // The following 9 are the puzzle.
+	// Read and construct a board using the passed file. Ex. 9x9 = 81 Sq's
+	// First line will feature the puzzle type. ( (t)raditional, (d)iagonal
+	// The following 9 are the puzzle.
 	for (short k = 0; k < BOARD_SIZE; ++k) {
 		fIn >> ws;
 		value = fIn.get();
