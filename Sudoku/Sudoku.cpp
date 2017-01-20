@@ -20,6 +20,7 @@ void ut_board_and_cluster();
 int main() {
 	cout << "\t    SUDOKU\n" << endl;
 	Game g;
+	g.run();
 	//ut_board_and_cluster();
 }
 //-------------------------------------------------------------------------

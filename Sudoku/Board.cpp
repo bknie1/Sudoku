@@ -7,10 +7,12 @@ Board::Board(const char* filename) {
 	short row = 1;
 	short col = 1;
 	dash_count = 0;
+	string junk;
 
 	say("Creating Traditional Board");
 
 	fIn.open(filename);
+	fIn >> junk; // get the t
 	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
 	else { say("Input file found."); } // Else unecessary, but due diligence.
 
