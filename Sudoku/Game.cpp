@@ -10,10 +10,12 @@ Game::Game() {
 		fIn >> ws;
 		type = fIn.get();
 		if (type == 't') {
-			Board board(file_name); run(board);
+			Board board(file_name);
+			run(board);
 		}
 		else if (type == 'd') {
-			Diagonal_Board board(file_name); run(board);
+			Diagonal_Board board(file_name);
+			run(board);
 		}
 		else { cout << "Error: Unrecognized type." << endl; }
 		fIn.close();
