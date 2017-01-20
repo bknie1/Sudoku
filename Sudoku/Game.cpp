@@ -1,7 +1,9 @@
 #include "Game.hpp"
 
 Game::Game() {
-	// Creates a board of BOARD_SIZE squares from a validated input file.
+	// Creates a Board consisting of 'n' Squares.
+	// n = BOARD_SIZE / (BOARD_SIZE / 3), probably.
+	
 	try {
 		char type;
 		ifstream fIn;
@@ -41,6 +43,7 @@ Game::Game() {
 }
 //-------------------------------------------------------------------------
 void Game::run(Board &board) {
+	// TODO Use Fischer's menu_c().
 	// Print the Board, Menu, and an actions menu.
 	char sel;
 	int row;
