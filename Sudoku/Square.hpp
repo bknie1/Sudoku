@@ -12,6 +12,7 @@
 
 #pragma once
 #include "Tools.hpp"
+
 // Forward declaration for the Square/Cluster circular include.
 #include "Cluster.hpp"
 class Cluster;
@@ -39,7 +40,7 @@ class Square : public State {
 protected:
 	short int row;
 	short int col;
-	vector<Cluster*> clues; // Should contain 3 Clusters.
+	vector<Cluster*> clues; // Should contain 3-4 Clusters.
 public:
 	Square();
 	Square(char ch, short row, short col);	// Ctor into State.
@@ -54,4 +55,8 @@ public:
 	ostream& print_clues(ostream& out);
 	ostream& print(ostream& out);
 };
-inline ostream& operator<< (ostream& out, Square& sq) { return out; }
+inline ostream& operator<< (ostream& out, Square& sq) {
+	// cout << sq << endl;
+	sq.print(out);
+	return out;
+}

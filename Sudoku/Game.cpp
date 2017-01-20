@@ -1,28 +1,46 @@
 #include "Game.hpp"
 
 Game::Game() {
-	// Creates a Board consisting of 'n' Squares.
-	// n = BOARD_SIZE / (BOARD_SIZE / 3), probably.
-	ifstream fIn;
-	fIn.open(diag_name);
-	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
-	else { say("Input file found."); } // Else unecessary, but due diligence.
-	char type = fIn.get();
-	fIn.close();
+	// Creates a board of BOARD_SIZE squares from a validated input file.
+	try {
+		char type;
+		ifstream fIn;
+		fIn.open(file_name);
+		if (!fIn.is_open()) throw StreamException();
+		fIn >> ws;
+		type = fIn.get();
+		if (type == 't') {
+			board = new Board(file_name);
+		}
+		else if (type == 'd') {
+			board = new Diagonal_Board(file_name);
+		}
+		else { cout << "Error: Unrecognized type." << endl; }
+		fIn.close();
+	}
+	catch (StreamException& e) {
+		e.print(cerr);
+		return;
+	}
 
-	if (type == 't') {
-		Board board(file_name); run(board);
-	}
-	else if (type == 'd') { 
-		Diagonal_Board board(file_name); run(board);
-	}
+	//fIn.open(diag_name);
+	//if (!fIn.is_open()) { fatal("Error: Input file missing."); }
+	//else { say("Input file found."); } // Else unecessary, but due diligence.
+	//char type = fIn.get();
+	//fIn.close();
+
+	//if (type == 't') {
+	//	Board board(file_name); run(board);
+	//}
+	//else if (type == 'd') { 
+	//	Diagonal_Board board(file_name); run(board);
+	//}
 
 	//&board.print(cout); // DEBUG
 	//board.draw_board(); // DEBUG
 }
 //-------------------------------------------------------------------------
-void Game::run(Board &board) {
-	// TODO Use Fischer's menu_c().
+void Game::run() {
 	// Print the Board, Menu, and an actions menu.
 	char sel;
 	int row;
@@ -35,38 +53,38 @@ void Game::run(Board &board) {
 
 	for (;;) {
 		// Returns true? There are no more dashes/all spots filled.
-		if (board.is_done() ) { break; }
-		&board.print(cout);
-		board.draw_board();
+		if (board->is_done()) { break; }
+		board->print(cout);
+		board->draw_board();
 
 		sel = menu_c("\t      Sudoku Menu", 6, menu, valid);
 
-		switch (sel) {
-		case 'm': // Move
-			cout << "Input (Row) (Column) (Value): ";
-			cin >> row; cin >> column; cin >> value;
-			board.move(row, column, value);
-			break;
-		case 'u': // Undo
+			switch (sel) {
+			case 'm': // Move
+				cout << "Input (Row) (Column) (Value): ";
+				cin >> row; cin >> column; cin >> value;
+				board->move(row, column, value);
+				break;
+			case 'u': // Undo
 
-			break;
-		case 'r': // Redo
+				break;
+			case 'r': // Redo
 
-			break;
-		case 's': // Save Game
+				break;
+			case 's': // Save Game
 
-			break;
-		case 'l': // Restore Game
+				break;
+			case 'l': // Restore Game
 
-			break;
-		case 'q': // Quit and Discard Game
-
-			return;
-		default:
-			say("Error: Invalid input.");
-			break;
+				break;
+			case 'q': // Quit and Discard Game
+				delete board;
+				return;
+			default:
+				say("Error: Invalid input.");
+				break;
+			}
 		}
-	}
 	say("Congratulations, you've won!");
 }
 // ----------------------------------------------------------------------------
