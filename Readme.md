@@ -12,19 +12,23 @@ new concepts. See the documentation folder for more about each assignment.
 - Board
 - Cluster
 - Game
+- Exceptions
+- Diagonal
 
 ### TODO
 
 ## Homework Assignments
-- Exceptions
-- Diagonal
 - Interface
 - Undo
 - Restore
 - Details & Documents
 
 ## Functionality
-- File and input error handling.
+- GUI Interface
+- Undo Move
+- Save a game.
+- Load a saved game.
+- const where possible.
 
 ### Questions
 - None atm.
