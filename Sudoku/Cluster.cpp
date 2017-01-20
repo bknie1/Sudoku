@@ -7,12 +7,6 @@ Cluster::Cluster(clusterT name, Square* cl_squares[]) {
 	}
 }
 //-------------------------------------------------------------------------
-Cluster::Cluster() {
-}
-//-------------------------------------------------------------------------
-Cluster::~Cluster() {
-}
-//-------------------------------------------------------------------------
 void Cluster::shoop_off(char new_value) {
 	//cout << "Shooping " << value << "." << endl; // DEBUG
 	for (int k = 0; k < MAX_COL; ++k) {

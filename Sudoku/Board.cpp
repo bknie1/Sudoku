@@ -228,7 +228,7 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 		if (col == 9) { ++row; col = 1; }
 		else { ++col; }
 	}
-	cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
+	//cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
 	//print(cout);
 	Board::create_clusters();
 	Diagonal_Board::create_clusters();
@@ -242,13 +242,11 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 void Diagonal_Board::create_clusters() {
 	// For continuity with traditional board function structure.
 	// This only has to call the diagonal cluster function.
-	say("Diag. Clusters");
 	build_cl_diag1(); // Build Block Cluster 28. Top Down.
-	//build_cl_diag2(); // Build Block Cluster 29. Bottom Up.
+	build_cl_diag2(); // Build Block Cluster 29. Bottom Up.
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::build_cl_diag1() {
-	say("First Cluster");
 	// In addition to traditional board clusters, diagonal boards also
 	// need two additional clusters: 1,1 to 9,9 and 1,9 to 9,1.
 	Square* cl_squares[9]; // Squares to be assigned to cluster.
@@ -256,39 +254,34 @@ void Diagonal_Board::build_cl_diag1() {
 	// 1,1 to 9,9, diagonally
 	for (int k = 0, board_i = 0; k < 9; ++k) {
 		cl_squares[k] = &board[board_i];
-		&board[board_i].print(cout); // DEBUG
-		cout << "k:\t" << k << endl;
-		cout << "bi:\t" << board_i << endl;
 		board_i = board_i + 10;
-		cout << "new bi:\t" << board_i << endl;
 	}
 	clusters[28] = Cluster(DIA, cl_squares);
-	clusters[28].print(cout); // DEBUG
 
 	// Each Square should get the first DIA cluster added to clues[].
 	for (int k = 0; k < 9; ++k) {
 		cl_squares[k]->addCluster(&clusters[28]);
 	}
+	//clusters[28].print(cout); // DEBUG
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::build_cl_diag2() {
-	say("Second Cluster");
 	// In addition to traditional board clusters, diagonal boards also
 	// need two additional clusters: 1,1 to 9,9 and 1,9 to 9,1.
 	Square* cl_squares[9]; // Squares to be assigned to cluster.
 	int board_i = 9;
 
 	// 1,9 to 9,1 diagonally
-	for (int k = 0; k < 9; ++k, board_i + 9) {
+	for (int k = 0, board_i = 8; k < 9; ++k) {
 		cl_squares[k] = &board[board_i];
-		&board[board_i].print(cout); // DEBUG
+		board_i = board_i + 8;
 	}
 	clusters[29] = Cluster(DIA, cl_squares);
-	clusters[29].print(cout); // DEBUG
 
 	// Each Square should get the first DIA cluster added to clues[].
 	for (int k = 0; k < 9; ++k) {
 		cl_squares[k]->addCluster(&clusters[28]);
 	}
+	//clusters[29].print(cout); // DEBUG
 }
 //-------------------------------------------------------------------------
