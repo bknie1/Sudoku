@@ -5,8 +5,7 @@
 
 class Game {
 private:
-	const char* const file_name = "udo-test1.txt";
-	const char* const diag_name = "puz2-d.txt";
+	const char* const file_name = "puz2-d.txt"; // "puz2-d.txt" "sudo-test1.txt"
 public:
 	Game();
 	void run(Board &board);

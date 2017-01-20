@@ -1,7 +1,7 @@
 #include "Board.hpp"
 //-------------------------------------------------------------------------
 Board::Board(const char* filename) {
-	const char* printT[] = { "Row", "Column", "Block" };
+	const char* printT[] = { "Row", "Column", "Block", "Diagonal" };
 	string new_value;
 	char value;
 	short row = 1;
@@ -9,6 +9,7 @@ Board::Board(const char* filename) {
 	dash_count = 0;
 
 	say("Creating Traditional Board");
+	cout << sizeof(clusters) << endl;
 
 	fIn.open(filename);
 	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
@@ -23,10 +24,10 @@ Board::Board(const char* filename) {
 		if (fIn.eof()) { break; }
 		board[k] = Square(value, row, col);
 		if (value == '-') { ++dash_count; }
-		if (col == MAX_COL) { ++row; col = 1; }
+		if (col == 9) { ++row; col = 1; }
 		else { ++col; }
 	}
-	cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
+	//cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
 	//print(cout);
 	create_clusters();
 	//draw_board();
@@ -69,7 +70,7 @@ bool Board::is_done() {
 void Board::create_clusters() {
 	// clusters[27] - To store created clusters.
 	// board[81]. Use these to create clusters.
-	cerr << "\n\t\tCLUSTER TEST: CREATE\n" << endl;
+	//cerr << "\n\t\tCLUSTER TEST: CREATE\n" << endl;
 	build_cl_row(); // Build Row Clusters: 0 - 8
 	build_cl_col();	// Build Column Clusters: 9 - 17
 	build_cl_blk();	// Build Block Clusters: 18 - 27
@@ -79,17 +80,17 @@ void Board::build_cl_row() {
 	// Outer iterates through to create n Clusters based on col size.
 	// Inner gets the 9 relevant squares related to a persistent index (s).
 
-	Square* cl_squares[MAX_COL]; // Squares to be assigned to cluster.
+	Square* cl_squares[9]; // Squares to be assigned to cluster.
 	int board_i = 0;
 
-	for (int ci = 0; ci < MAX_COL; ++ci) { // Creates Clusters
-		for (int k = 0; k < MAX_COL; ++board_i, ++k) { // Gathers Squares
+	for (int ci = 0; ci < 9; ++ci) { // Creates Clusters
+		for (int k = 0; k < 9; ++board_i, ++k) { // Gathers Squares
 			cl_squares[k] = &board[board_i];
 		}
 		clusters[ci] = Cluster(ROW, cl_squares);
 		//clusters[ci].print(cout); // DEBUG
 		// Each Square should get a ROW cluster added to clues[].
-		for (int k = 0; k < MAX_COL; ++k) {
+		for (int k = 0; k < 9; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
 	}
@@ -100,18 +101,18 @@ void Board::build_cl_col() {
 	// col_start persists to help iterate through columns.
 	// board_i will pick up where the previous inner op ended.
 
-	Square* cl_squares[MAX_COL]; // Squares to be assigned to cluster.
+	Square* cl_squares[9]; // Squares to be assigned to cluster.
 	int col_start = 0, board_i;
 
-	for (int ci = MAX_COL; ci < MAX_COL * 2; ++ci) { // Creates Clusters
+	for (int ci = 9; ci < 9 * 2; ++ci) { // Creates Clusters
 		board_i = col_start;
-		for (int k = 0; k < MAX_COL; ++k, board_i += MAX_COL) {
+		for (int k = 0; k < 9; ++k, board_i += 9) {
 			cl_squares[k] = &board[board_i];
 		}
 		++col_start; // 1,1 -> 1,2 -> 1,3 etc. Change columns/starting point.
 		clusters[ci] = Cluster(COL, cl_squares);
 		//clusters[ci].print(cout); // DEBUG
-		for (int k = 0; k < MAX_COL; ++k) {
+		for (int k = 0; k < 9; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
 	}
@@ -123,27 +124,27 @@ void Board::build_cl_blk() {
 	// Once it hits the last block in a row (ex. 3 out of 3 on size 9.
 	// It recognizes and increments the board index to skip the next two rows.
 	// Otherwise, there would be overlapping blocks.
-	Square* cl_squares[MAX_COL]; // To be assigned to cluster.
+	Square* cl_squares[9]; // To be assigned to cluster.
 	int blk_start = 0, board_i;
 
-	for (int ci = MAX_COL * 2; ci < MAX_COL * 3; ++ci) { // Creates Clusters.
+	for (int ci = 9 * 2; ci < 9 * 3; ++ci) { // Creates Clusters.
 		board_i = blk_start;
-		for (int k = 0; k < MAX_COL; ++k) {
+		for (int k = 0; k < 9; ++k) {
 			cl_squares[k] = &board[board_i];
 			if (!((board_i + 1) % 3) ) {
-				board_i += (MAX_COL + 1) - BLK_WID;
+				board_i += (9 + 1) - 3;
 			}
 			else { ++board_i; }
 		}
-		if (!((1 + ci) % 3)) { blk_start += BLK_WID * 7; }
-		else { blk_start += BLK_WID; }
+		if (!((1 + ci) % 3)) { blk_start += 3 * 7; }
+		else { blk_start += 3; }
 		clusters[ci] = Cluster(BLK, cl_squares);
 		//clusters[ci].print(cout); // DEBUG
-		for (int k = 0; k < MAX_COL; ++k) {
+		for (int k = 0; k < 9; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
 		// Debugging Create Print
-		//for (int k = 0; k < MAX_COL; ++k) {
+		//for (int k = 0; k < 9; ++k) {
 		//	cout << "Clue Clusters so far:\n" << endl;
 		//	cl_squares[k]->print_clues(cout);
 		//}
@@ -153,7 +154,7 @@ void Board::build_cl_blk() {
 void Board::initial_shoop() {
 	// Once the board has been constructed, use this to 'initialize'
 	// All of the possibilities lists in each Square by Cluster.
-	cerr << "\t\tCLUSTER TEST: INITIAL SHOOP" << endl; // DEBUG
+	//cerr << "\t\tCLUSTER TEST: INITIAL SHOOP" << endl; // DEBUG
 	char value;
 	for (int k = 0; k < BOARD_SIZE; ++k) {
 		value = board[k].getValue();
@@ -170,7 +171,7 @@ int Board::sub(int row, int col) {
 void Board::move(int row, int col, char value) {
 	int loc = sub(row, col);
 	// If coordinates exceed the board:
-	if (row > MAX_COL || col > MAX_COL) { 
+	if (row > 9 || col > 9) { 
 		say("Error: Coordinates exceed board size.");
 		return;
 	}
@@ -201,7 +202,7 @@ ostream & Board::print(ostream& out) {
 /*---------This is the end of Board and the beginning of Diag. Board------*/
 //-------------------------------------------------------------------------
 Diagonal_Board::Diagonal_Board(const char* filename) {
-	const char* printT[] = { "Row", "Column", "Block" };
+	const char* printT[] = { "Row", "Column", "Block", "Diagonal" };
 	string new_value;
 	char value;
 	short row = 1;
@@ -209,6 +210,7 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 	dash_count = 0;
 
 	say("Creating Diagonal Board");
+	cout << sizeof(clusters) << endl;
 
 	fIn.open(filename);
 	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
@@ -223,16 +225,70 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 		if (fIn.eof()) { break; }
 		board[k] = Square(value, row, col);
 		if (value == '-') { ++dash_count; }
-		if (col == MAX_COL) { ++row; col = 1; }
+		if (col == 9) { ++row; col = 1; }
 		else { ++col; }
 	}
 	cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
 	//print(cout);
 	Board::create_clusters();
+	Diagonal_Board::create_clusters();
 	//draw_board();
 	Board::initial_shoop();
 	fIn.close();
 
 	//cout << "Dash Count: " << dash_count << endl; // DEBUG
+}
+//-------------------------------------------------------------------------
+void Diagonal_Board::create_clusters() {
+	// For continuity with traditional board function structure.
+	// This only has to call the diagonal cluster function.
+	say("Diag. Clusters");
+	build_cl_diag1(); // Build Block Cluster 28. Top Down.
+	//build_cl_diag2(); // Build Block Cluster 29. Bottom Up.
+}
+//-------------------------------------------------------------------------
+void Diagonal_Board::build_cl_diag1() {
+	say("First Cluster");
+	// In addition to traditional board clusters, diagonal boards also
+	// need two additional clusters: 1,1 to 9,9 and 1,9 to 9,1.
+	Square* cl_squares[9]; // Squares to be assigned to cluster.
+
+	// 1,1 to 9,9, diagonally
+	for (int k = 0, board_i = 0; k < 9; ++k) {
+		cl_squares[k] = &board[board_i];
+		&board[board_i].print(cout); // DEBUG
+		cout << "k:\t" << k << endl;
+		cout << "bi:\t" << board_i << endl;
+		board_i = board_i + 10;
+		cout << "new bi:\t" << board_i << endl;
+	}
+	clusters[28] = Cluster(DIA, cl_squares);
+	clusters[28].print(cout); // DEBUG
+
+	// Each Square should get the first DIA cluster added to clues[].
+	for (int k = 0; k < 9; ++k) {
+		cl_squares[k]->addCluster(&clusters[28]);
+	}
+}
+//-------------------------------------------------------------------------
+void Diagonal_Board::build_cl_diag2() {
+	say("Second Cluster");
+	// In addition to traditional board clusters, diagonal boards also
+	// need two additional clusters: 1,1 to 9,9 and 1,9 to 9,1.
+	Square* cl_squares[9]; // Squares to be assigned to cluster.
+	int board_i = 9;
+
+	// 1,9 to 9,1 diagonally
+	for (int k = 0; k < 9; ++k, board_i + 9) {
+		cl_squares[k] = &board[board_i];
+		&board[board_i].print(cout); // DEBUG
+	}
+	clusters[29] = Cluster(DIA, cl_squares);
+	clusters[29].print(cout); // DEBUG
+
+	// Each Square should get the first DIA cluster added to clues[].
+	for (int k = 0; k < 9; ++k) {
+		cl_squares[k]->addCluster(&clusters[28]);
+	}
 }
 //-------------------------------------------------------------------------

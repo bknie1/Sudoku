@@ -7,6 +7,7 @@ Game::Game() {
 		ifstream fIn;
 		fIn.open(file_name);
 		if (!fIn.is_open()) throw StreamException();
+		fIn >> ws;
 		type = fIn.get();
 		if (type == 't') {
 			Board board(file_name); run(board);
@@ -14,6 +15,7 @@ Game::Game() {
 		else if (type == 'd') {
 			Diagonal_Board board(file_name); run(board);
 		}
+		else { cout << "Error: Unrecognized type." << endl; }
 		fIn.close();
 	}
 	catch (StreamException& e) {

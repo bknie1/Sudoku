@@ -12,6 +12,7 @@
 
 #pragma once
 #include "Tools.hpp"
+
 // Forward declaration for the Square/Cluster circular include.
 #include "Cluster.hpp"
 class Cluster;

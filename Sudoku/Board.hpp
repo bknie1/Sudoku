@@ -12,18 +12,18 @@ Description: A simple, console-based C++ implementation of a
 #include "Square.hpp"
 #include "Cluster.hpp"
 
-#define MAX_COL 9	// Max column/row size. Used to adjust coords.
-#define BLK_WID MAX_COL/3	// MAX_COL / 3
-#define BOARD_SIZE MAX_COL * MAX_COL // MAX_COL * MAX_COL
+#define BOARD_SIZE 81 // MAX_COL * MAX_COL
 
-enum clusterT { ROW, COL, BLK };
-static const char* printT[3];
+enum clusterT { ROW, COL, BLK, DIA };
+static const char* printT[4];
 
+//-------------------------------------------------------------------------
 // 't'
 class Board {
 protected:
 	ifstream fIn;
 	Square board[BOARD_SIZE];
+	//short cluster_size;
 	Cluster clusters[27];
 	void create_clusters(); // Helper
 	void build_cl_row();	// Helper, called by create_clusters()
@@ -41,9 +41,14 @@ public:
 
 	ostream& print(ostream&);
 };
-
+//-------------------------------------------------------------------------
 // 'd'
 class Diagonal_Board : public Board {
+private:
+	Cluster clusters[29]; // Overrides Board's '27'. Replace with Ctor prob.
+	void create_clusters();
+	void build_cl_diag1();
+	void build_cl_diag2();
 public:
 	Diagonal_Board() = default;
 	Diagonal_Board(const char* filename);

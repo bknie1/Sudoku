@@ -31,7 +31,7 @@ ostream& Cluster::print(ostream& out) {
 	// I wanted to use the printT from board but had to do this.
 	// Why wouldn't printT just exist here because Cluster is
 	// in charge of printing itself? Isn't it supposed to be?
-	string printT[] = { "Row", "Column", "Block" };
+	string printT[] = { "Row", "Column", "Block", "Diagonal" };
 	out << "Cluster Type: " << printT[name] << endl;
 	for (int k = 0; k < MAX_COL; ++k) {
 		cl_squares[k]->print(out);
