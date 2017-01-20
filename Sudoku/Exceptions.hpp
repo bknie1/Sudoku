@@ -13,5 +13,13 @@ public:
 	ostream& print(ostream& out);
 };
 
-inline ostream& operator<< (ostream& out, StreamException& s) { return out; }
-inline ostream& operator<< (ostream& out, LogicException& l) { return out; }
+inline ostream& operator<< (ostream& out, StreamException& se) {
+	// cout << se << endl;
+	se.print(out);
+	return out;
+}
+inline ostream& operator<< (ostream& out, LogicException& le) {
+	// cout << le << endl;
+	le.print(out);
+	return out;
+}

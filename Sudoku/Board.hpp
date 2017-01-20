@@ -54,4 +54,8 @@ public:
 	Diagonal_Board(const char* filename);
 };
 
-inline ostream& operator<< (ostream& out, Board& b) { return out; }
+inline ostream& operator<< (ostream& out, Board& b) {
+	// cout << b << endl;
+	b.print(out);
+	return out;
+}

@@ -124,7 +124,7 @@ void Square::move(char new_value) {
 		}
 	}
 }
-	//cout << clues.size() << endl; // DEBUG
+	// cout << clues.size() << endl; // DEBUG	
 	//print_clues(cout); // DEBUG
 	//cout << "Considering " << value << endl; // DEBUG
 	//cout << "This is Square " << row << ", " << col << endl; // DEBUG

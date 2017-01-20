@@ -1,6 +1,6 @@
 #include "Cluster.hpp"
 
-Cluster::Cluster(clusterT name, Square* cl_squares[]) {
+Cluster::Cluster(int name, Square* cl_squares[]) {
 	this->name = name;
 	for (int k = 0; k < MAX_COL; ++k) {
 		this->cl_squares[k] = cl_squares[k];

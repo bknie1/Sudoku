@@ -9,7 +9,6 @@ Board::Board(const char* filename) {
 	dash_count = 0;
 
 	say("Creating Traditional Board");
-	cout << sizeof(clusters) << endl;
 
 	fIn.open(filename);
 	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
@@ -210,7 +209,6 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 	dash_count = 0;
 
 	say("Creating Diagonal Board");
-	cout << sizeof(clusters) << endl;
 
 	fIn.open(filename);
 	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
@@ -262,7 +260,7 @@ void Diagonal_Board::build_cl_diag1() {
 	for (int k = 0; k < 9; ++k) {
 		cl_squares[k]->addCluster(&clusters[28]);
 	}
-	//clusters[28].print(cout); // DEBUG
+	clusters[28].print(cout); // DEBUG
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::build_cl_diag2() {
@@ -282,6 +280,6 @@ void Diagonal_Board::build_cl_diag2() {
 	for (int k = 0; k < 9; ++k) {
 		cl_squares[k]->addCluster(&clusters[28]);
 	}
-	//clusters[29].print(cout); // DEBUG
+	clusters[29].print(cout); // DEBUG
 }
 //-------------------------------------------------------------------------

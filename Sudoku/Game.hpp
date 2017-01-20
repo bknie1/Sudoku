@@ -12,5 +12,3 @@ public:
 	char menu_c(const char* title, int n, const char* menu[], 
 		const string valid);
 };
-
-inline ostream& operator<< (ostream& out, Game& g) { return out; }

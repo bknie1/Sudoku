@@ -16,14 +16,12 @@ Description: A simple, console-based C++ implementation of a
 
 class Square;
 
-enum clusterT;
-
 class Cluster {
 private:
-	clusterT name;
+	int name;
 	Square* cl_squares[9];
 public:
-	Cluster(clusterT type, Square* cl_squares[]);
+	Cluster(int type, Square* cl_squares[]);
 	Cluster() = default;
 	~Cluster() = default;
 	void shoop_off(char ch); // Removes possibility from each cluster.
@@ -31,4 +29,8 @@ public:
 	ostream& print(ostream& out);
 };
 
-inline ostream& operator<< (ostream& out, Cluster& c) { return out; }
+inline ostream& operator<< (ostream& out, Cluster& c) {
+	// cout << c << endl;
+	c.print(out);
+	return out;
+}

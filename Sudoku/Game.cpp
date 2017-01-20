@@ -54,7 +54,7 @@ void Game::run(Board &board) {
 	for (;;) {
 		// Returns true? There are no more dashes/all spots filled.
 		if (board.is_done() ) { break; }
-		&board.print(cout);
+		board.print(cout);
 		board.draw_board();
 
 		sel = menu_c("\t      Sudoku Menu", 6, menu, valid);
