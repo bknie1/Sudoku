@@ -33,7 +33,7 @@ public:
 	bool validate_move(char ch); // Is a move legal? Refer to poss list.
 	ostream& print(ostream& out);	// Print possibilities in values/dashes.
 
-	inline short getPossibilities() { return possibilities; }
+	inline short getPossibilities() const { return possibilities; }
 	inline bool isFixed() {if(fixed) {return true;} else {return false;}}
 };
 //-------------------------------------------------------------------------
@@ -48,7 +48,7 @@ public:
 	~Square();
 	void move(char value);  // Writes submission.
 	inline void addCluster(Cluster* c) { clues.push_back(c); }
-	inline char getValue() { return value; }
+	inline char getValue() const { return value; }
 	inline vector<Cluster*> getClues() { return clues; }
 	inline short getRow() { return row; }
 	inline short getCol() { return col; }

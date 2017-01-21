@@ -31,7 +31,7 @@ protected:
 	void build_cl_col();	// Helper, called by create_clusters()
 	void build_cl_blk();	// Helper, called by create_clusters()
 	void initial_shoop();	// Board ready, so shoop all values.
-	int sub(int row, int col);
+	int sub(int row, int col) const;
 	short dash_count;
 
 public:
@@ -41,8 +41,8 @@ public:
 	void draw_board(); // User friendly view.
 	bool is_done();
 
-	char const getMarkChar(int row, int col);
-	string const getPossibilityString(int row, int col);
+	char getMarkChar(int row, int col) const;
+	string getPossibilityString(int row, int col) const;
 
 	ostream& print(ostream&);
 };

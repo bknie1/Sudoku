@@ -68,13 +68,13 @@ bool Board::is_done() {
 	else { cout << dash_count << " empty spaces left." << endl; return false; }
 }
 //-------------------------------------------------------------------------
-char const Board::getMarkChar(int row, int col) {
+char Board::getMarkChar(int row, int col) const {
 	// sub to find index
 	int loc = sub(row, col);
 	return board[loc].getValue();
 }
 //-------------------------------------------------------------------------
-string const Board::getPossibilityString(int row, int col) {
+string Board::getPossibilityString(int row, int col) const {
 	int loc = sub(row, col);
 	short poss = board[loc].getPossibilities();
 	string possibilities = "";
@@ -182,7 +182,7 @@ void Board::initial_shoop() {
 	}
 }
 //-------------------------------------------------------------------------
-int Board::sub(int row, int col) {
+int Board::sub(int row, int col) const {
 	// Algorithm that determines loc in array based on coordinates.
 	int loc = (row - 1) * 9 + (col - 1);
 	return loc;
