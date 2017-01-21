@@ -33,6 +33,7 @@ public:
 	bool validate_move(char ch); // Is a move legal? Refer to poss list.
 	ostream& print(ostream& out);	// Print possibilities in values/dashes.
 
+	inline short getPossibilities() { return possibilities; }
 	inline bool isFixed() {if(fixed) {return true;} else {return false;}}
 };
 //-------------------------------------------------------------------------

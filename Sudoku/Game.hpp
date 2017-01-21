@@ -7,7 +7,6 @@
 class Game {
 private:
 	Board* board;
-	Viewer fancyView;
 	const char* const file_name = "sudo-test1.txt"; // "puz2-d.txt" "sudo-test1.txt"
 public:
 	Game();

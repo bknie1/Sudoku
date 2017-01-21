@@ -68,6 +68,25 @@ bool Board::is_done() {
 	else { cout << dash_count << " empty spaces left." << endl; return false; }
 }
 //-------------------------------------------------------------------------
+char const Board::getMarkChar(int row, int col) {
+	// sub to find index
+	int loc = sub(row, col);
+	return board[loc].getValue();
+}
+//-------------------------------------------------------------------------
+string const Board::getPossibilityString(int row, int col) {
+	int loc = sub(row, col);
+	short poss = board[loc].getPossibilities();
+	string possibilities = "";
+
+	for (int k = 9; k >= 1; k--) {
+		int bit = poss & 1 << k;
+		if (bit) { possibilities += k; }
+		else { possibilities += '-'; }
+	}
+	return possibilities;
+}
+//-------------------------------------------------------------------------
 void Board::create_clusters() {
 	// clusters[27] - To store created clusters.
 	// board[81]. Use these to create clusters.

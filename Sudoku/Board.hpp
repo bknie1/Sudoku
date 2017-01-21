@@ -41,8 +41,8 @@ public:
 	void draw_board(); // User friendly view.
 	bool is_done();
 
-	char getMarkChar(int row, int col) const;
-	string getPossibilityString(int row, int col) const;
+	char const getMarkChar(int row, int col);
+	string const getPossibilityString(int row, int col);
 
 	ostream& print(ostream&);
 };
