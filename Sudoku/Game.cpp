@@ -11,9 +11,11 @@ Game::Game() {
 		type = fIn.get();
 		if (type == 't') {
 			board = new Board(file_name);
+			Viewer fancyView(9, 9, board);
 		}
 		else if (type == 'd') {
 			board = new Diagonal_Board(file_name);
+			Viewer fancyView(9, 9, board);
 		}
 		else { cout << "Error: Unrecognized type." << endl; }
 		fIn.close();
@@ -50,6 +52,8 @@ void Game::run() {
 		"(M)ove", "(U)ndo", "(R)edo", "(S)ave", "(L)oad", "(Q)uit"
 	};
 	string valid = "murslq";
+
+	fancyView.show(cout);
 
 	for (;;) {
 		// Returns true? There are no more dashes/all spots filled.

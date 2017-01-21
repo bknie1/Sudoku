@@ -2,7 +2,8 @@
 	Description: A simple, console-based C++ implementation of a
 	9x9 Sudoku board game.
 	Header/Source Files: Sudoku.cpp, Tools.hpp/cpp, Square.hpp/cpp,
-	Board.hpp/cpp, Cluster.hpp/cpp
+	Board.hpp/cpp, Cluster.hpp/cpp, Exceptions.hpp/cpp, CanView.hpp,
+	Viewer.hpp/cpp, Canvas.hpp/cpp, GridChar.hpp/cpp, MixedChar.hpp/cpp
 */
 #include "Game.hpp"
 #include "Board.hpp"

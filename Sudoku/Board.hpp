@@ -11,6 +11,7 @@ Description: A simple, console-based C++ implementation of a
 #include "Tools.hpp"
 #include "Square.hpp"
 #include "Cluster.hpp"
+#include "CanView.hpp" // GUI
 
 #define BOARD_SIZE 81 // MAX_COL * MAX_COL
 
@@ -19,7 +20,7 @@ static const char* printT[4];
 
 //-------------------------------------------------------------------------
 // 't'
-class Board {
+class Board : CanView {
 protected:
 	ifstream fIn;
 	Square board[BOARD_SIZE];
