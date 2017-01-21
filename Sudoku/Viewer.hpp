@@ -34,12 +34,12 @@ private:
 	void drawGrid();
 	bool topEdge(int sr)  const { return sr==0; }
 	bool botEdge(int sr)  const { return sr==height-1; }
- 	bool majorRow(int sr)  const { return sr%(rowSpan*sqInBox) == 0; }
+	bool majorRow(int sr)  const { return sr%(rowSpan*sqInBox) == 0; }
 	bool minorRow(int sr)  const { return sr%rowSpan == 0; }
 
 	bool leftEdge(int sc)  const { return sc==0; }
 	bool rightEdge(int sc) const { return sc==width-1; }
- 	bool majorCol(int sc)  const { return sc%(colSpan*sqInBox) == 0; }
+	bool majorCol(int sc)  const { return sc%(colSpan*sqInBox) == 0; }
 	bool minorCol(int sc)  const { return sc%colSpan == 0; }
 
 public:

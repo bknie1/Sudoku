@@ -20,7 +20,7 @@ static const char* printT[4];
 
 //-------------------------------------------------------------------------
 // 't'
-class Board : CanView {
+class Board : public CanView {
 protected:
 	ifstream fIn;
 	Square board[BOARD_SIZE];
