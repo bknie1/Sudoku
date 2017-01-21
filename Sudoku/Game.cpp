@@ -11,11 +11,11 @@ Game::Game() {
 		type = fIn.get();
 		if (type == 't') {
 			board = new Board(file_name);
-			Viewer fancyView(9, 9, board);
+			Viewer fancyView(9, 9, *board);
 		}
 		else if (type == 'd') {
 			board = new Diagonal_Board(file_name);
-			Viewer fancyView(9, 9, board);
+			Viewer fancyView(9, 9, *board);
 		}
 		else { cout << "Error: Unrecognized type." << endl; }
 		fIn.close();

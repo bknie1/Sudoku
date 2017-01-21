@@ -18,7 +18,6 @@ public:
 	virtual ~CanView() {};
 	virtual char getMarkChar(int row, int col) const =0;
 	virtual string getPossibilityString(int row, int col) const =0;
-
 };
 
 #endif /* CANVIEW_HPP_ */

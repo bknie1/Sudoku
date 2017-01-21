@@ -33,12 +33,16 @@ protected:
 	void initial_shoop();	// Board ready, so shoop all values.
 	int sub(int row, int col);
 	short dash_count;
+
 public:
 	Board() = default;
 	Board(const char* filename);
 	void move(int row, int col, char val);
 	void draw_board(); // User friendly view.
 	bool is_done();
+
+	char getMarkChar(int row, int col) const;
+	string getPossibilityString(int row, int col) const;
 
 	ostream& print(ostream&);
 };
