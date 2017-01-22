@@ -67,6 +67,20 @@ bool Board::is_done() {
 	else { cout << dash_count << " empty spaces left." << endl; return false; }
 }
 //-------------------------------------------------------------------------
+void Board::restore_state(BoardState * bs) {
+
+}
+//-------------------------------------------------------------------------
+ostream & Board::save_game(ofstream& fOut) {
+	for (short k = 0; k < BOARD_SIZE; ++k) {
+		fOut << board[k].getValue();
+		if (((k + 1) % 9) == 0) {
+			fOut << "\n";
+		}
+	}
+	return fOut;
+}
+//-------------------------------------------------------------------------
 char Board::getMarkChar(int row, int col) const {
 	// sub to find index
 	int loc = sub(row, col);

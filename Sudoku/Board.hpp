@@ -12,6 +12,7 @@ Description: A simple, console-based C++ implementation of a
 #include "Square.hpp"
 #include "Cluster.hpp"
 #include "CanView.hpp" // GUI
+#include "BoardState.hpp"
 
 #define BOARD_SIZE 81 // MAX_COL * MAX_COL
 
@@ -24,7 +25,6 @@ class Board : public CanView {
 protected:
 	ifstream fIn;
 	Square board[BOARD_SIZE];
-	//short cluster_size;
 	Cluster clusters[27];
 	void create_clusters(); // Helper
 	void build_cl_row();	// Helper, called by create_clusters()
@@ -40,6 +40,8 @@ public:
 	void move(int row, int col, char val);
 	void draw_board(); // User friendly view.
 	bool is_done();
+	void restore_state(BoardState* bs);
+	ostream & Board::save_game(ofstream& fOut);
 
 	char getMarkChar(int row, int col) const;
 	string getPossibilityString(int row, int col) const;

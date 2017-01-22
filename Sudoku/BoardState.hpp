@@ -10,6 +10,7 @@ private:
 public:
 	BoardState(Board &bd);
 	~BoardState() = default;
+	Board getBoard() { return board; }
 	ostream& print(ostream& out);
 };
 

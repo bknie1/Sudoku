@@ -7,6 +7,7 @@ Game::Game() {
 		ifstream fIn;
 		fIn.open(file_name);
 		if (!fIn.is_open()) throw StreamException();
+		say("Loading default input file. Feel free to load your own.");
 		fIn >> ws;
 		type = fIn.get();
 		if (type == 't') {
@@ -48,16 +49,16 @@ void Game::run() {
 				move();
 				break;
 			case 'u': // Undo
-
+				undo_move();
 				break;
 			case 'r': // Redo
-
+				redo_move();
 				break;
 			case 's': // Save Game
-
+				save_game();
 				break;
 			case 'l': // Restore Game
-
+				load_game();
 				break;
 			case 'q': // Quit and Discard Game
 				delete board;
@@ -99,15 +100,85 @@ void Game::move() {
 	cout << "Input (Row) (Column) (Value): ";
 	cin >> row; cin >> column; cin >> value;
 	board->move(row, column, value);
-	undo.push(create_board_state(board) );
+	create_board_state(board);
 
 	// Garbage past 1,7?
 	BoardState* temp = undo.top(); // DEBUG
 	temp->print(cout); // DEBUG
 }
 //-------------------------------------------------------------------------
-BoardState* Game::create_board_state(Board* board) {
-	BoardState bs(*board);
-	return &bs;
+void Game::create_board_state(Board* board) {
+	BoardState * bs = new BoardState(*board);
+	undo.push(bs);
 }
-//----------------------------------------------------------------------------
+//-------------------------------------------------------------------------
+void Game::undo_move() {
+	// Puts the current board on the redo stack in case we want to revert.
+	// Gets the last BoardState from the undo list. Gets the board from it.
+	// Replaces the current board with the previous, redo stored board.
+	// Discard the old from undo.
+	if (undo.size() > 2) {
+		BoardState * bs = new BoardState(*board);
+		redo.push(bs);
+		Board& previous = undo.top()->getBoard();
+		board = &previous; // Need to use restore_state...
+		undo.pop();
+	}
+}
+//-------------------------------------------------------------------------
+void Game::redo_move() {
+	// Opposite of undo_move().
+	if (redo.size() > 2) {
+		BoardState * bs = new BoardState(*board);
+		undo.push(bs);
+		Board& previous = redo.top()->getBoard();
+		board = &previous; // Need to use restore_state...
+		redo.pop();
+	}
+}
+//-------------------------------------------------------------------------
+void Game::save_game() {
+	string file_name;
+	ofstream fOut;
+	say("Saved file name(*.txt): "); cin >> file_name;
+	file_name += ".txt";
+	try {
+		fOut.open(file_name);
+		if (!fOut.is_open()) throw StreamException();
+		board->save_game(fOut);
+		fOut.close();
+	}
+	catch (StreamException& e) {
+		e.print(cerr);
+		return;
+	}
+}
+//-------------------------------------------------------------------------
+void Game::load_game() {
+	try {
+		char type;
+		string file_name;
+		ifstream fIn;
+		say("Enter a file name (*.txt): ");
+		cin >> file_name;
+		file_name += ".txt";
+		const char * file = file_name.c_str(); // String to const char*
+		fIn.open(file_name);
+		if (!fIn.is_open()) throw StreamException();
+		fIn >> ws;
+		type = fIn.get();
+		if (type == 't') {
+			board = new Board(file);
+		}
+		else if (type == 'd') {
+			board = new Diagonal_Board(file);
+		}
+		else { cout << "Error: Unrecognized type." << endl; }
+		fIn.close();
+	}
+	catch (StreamException& e) {
+		e.print(cerr);
+		return;
+	}
+}
+//-------------------------------------------------------------------------
