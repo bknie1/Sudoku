@@ -11,13 +11,9 @@ Game::Game() {
 		type = fIn.get();
 		if (type == 't') {
 			board = new Board(file_name);
-			Viewer fancyView(9, 9, *board);
-			fancyView.show(cout);
 		}
 		else if (type == 'd') {
 			board = new Diagonal_Board(file_name);
-			Viewer fancyView(9, 9, *board);
-			fancyView.show(cout);
 		}
 		else { cout << "Error: Unrecognized type." << endl; }
 		fIn.close();
@@ -26,22 +22,6 @@ Game::Game() {
 		e.print(cerr);
 		return;
 	}
-
-	//fIn.open(diag_name);
-	//if (!fIn.is_open()) { fatal("Error: Input file missing."); }
-	//else { say("Input file found."); } // Else unecessary, but due diligence.
-	//char type = fIn.get();
-	//fIn.close();
-
-	//if (type == 't') {
-	//	Board board(file_name); run(board);
-	//}
-	//else if (type == 'd') { 
-	//	Diagonal_Board board(file_name); run(board);
-	//}
-
-	//&board.print(cout); // DEBUG
-	//board.draw_board(); // DEBUG
 }
 //-------------------------------------------------------------------------
 void Game::run() {
@@ -55,11 +35,13 @@ void Game::run() {
 	};
 	string valid = "murslq";
 
+	Viewer fancyView(9, 9, *board);
+	
 	for (;;) {
 		// Returns true? There are no more dashes/all spots filled.
 		if (board->is_done()) { break; }
 		board->print(cout);
-		board->draw_board();
+		fancyView.show(cout);
 
 		sel = menu_c("\t      Sudoku Menu", 6, menu, valid);
 

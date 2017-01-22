@@ -11,8 +11,6 @@
 #include "Square.hpp"
 #include "Tools.hpp"
 
-// #define INPUT_FILE "sudo-test1.txt" // Game owns this now.
-
 /* Unit Test Prototypes */
 void ut_state();
 void ut_square();
@@ -22,7 +20,6 @@ int main() {
 	cout << "\t    SUDOKU\n" << endl;
 	Game g;
 	g.run();
-	//ut_board_and_cluster();
 }
 //-------------------------------------------------------------------------
 void ut_state() {

@@ -21,20 +21,20 @@ private:
 	};
 
 public:
-    MixedChar() {
-        tag = single;
-        singleChar = ' ';
-    }
+	MixedChar() {
+		tag = single;
+		singleChar = ' ';
+	}
 
-    MixedChar(const char* uc) {
-        tag = multi;
-        multiChar = uc;
-    }
+	MixedChar(const char* uc) {
+		tag = multi;
+		multiChar = uc;
+	}
 
-    MixedChar(char c) {
-        tag = single;
-        singleChar = c;
-    }
+	MixedChar(char c) {
+		tag = single;
+		singleChar = c;
+	}
 
 	MixedChar& operator=(const char* uc) {
 		tag = multi;

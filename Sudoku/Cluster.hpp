@@ -9,7 +9,7 @@ Description: A simple, console-based C++ implementation of a
 */
 
 #pragma once
-#include "tools.hpp"
+#include "Tools.hpp"
 #include "Square.hpp"
 
 #define MAX_COL 9	// Max column/row size. Used to adjust coords.

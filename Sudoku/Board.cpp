@@ -35,7 +35,6 @@ Board::Board(const char* filename) {
 	initial_shoop();
 	fIn.close();
 	
-	//cout << "Dash Count: " << dash_count << endl; // DEBUG
 }
 //-------------------------------------------------------------------------
 void Board::draw_board() {
@@ -81,7 +80,7 @@ string Board::getPossibilityString(int row, int col) const {
 
 	for (int k = 9; k >= 1; k--) {
 		int bit = poss & 1 << k;
-		if (bit) { possibilities += k; }
+		if (bit) { possibilities += k + '0'; }
 		else { possibilities += '-'; }
 	}
 	return possibilities;
@@ -90,7 +89,7 @@ string Board::getPossibilityString(int row, int col) const {
 void Board::create_clusters() {
 	// clusters[27] - To store created clusters.
 	// board[81]. Use these to create clusters.
-	//cerr << "\n\t\tCLUSTER TEST: CREATE\n" << endl;
+
 	build_cl_row(); // Build Row Clusters: 0 - 8
 	build_cl_col();	// Build Column Clusters: 9 - 17
 	build_cl_blk();	// Build Block Clusters: 18 - 27
@@ -108,7 +107,6 @@ void Board::build_cl_row() {
 			cl_squares[k] = &board[board_i];
 		}
 		clusters[ci] = Cluster(ROW, cl_squares);
-		//clusters[ci].print(cout); // DEBUG
 		// Each Square should get a ROW cluster added to clues[].
 		for (int k = 0; k < 9; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
@@ -131,7 +129,6 @@ void Board::build_cl_col() {
 		}
 		++col_start; // 1,1 -> 1,2 -> 1,3 etc. Change columns/starting point.
 		clusters[ci] = Cluster(COL, cl_squares);
-		//clusters[ci].print(cout); // DEBUG
 		for (int k = 0; k < 9; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
@@ -159,22 +156,15 @@ void Board::build_cl_blk() {
 		if (!((1 + ci) % 3)) { blk_start += 3 * 7; }
 		else { blk_start += 3; }
 		clusters[ci] = Cluster(BLK, cl_squares);
-		//clusters[ci].print(cout); // DEBUG
 		for (int k = 0; k < 9; ++k) {
 			cl_squares[k]->addCluster(&clusters[ci]);
 		}
-		// Debugging Create Print
-		//for (int k = 0; k < 9; ++k) {
-		//	cout << "Clue Clusters so far:\n" << endl;
-		//	cl_squares[k]->print_clues(cout);
-		//}
 	}
 }
 //-------------------------------------------------------------------------
 void Board::initial_shoop() {
 	// Once the board has been constructed, use this to 'initialize'
 	// All of the possibilities lists in each Square by Cluster.
-	//cerr << "\t\tCLUSTER TEST: INITIAL SHOOP" << endl; // DEBUG
 	char value;
 	for (int k = 0; k < BOARD_SIZE; ++k) {
 		value = board[k].getValue();
@@ -247,15 +237,10 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 		if (col == 9) { ++row; col = 1; }
 		else { ++col; }
 	}
-	//cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
-	//print(cout);
 	Board::create_clusters();
 	Diagonal_Board::create_clusters();
-	//draw_board();
 	Board::initial_shoop();
 	fIn.close();
-
-	//cout << "Dash Count: " << dash_count << endl; // DEBUG
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::create_clusters() {
@@ -281,7 +266,6 @@ void Diagonal_Board::build_cl_diag1() {
 	for (int k = 0; k < 9; ++k) {
 		cl_squares[k]->addCluster(&clusters[28]);
 	}
-	clusters[28].print(cout); // DEBUG
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::build_cl_diag2() {
@@ -301,6 +285,5 @@ void Diagonal_Board::build_cl_diag2() {
 	for (int k = 0; k < 9; ++k) {
 		cl_squares[k]->addCluster(&clusters[28]);
 	}
-	clusters[29].print(cout); // DEBUG
 }
 //-------------------------------------------------------------------------
