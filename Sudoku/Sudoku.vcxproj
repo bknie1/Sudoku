@@ -150,6 +150,7 @@
     <ClCompile Include="GridChar.cpp" />
     <ClCompile Include="MixedChar.cpp" />
     <ClCompile Include="Square.cpp" />
+    <ClCompile Include="BoardState.cpp" />
     <ClCompile Include="Sudoku.cpp" />
     <ClCompile Include="Tools.cpp" />
     <ClCompile Include="Viewer.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="GridChar.hpp" />
     <ClInclude Include="MixedChar.hpp" />
     <ClInclude Include="Square.hpp" />
+    <ClInclude Include="BoardState.hpp" />
     <ClInclude Include="Tools.hpp" />
     <ClInclude Include="Viewer.hpp" />
   </ItemGroup>

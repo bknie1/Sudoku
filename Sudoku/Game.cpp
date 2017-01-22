@@ -27,9 +27,7 @@ Game::Game() {
 void Game::run() {
 	// Print the Board, Menu, and an actions menu.
 	char sel;
-	int row;
-	int column;
-	char value;
+
 	const char* menu[] = { 
 		"(M)ove", "(U)ndo", "(R)edo", "(S)ave", "(L)oad", "(Q)uit"
 	};
@@ -47,9 +45,7 @@ void Game::run() {
 
 			switch (sel) {
 			case 'm': // Move
-				cout << "Input (Row) (Column) (Value): ";
-				cin >> row; cin >> column; cin >> value;
-				board->move(row, column, value);
+				move();
 				break;
 			case 'u': // Undo
 
@@ -95,3 +91,23 @@ char Game::menu_c(const char* title, int n, const char* menu[], const string val
 	}
 	return choice;
 }
+//----------------------------------------------------------------------------
+void Game::move() {
+	int row;
+	int column;
+	char value;
+	cout << "Input (Row) (Column) (Value): ";
+	cin >> row; cin >> column; cin >> value;
+	board->move(row, column, value);
+	undo.push(create_board_state(board) );
+
+	// Garbage past 1,7?
+	BoardState* temp = undo.top(); // DEBUG
+	temp->print(cout); // DEBUG
+}
+//-------------------------------------------------------------------------
+BoardState* Game::create_board_state(Board* board) {
+	BoardState bs(*board);
+	return &bs;
+}
+//----------------------------------------------------------------------------
