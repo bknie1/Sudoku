@@ -218,6 +218,12 @@ void Board::move(int row, int col, char value) {
 	else { say("Error: Square is fixed. Cannot change values."); }
 }
 //-------------------------------------------------------------------------
+State Board::get_square(int square_loc) {
+	// Returns one whole Square from Board's array of Squares.
+	// To be stripped and used to create a BoardState obj.
+	return board[square_loc];
+}
+//-------------------------------------------------------------------------
 ostream & Board::print(ostream& out) {
 	for (short k = 0; k < BOARD_SIZE; ++k) {
 		board[k].print(out);

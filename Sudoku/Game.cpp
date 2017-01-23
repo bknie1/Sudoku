@@ -100,6 +100,9 @@ void Game::move() {
 	cout << "Input (Row) (Column) (Value): ";
 	cin >> row; cin >> column; cin >> value;
 	board->move(row, column, value);
+
+	// WIP
+	BoardState* bs = new BoardState(board);
 }
 //-------------------------------------------------------------------------
 void Game::undo_move() {

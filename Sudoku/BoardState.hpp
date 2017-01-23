@@ -7,9 +7,9 @@ class Board;
 // BoardState - Stores 'versions' of the Board for the undo/redo stacks.
 class BoardState {
 private:
-
+	State states[81];
 public:
-	BoardState() = default;
+	BoardState(const Board* bd);
 	~BoardState() = default;
 	ostream& print(ostream& out);
 };
