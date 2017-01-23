@@ -1,4 +1,6 @@
 #include "Board.hpp"
+#include "BoardState.hpp"
+
 //-------------------------------------------------------------------------
 Board::Board(const char* filename) {
 	const char* printT[] = { "Row", "Column", "Block", "Diagonal" };
@@ -67,7 +69,7 @@ bool Board::is_done() {
 	else { cout << dash_count << " empty spaces left." << endl; return false; }
 }
 //-------------------------------------------------------------------------
-void Board::restore_state(BoardState * bs) {
+void Board::restore_state(BoardState* bs) {
 
 }
 //-------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 #pragma once
-#include "Board.hpp"
 #include "Tools.hpp"
+
+class Board;
 
 //-------------------------------------------------------------------------
 // BoardState - Stores 'versions' of the Board for the undo/redo stacks.
@@ -8,9 +9,9 @@ class BoardState {
 private:
 	Board board;
 public:
-	BoardState(Board &bd);
+	BoardState(Board* bd);
 	~BoardState() = default;
-	Board getBoard() { return board; }
+	Board& getBoard() { return board; }
 	ostream& print(ostream& out);
 };
 

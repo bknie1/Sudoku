@@ -108,7 +108,7 @@ void Game::move() {
 }
 //-------------------------------------------------------------------------
 void Game::create_board_state(Board* board) {
-	BoardState * bs = new BoardState(*board);
+	BoardState * bs = new BoardState(board);
 	undo.push(bs);
 }
 //-------------------------------------------------------------------------
@@ -118,7 +118,7 @@ void Game::undo_move() {
 	// Replaces the current board with the previous, redo stored board.
 	// Discard the old from undo.
 	if (undo.size() > 2) {
-		BoardState * bs = new BoardState(*board);
+		BoardState * bs = new BoardState(board);
 		redo.push(bs);
 		Board& previous = undo.top()->getBoard();
 		board = &previous; // Need to use restore_state...
@@ -129,7 +129,7 @@ void Game::undo_move() {
 void Game::redo_move() {
 	// Opposite of undo_move().
 	if (redo.size() > 2) {
-		BoardState * bs = new BoardState(*board);
+		BoardState * bs = new BoardState(board);
 		undo.push(bs);
 		Board& previous = redo.top()->getBoard();
 		board = &previous; // Need to use restore_state...

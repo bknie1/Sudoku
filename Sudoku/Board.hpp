@@ -12,7 +12,8 @@ Description: A simple, console-based C++ implementation of a
 #include "Square.hpp"
 #include "Cluster.hpp"
 #include "CanView.hpp" // GUI
-#include "BoardState.hpp"
+
+class BoardState;
 
 #define BOARD_SIZE 81 // MAX_COL * MAX_COL
 
