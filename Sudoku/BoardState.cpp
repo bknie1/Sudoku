@@ -3,8 +3,7 @@
 
 //-------------------------------------------------------------------------
 BoardState::BoardState(Board* bd) {
-	//memcpy(&board, bd, sizeof(bd));
-	memcpy(&board, &bd, sizeof(board));
+	memcpy(&board, &bd, sizeof(&bd));
 }
 //-------------------------------------------------------------------------
 ostream& BoardState::print(ostream & out) {
@@ -12,3 +11,9 @@ ostream& BoardState::print(ostream & out) {
 	return out;
 }
 //-------------------------------------------------------------------------
+
+void Stack::pop() {
+	BoardState* bs = top();
+	vector::pop_back();
+	delete bs;
+}

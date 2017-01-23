@@ -26,7 +26,7 @@ class Stack : public vector<BoardState*> {
 public:
 	Stack() = default;
 	~Stack() = default;
-	inline void pop() { vector::pop_back(); }
+	void pop();
 	inline void push(BoardState* bs) { vector::push_back(bs); }
 	inline BoardState* top() { return vector::back(); }
 	inline int size() { return vector::size(); }
