@@ -1,5 +1,6 @@
 #pragma once
 #include "Tools.hpp"
+#include "Square.hpp"
 #define BOARD_SIZE 81
 
 class Board;

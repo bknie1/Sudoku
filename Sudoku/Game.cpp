@@ -17,6 +17,8 @@ Game::Game() {
 			board = new Diagonal_Board(file_name);
 		}
 		else { cout << "Error: Unrecognized type." << endl; }
+		BoardState* bs = new BoardState(board);
+		undo.push(bs);
 		fIn.close();
 	}
 	catch (StreamException& e) {
@@ -97,12 +99,14 @@ void Game::move() {
 	int row;
 	int column;
 	char value;
+	bool valid;
 	cout << "Input (Row) (Column) (Value): ";
 	cin >> row; cin >> column; cin >> value;
-	board->move(row, column, value);
-
-	// WIP
-	BoardState* bs = new BoardState(board);
+	valid = board->move(row, column, value);
+	if (valid) {
+		BoardState* bs = new BoardState(board);
+		undo.push(bs);
+	}
 }
 //-------------------------------------------------------------------------
 void Game::undo_move() {

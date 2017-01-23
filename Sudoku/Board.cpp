@@ -194,28 +194,30 @@ int Board::sub(int row, int col) const {
 	return loc;
 }
 //-------------------------------------------------------------------------
-void Board::move(int row, int col, char value) {
+bool Board::move(int row, int col, char value) {
 	int loc = sub(row, col);
 	// If coordinates exceed the board:
 	if (row > 9 || col > 9) { 
 		say("Error: Coordinates exceed board size.");
-		return;
+		return false;
 	}
 	if (!board[loc].isFixed()) { // Is it a fixed Square?
 		if (isdigit(value)) { // A numerical entry?
 			if(!board[loc].validate_move(value)) { 
 				board[loc].move(value);
 				--dash_count;
+				return true;
 			}
-			else { say("Error: Illegal move."); }
+			else { say("Error: Illegal move."); return false; }
 		}
 		else if (value == '-') { // A dash entry?
 			board[loc].erase();
 			++dash_count;
+			return true;
 		}
-		else { say("Error: Value must be a number or dash."); }
+		else { say("Error: Value must be a number or dash."); return false; }
 	}
-	else { say("Error: Square is fixed. Cannot change values."); }
+	else { say("Error: Square is fixed. Cannot change values."); return false; }
 }
 //-------------------------------------------------------------------------
 State Board::get_square(int square_loc) const {
