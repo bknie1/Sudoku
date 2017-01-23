@@ -39,7 +39,7 @@ public:
 	Board() = default;
 	Board(const char* filename);
 	void move(int row, int col, char val);
-	State get_square(int square_loc);
+	State get_square(int square_loc) const;
 	void draw_board(); // User friendly view.
 	bool is_done();
 	void restore_state(BoardState* bs);

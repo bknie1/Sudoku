@@ -1,5 +1,6 @@
 #pragma once
 #include "Tools.hpp"
+#define BOARD_SIZE 81
 
 class Board;
 
@@ -7,7 +8,7 @@ class Board;
 // BoardState - Stores 'versions' of the Board for the undo/redo stacks.
 class BoardState {
 private:
-	State states[81];
+	State states[BOARD_SIZE];
 public:
 	BoardState(const Board* bd);
 	~BoardState() = default;
