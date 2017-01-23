@@ -108,7 +108,7 @@ void Game::move() {
 }
 //-------------------------------------------------------------------------
 void Game::create_board_state(Board* board) {
-	BoardState * bs = new BoardState(board);
+	BoardState* bs = new BoardState(board);
 	undo.push(bs);
 }
 //-------------------------------------------------------------------------

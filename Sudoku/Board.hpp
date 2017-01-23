@@ -42,7 +42,7 @@ public:
 	void draw_board(); // User friendly view.
 	bool is_done();
 	void restore_state(BoardState* bs);
-	ostream & Board::save_game(ofstream& fOut);
+	ostream& save_game(ofstream& fOut);
 
 	char getMarkChar(int row, int col) const;
 	string getPossibilityString(int row, int col) const;
