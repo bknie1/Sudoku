@@ -63,6 +63,7 @@ private:
 public:
 	Diagonal_Board() = default;
 	Diagonal_Board(const char* filename);
+	ostream& save_game(ofstream& fOut);
 };
 
 inline ostream& operator<< (ostream& out, Board& b) {
