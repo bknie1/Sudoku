@@ -38,14 +38,12 @@ void State::turn_off(char ch) {
 	*/
 	int n = ch - '0';
 	possibilities = possibilities & ~(1 << n);
-	//print_bin(possibilities); // Debugging
 }
 //-------------------------------------------------------------------------
 void State::turn_on(char old_value) {
 	// TODO use this and shoop() to turn back on all values.
 	int old = old_value - '0';
 	possibilities = possibilities | 1 << old;
-	//print_bin(possibilities); // Debugging
 	/*		111111011 <- '3' is toggled off.
 		|	000000100 <- Mask to isolate '3'. | to set it.
 			---------
@@ -55,13 +53,8 @@ void State::turn_on(char old_value) {
 //-------------------------------------------------------------------------
 bool State::validate_move(char ch) {
 	int value = ch - '0';
-	cout << "Entered: " << ch << endl;
 	for (int k = 9; k >= 1; k--) {
 		int bit = possibilities & 1 << k;
-		cout << "Iteration: " << k << endl;
-		cout << "Comparing to: ";
-		if (bit) { cout << "true" << endl; }
-		if (!bit) { cout << "false" << endl; }
 		if (!bit && k == value) { return true; }
 	}
 	return false;
@@ -124,10 +117,6 @@ void Square::move(char new_value) {
 		}
 	}
 }
-	// cout << clues.size() << endl; // DEBUG	
-	//print_clues(cout); // DEBUG
-	//cout << "Considering " << value << endl; // DEBUG
-	//cout << "This is Square " << row << ", " << col << endl; // DEBUG
 //-------------------------------------------------------------------------
 void Square::erase() {
 	// The user entered a dash indicating erasure.

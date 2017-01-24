@@ -11,6 +11,9 @@ Description: A simple, console-based C++ implementation of a
 #include "Tools.hpp"
 #include "Square.hpp"
 #include "Cluster.hpp"
+#include "CanView.hpp" // GUI
+
+class BoardState;
 
 #define BOARD_SIZE 81 // MAX_COL * MAX_COL
 
@@ -19,25 +22,31 @@ static const char* printT[4];
 
 //-------------------------------------------------------------------------
 // 't'
-class Board {
+class Board : public CanView {
 protected:
 	ifstream fIn;
 	Square board[BOARD_SIZE];
-	//short cluster_size;
 	Cluster clusters[27];
 	void create_clusters(); // Helper
 	void build_cl_row();	// Helper, called by create_clusters()
 	void build_cl_col();	// Helper, called by create_clusters()
 	void build_cl_blk();	// Helper, called by create_clusters()
 	void initial_shoop();	// Board ready, so shoop all values.
-	int sub(int row, int col);
+	int sub(int row, int col) const;
 	short dash_count;
+
 public:
 	Board() = default;
 	Board(const char* filename);
-	void move(int row, int col, char val);
+	bool move(int row, int col, char val);
+	State get_square(int square_loc) const;
 	void draw_board(); // User friendly view.
 	bool is_done();
+	void restore_state(BoardState* bs);
+	ostream& save_game(ofstream& fOut);
+
+	char getMarkChar(int row, int col) const;
+	string getPossibilityString(int row, int col) const;
 
 	ostream& print(ostream&);
 };

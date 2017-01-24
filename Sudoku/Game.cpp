@@ -7,6 +7,7 @@ Game::Game() {
 		ifstream fIn;
 		fIn.open(file_name);
 		if (!fIn.is_open()) throw StreamException();
+		say("Loading default input file. Feel free to load your own.");
 		fIn >> ws;
 		type = fIn.get();
 		if (type == 't') {
@@ -16,66 +17,50 @@ Game::Game() {
 			board = new Diagonal_Board(file_name);
 		}
 		else { cout << "Error: Unrecognized type." << endl; }
+		BoardState* bs = new BoardState(board);
+		undo.push(bs);
 		fIn.close();
 	}
 	catch (StreamException& e) {
 		e.print(cerr);
 		return;
 	}
-
-	//fIn.open(diag_name);
-	//if (!fIn.is_open()) { fatal("Error: Input file missing."); }
-	//else { say("Input file found."); } // Else unecessary, but due diligence.
-	//char type = fIn.get();
-	//fIn.close();
-
-	//if (type == 't') {
-	//	Board board(file_name); run(board);
-	//}
-	//else if (type == 'd') { 
-	//	Diagonal_Board board(file_name); run(board);
-	//}
-
-	//&board.print(cout); // DEBUG
-	//board.draw_board(); // DEBUG
 }
 //-------------------------------------------------------------------------
 void Game::run() {
 	// Print the Board, Menu, and an actions menu.
 	char sel;
-	int row;
-	int column;
-	char value;
+
 	const char* menu[] = { 
 		"(M)ove", "(U)ndo", "(R)edo", "(S)ave", "(L)oad", "(Q)uit"
 	};
 	string valid = "murslq";
 
+	Viewer fancyView(9, 9, *board);
+	
 	for (;;) {
 		// Returns true? There are no more dashes/all spots filled.
 		if (board->is_done()) { break; }
 		board->print(cout);
-		board->draw_board();
+		fancyView.show(cout);
 
 		sel = menu_c("\t      Sudoku Menu", 6, menu, valid);
 
 			switch (sel) {
 			case 'm': // Move
-				cout << "Input (Row) (Column) (Value): ";
-				cin >> row; cin >> column; cin >> value;
-				board->move(row, column, value);
+				move();
 				break;
 			case 'u': // Undo
-
+				undo_move();
 				break;
 			case 'r': // Redo
-
+				redo_move();
 				break;
 			case 's': // Save Game
-
+				save_game();
 				break;
 			case 'l': // Restore Game
-
+				load_game();
 				break;
 			case 'q': // Quit and Discard Game
 				delete board;
@@ -109,3 +94,71 @@ char Game::menu_c(const char* title, int n, const char* menu[], const string val
 	}
 	return choice;
 }
+//----------------------------------------------------------------------------
+void Game::move() {
+	int row;
+	int column;
+	char value;
+	bool valid;
+	cout << "Input (Row) (Column) (Value): ";
+	cin >> row; cin >> column; cin >> value;
+	valid = board->move(row, column, value);
+	if (valid) {
+		BoardState* bs = new BoardState(board);
+		undo.push(bs);
+	}
+}
+//-------------------------------------------------------------------------
+void Game::undo_move() {
+
+}
+//-------------------------------------------------------------------------
+void Game::redo_move() {
+
+}
+//-------------------------------------------------------------------------
+void Game::save_game() {
+	string file_name;
+	ofstream fOut;
+	say("Saved file name(*.txt): "); cin >> file_name;
+	file_name += ".txt";
+	try {
+		fOut.open(file_name);
+		if (!fOut.is_open()) throw StreamException();
+		board->save_game(fOut);
+		fOut.close();
+	}
+	catch (StreamException& e) {
+		e.print(cerr);
+		return;
+	}
+}
+//-------------------------------------------------------------------------
+void Game::load_game() {
+	try {
+		char type;
+		string file_name;
+		ifstream fIn;
+		say("Enter a file name (*.txt): ");
+		cin >> file_name;
+		file_name += ".txt";
+		const char * file = file_name.c_str(); // String to const char*
+		fIn.open(file_name);
+		if (!fIn.is_open()) throw StreamException();
+		fIn >> ws;
+		type = fIn.get();
+		if (type == 't') {
+			board = new Board(file);
+		}
+		else if (type == 'd') {
+			board = new Diagonal_Board(file);
+		}
+		else { cout << "Error: Unrecognized type." << endl; }
+		fIn.close();
+	}
+	catch (StreamException& e) {
+		e.print(cerr);
+		return;
+	}
+}
+//-------------------------------------------------------------------------

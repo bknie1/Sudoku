@@ -1,14 +1,14 @@
 //                    -*- mode:c++; tab-width:4 -*-
 // modified September 2016
-// file: tools.hpp -----------------------------------------------------------
+// file: Tools.hpp -----------------------------------------------------------
 // header file for the tools library.
 // ---------------------------------------------------------------------------
 // Local definitions and portability code.
 // Please enter your own system, name, class, and printer stream name.
 // ---------------------------------------------------------------------------
 #pragma once
-#define NAME    "Patience S. Goodenough"
-#define CLASS   "CS 6620"
+#define NAME    "Brandon Knieriem"
+#define CLASS   "CS 6626"
 
 #include <iostream>
 #include <fstream>
