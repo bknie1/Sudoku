@@ -12,7 +12,6 @@ BoardState::BoardState(const Board* board) {
 void Stack::pop() {
 	BoardState* bs = top();
 	vector::pop_back();
-	delete bs;
 }
 //-------------------------------------------------------------------------
 ostream & BoardState::print(ostream & out) {

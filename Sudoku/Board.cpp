@@ -70,7 +70,10 @@ bool Board::is_done() {
 }
 //-------------------------------------------------------------------------
 void Board::restore_state(BoardState* bs) {
-
+	State* states = bs->getStates();
+	for (int k = 0; k < BOARD_SIZE; ++k) {
+		(State&)board[k] = states[k];
+	}
 }
 //-------------------------------------------------------------------------
 ostream & Board::save_game(ofstream& fOut) {

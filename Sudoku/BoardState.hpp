@@ -14,6 +14,7 @@ public:
 	BoardState(const Board* bd);
 	~BoardState() = default;
 	ostream& print(ostream& out);
+	inline State* getStates() { return states; }
 };
 
 inline ostream& operator<< (ostream& out, BoardState bs) {
