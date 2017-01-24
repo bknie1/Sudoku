@@ -27,6 +27,17 @@ Game::Game() {
 	}
 }
 //-------------------------------------------------------------------------
+Game::~Game() {
+	for (int k = 0; k < undo.size(); ++k) {
+		delete undo.top();
+		undo.pop();
+	}
+	for (int k = 0; k < redo.size(); ++k) {
+		delete redo.top();
+		redo.pop();
+	}
+}
+//-------------------------------------------------------------------------
 void Game::run() {
 	// Print the Board, Menu, and an actions menu.
 	char sel;
