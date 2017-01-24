@@ -110,11 +110,19 @@ void Game::move() {
 }
 //-------------------------------------------------------------------------
 void Game::undo_move() {
-
+	if (undo.size() >= 2) {
+		redo.push(undo.top());
+		undo.pop();
+		board->restore_state(undo.top());
+	}
 }
 //-------------------------------------------------------------------------
 void Game::redo_move() {
-
+	if (redo.size() > 0) {
+		board->restore_state(redo.top());
+		undo.push(redo.top());
+		redo.pop();
+	}
 }
 //-------------------------------------------------------------------------
 void Game::save_game() {

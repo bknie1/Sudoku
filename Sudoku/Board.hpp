@@ -48,6 +48,8 @@ public:
 	char getMarkChar(int row, int col) const;
 	string getPossibilityString(int row, int col) const;
 
+	Square& operator[](int k) { return this->board[k]; }
+
 	ostream& print(ostream&);
 };
 //-------------------------------------------------------------------------
