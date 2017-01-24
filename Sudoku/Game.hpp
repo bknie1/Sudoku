@@ -18,6 +18,7 @@ private:
 	void load_game();
 public:
 	Game();
+	~Game();
 	void run();
 	char menu_c(const char* title, int n, const char* menu[], 
 		const string valid);
