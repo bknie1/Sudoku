@@ -2,29 +2,7 @@
 
 Game::Game() {
 	// Creates a board of BOARD_SIZE squares from a validated input file.
-	try {
-		char type;
-		ifstream fIn;
-		fIn.open(file_name);
-		if (!fIn.is_open()) throw StreamException();
-		say("Loading default input file. Feel free to load your own.");
-		fIn >> ws;
-		type = fIn.get();
-		if (type == 't') {
-			board = new Board(file_name);
-		}
-		else if (type == 'd') {
-			board = new Diagonal_Board(file_name);
-		}
-		else { cout << "Error: Unrecognized type." << endl; }
-		BoardState* bs = new BoardState(board);
-		undo.push(bs);
-		fIn.close();
-	}
-	catch (StreamException& e) {
-		e.print(cerr);
-		return;
-	}
+	load_game();
 }
 //-------------------------------------------------------------------------
 Game::~Game() {
@@ -42,9 +20,8 @@ void Game::run() {
 	// Print the Board, Menu, and an actions menu.
 	char sel;
 
-	const char* menu[] = { 
-		"(M)ove", "(U)ndo", "(R)edo", "(S)ave", "(L)oad", "(Q)uit"
-	};
+	const char* menu[] =
+	{ "(M)ove", "(U)ndo", "(R)edo", "(S)ave", "(L)oad", "(Q)uit" };
 	string valid = "murslq";
 
 	Viewer fancyView(9, 9, *board);
@@ -52,7 +29,7 @@ void Game::run() {
 	for (;;) {
 		// Returns true? There are no more dashes/all spots filled.
 		if (board->is_done()) { break; }
-		board->print(cout);
+		// board->print(cout); // Prints the full contents of each Square.
 		fancyView.show(cout);
 
 		sel = menu_c("\t      Sudoku Menu", 6, menu, valid);
@@ -137,12 +114,13 @@ void Game::redo_move() {
 }
 //-------------------------------------------------------------------------
 void Game::save_game() {
-	string file_name;
-	ofstream fOut;
-	say("Saved file name(*.txt): "); cin >> file_name;
-	file_name += ".txt";
 	try {
-		fOut.open(file_name);
+		string file_name;
+		ofstream fOut;
+		cout << "Enter a file name (without *.txt): "; cin >> file_name;
+		file_name += ".txt";
+		const char * file = file_name.c_str(); // String to const char*
+		fOut.open(file);
 		if (!fOut.is_open()) throw StreamException();
 		board->save_game(fOut);
 		fOut.close();
@@ -158,11 +136,10 @@ void Game::load_game() {
 		char type;
 		string file_name;
 		ifstream fIn;
-		say("Enter a file name (*.txt): ");
-		cin >> file_name;
+		cout << "Enter a file name (without *.txt): "; cin >> file_name;
 		file_name += ".txt";
 		const char * file = file_name.c_str(); // String to const char*
-		fIn.open(file_name);
+		fIn.open(file);
 		if (!fIn.is_open()) throw StreamException();
 		fIn >> ws;
 		type = fIn.get();
@@ -173,6 +150,8 @@ void Game::load_game() {
 			board = new Diagonal_Board(file);
 		}
 		else { cout << "Error: Unrecognized type." << endl; }
+		BoardState* bs = new BoardState(board);
+ 		undo.push(bs);
 		fIn.close();
 	}
 	catch (StreamException& e) {

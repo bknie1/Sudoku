@@ -77,6 +77,7 @@ void Board::restore_state(BoardState* bs) {
 }
 //-------------------------------------------------------------------------
 ostream & Board::save_game(ofstream& fOut) {
+	fOut << "t\n";
 	for (short k = 0; k < BOARD_SIZE; ++k) {
 		fOut << board[k].getValue();
 		if (((k + 1) % 9) == 0) {
@@ -260,6 +261,7 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 		fIn >> ws;
 		value = fIn.get();
 		if (fIn.eof()) { break; }
+		cout << "[" << row << ", " << col << "]\t" << value << endl;
 		board[k] = Square(value, row, col);
 		if (value == '-') { ++dash_count; }
 		if (col == 9) { ++row; col = 1; }
@@ -274,8 +276,11 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 void Diagonal_Board::create_clusters() {
 	// For continuity with traditional board function structure.
 	// This only has to call the diagonal cluster function.
+	say("Cluster Diag 1");
 	build_cl_diag1(); // Build Block Cluster 28. Top Down.
+	say("Clister Diag 2");
 	build_cl_diag2(); // Build Block Cluster 29. Bottom Up.
+	say("Clusters finished.");
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::build_cl_diag1() {
@@ -313,5 +318,16 @@ void Diagonal_Board::build_cl_diag2() {
 	for (int k = 0; k < 9; ++k) {
 		cl_squares[k]->addCluster(&clusters[28]);
 	}
+}
+//-------------------------------------------------------------------------
+ostream & Diagonal_Board::save_game(ofstream& fOut) {
+	fOut << "d\n";
+	for (short k = 0; k < BOARD_SIZE; ++k) {
+		fOut << board[k].getValue();
+		if (((k + 1) % 9) == 0) {
+			fOut << "\n";
+		}
+	}
+	return fOut;
 }
 //-------------------------------------------------------------------------

@@ -9,7 +9,6 @@ class Game {
 private:
 	Board* board;
 	// "puz2-d.txt" "sudo-test1.txt"
-	const char* const file_name = "sudo-test1.txt"; 
 	Stack undo, redo; // Derived from vector<BoardState*>
 	void move();
 	void undo_move();
