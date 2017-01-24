@@ -100,41 +100,14 @@ void Game::move() {
 	cout << "Input (Row) (Column) (Value): ";
 	cin >> row; cin >> column; cin >> value;
 	board->move(row, column, value);
-	create_board_state(board);
-
-	// Garbage past 1,7?
-	BoardState* temp = undo.top(); // DEBUG
-	temp->print(cout); // DEBUG
-}
-//-------------------------------------------------------------------------
-void Game::create_board_state(Board* board) {
-	BoardState* bs = new BoardState(board);
-	undo.push(bs);
 }
 //-------------------------------------------------------------------------
 void Game::undo_move() {
-	// Puts the current board on the redo stack in case we want to revert.
-	// Gets the last BoardState from the undo list. Gets the board from it.
-	// Replaces the current board with the previous, redo stored board.
-	// Discard the old from undo.
-	if (undo.size() > 2) {
-		BoardState * bs = new BoardState(board);
-		redo.push(bs);
-		Board& previous = undo.top()->getBoard();
-		board = &previous; // Need to use restore_state...
-		undo.pop();
-	}
+
 }
 //-------------------------------------------------------------------------
 void Game::redo_move() {
-	// Opposite of undo_move().
-	if (redo.size() > 2) {
-		BoardState * bs = new BoardState(board);
-		undo.push(bs);
-		Board& previous = redo.top()->getBoard();
-		board = &previous; // Need to use restore_state...
-		redo.pop();
-	}
+
 }
 //-------------------------------------------------------------------------
 void Game::save_game() {

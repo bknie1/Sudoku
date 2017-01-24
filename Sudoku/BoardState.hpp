@@ -7,11 +7,10 @@ class Board;
 // BoardState - Stores 'versions' of the Board for the undo/redo stacks.
 class BoardState {
 private:
-	Board board;
+
 public:
-	BoardState(Board* bd);
+	BoardState() = default;
 	~BoardState() = default;
-	Board& getBoard() { return board; }
 	ostream& print(ostream& out);
 };
 
@@ -27,8 +26,8 @@ public:
 	Stack() = default;
 	~Stack() = default;
 	void pop();
-	inline void push(BoardState* bs) { vector::push_back(bs); }
-	inline BoardState* top() { return vector::back(); }
+	inline void push(BoardState* bs) { this->push_back(bs); }
+	inline BoardState* top() { return this->back(); }
 	inline int size() { return vector::size(); }
 	// use the :: operator to call the size() function from the base class. 
 	// (Otherwise, an attempt to delegate becomes an infinite recursion and
