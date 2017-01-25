@@ -14,6 +14,7 @@ Game::~Game() {
 		delete redo.top();
 		redo.pop();
 	}
+	delete board;
 }
 //-------------------------------------------------------------------------
 void Game::run() {
@@ -143,6 +144,7 @@ void Game::load_game() {
 		if (!fIn.is_open()) throw StreamException();
 		fIn >> ws;
 		type = fIn.get();
+		fIn.close();
 		if (type == 't') {
 			board = new Board(file);
 		}
@@ -152,7 +154,6 @@ void Game::load_game() {
 		else { cout << "Error: Unrecognized type." << endl; }
 		BoardState* bs = new BoardState(board);
  		undo.push(bs);
-		fIn.close();
 	}
 	catch (StreamException& e) {
 		e.print(cerr);

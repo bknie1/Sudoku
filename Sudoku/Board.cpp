@@ -15,8 +15,6 @@ Board::Board(const char* filename) {
 
 	fIn.open(filename);
 	fIn >> junk; // get the t
-	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
-	else { say("Input file found."); } // Else unecessary, but due diligence.
 
 	// Read and construct a board using the passed file. Ex. 9x9 = 81 Sq's
 	// First line will feature the puzzle type. ( (t)raditional, (d)iagonal
@@ -247,12 +245,12 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 	short row = 1;
 	short col = 1;
 	dash_count = 0;
+	string junk;
 
 	say("Creating Diagonal Board");
 
 	fIn.open(filename);
-	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
-	else { say("Input file found."); } // Else unecessary, but due diligence.
+	fIn >> junk; // get the d
 
 	// Read and construct a board using the passed file. Ex. 9x9 = 81 Sq's
 	// First line will feature the puzzle type. ( (t)raditional, (d)iagonal
@@ -261,7 +259,6 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 		fIn >> ws;
 		value = fIn.get();
 		if (fIn.eof()) { break; }
-		cout << "[" << row << ", " << col << "]\t" << value << endl;
 		board[k] = Square(value, row, col);
 		if (value == '-') { ++dash_count; }
 		if (col == 9) { ++row; col = 1; }
@@ -276,11 +273,8 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 void Diagonal_Board::create_clusters() {
 	// For continuity with traditional board function structure.
 	// This only has to call the diagonal cluster function.
-	say("Cluster Diag 1");
 	build_cl_diag1(); // Build Block Cluster 28. Top Down.
-	say("Clister Diag 2");
 	build_cl_diag2(); // Build Block Cluster 29. Bottom Up.
-	say("Clusters finished.");
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::build_cl_diag1() {
