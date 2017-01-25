@@ -52,7 +52,6 @@ void Game::run() {
 				load_game();
 				break;
 			case 'q': // Quit and Discard Game
-				delete board;
 				return;
 			default:
 				say("Error: Invalid input.");
@@ -133,31 +132,34 @@ void Game::save_game() {
 }
 //-------------------------------------------------------------------------
 void Game::load_game() {
-	try {
-		char type;
-		string file_name;
-		ifstream fIn;
-		cout << "Enter a file name (without *.txt): "; cin >> file_name;
-		file_name += ".txt";
-		const char * file = file_name.c_str(); // String to const char*
-		fIn.open(file);
-		if (!fIn.is_open()) throw StreamException();
-		fIn >> ws;
-		type = fIn.get();
-		fIn.close();
-		if (type == 't') {
-			board = new Board(file);
+	for (;;) {
+		try {
+			char type;
+			string file_name;
+			ifstream fIn;
+			cout << "Enter a file name (without *.txt): "; cin >> file_name;
+			file_name += ".txt";
+			const char * file = file_name.c_str(); // String to const char*
+			fIn.open(file);
+			if (!fIn.is_open()) throw StreamException();
+			fIn >> ws;
+			type = fIn.get();
+			fIn.close();
+			if (type == 't') {
+				board = new Board(file);
+			}
+			else if (type == 'd') {
+				board = new Diagonal_Board(file);
+			}
+			else { cout << "Error: Unrecognized type." << endl; }
+			BoardState* bs = new BoardState(board);
+			undo.push(bs);
+			break;
 		}
-		else if (type == 'd') {
-			board = new Diagonal_Board(file);
+		catch (StreamException& e) {
+			e.print(cerr);
+			return;
 		}
-		else { cout << "Error: Unrecognized type." << endl; }
-		BoardState* bs = new BoardState(board);
- 		undo.push(bs);
-	}
-	catch (StreamException& e) {
-		e.print(cerr);
-		return;
 	}
 }
 //-------------------------------------------------------------------------
