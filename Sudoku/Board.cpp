@@ -122,11 +122,9 @@ void Board::build_cl_row() {
 		for (int k = 0; k < 9; ++board_i, ++k) { // Gathers Squares
 			cl_squares[k] = &board[board_i];
 		}
-		clusters[ci] = Cluster(ROW, cl_squares);
-		// Each Square should get a ROW cluster added to clues[].
-		for (int k = 0; k < 9; ++k) {
-			cl_squares[k]->addCluster(&clusters[ci]);
-		}
+		Cluster* temp = new Cluster(ROW, cl_squares);
+		bClusts.push_back(temp);
+
 	}
 }
 //-------------------------------------------------------------------------
@@ -144,10 +142,9 @@ void Board::build_cl_col() {
 			cl_squares[k] = &board[board_i];
 		}
 		++col_start; // 1,1 -> 1,2 -> 1,3 etc. Change columns/starting point.
-		clusters[ci] = Cluster(COL, cl_squares);
-		for (int k = 0; k < 9; ++k) {
-			cl_squares[k]->addCluster(&clusters[ci]);
-		}
+		Cluster* temp = new Cluster(COL, cl_squares);
+		bClusts.push_back( temp );
+
 	}
 }
 //-------------------------------------------------------------------------
@@ -171,10 +168,11 @@ void Board::build_cl_blk() {
 		}
 		if (!((1 + ci) % 3)) { blk_start += 3 * 7; }
 		else { blk_start += 3; }
-		clusters[ci] = Cluster(BLK, cl_squares);
-		for (int k = 0; k < 9; ++k) {
-			cl_squares[k]->addCluster(&clusters[ci]);
-		}
+
+
+		Cluster* temp = new Cluster(BLK, cl_squares);
+		bClusts.push_back(temp);
+
 	}
 }
 //-------------------------------------------------------------------------
@@ -285,12 +283,10 @@ void Diagonal_Board::build_cl_diag1() {
 		cl_squares[k] = &board[board_i];
 		board_i = board_i + 10;
 	}
-	clusters[28] = Cluster(DIA, cl_squares);
+	Cluster* temp = new Cluster(DIA, cl_squares);
+	bClusts.push_back(temp);
 
-	// Each Square should get the first DIA cluster added to clues[].
-	for (int k = 0; k < 9; ++k) {
-		cl_squares[k]->addCluster(&clusters[28]);
-	}
+
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::build_cl_diag2() {
@@ -304,12 +300,11 @@ void Diagonal_Board::build_cl_diag2() {
 		cl_squares[k] = &board[board_i];
 		board_i = board_i + 8;
 	}
-	clusters[29] = Cluster(DIA, cl_squares);
 
-	// Each Square should get the first DIA cluster added to clues[].
-	for (int k = 0; k < 9; ++k) {
-		cl_squares[k]->addCluster(&clusters[28]);
-	}
+	Cluster* temp = new Cluster(DIA, cl_squares);
+	bClusts.push_back(temp);
+
+
 }
 //-------------------------------------------------------------------------
 ostream & Diagonal_Board::save_game(ofstream& fOut) {
