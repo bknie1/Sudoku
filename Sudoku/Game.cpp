@@ -14,6 +14,7 @@ Game::~Game() {
 		delete redo.top();
 		redo.pop();
 	}
+	delete board;
 }
 //-------------------------------------------------------------------------
 void Game::run() {
@@ -51,7 +52,6 @@ void Game::run() {
 				load_game();
 				break;
 			case 'q': // Quit and Discard Game
-				delete board;
 				return;
 			default:
 				say("Error: Invalid input.");
@@ -114,49 +114,55 @@ void Game::redo_move() {
 }
 //-------------------------------------------------------------------------
 void Game::save_game() {
-	try {
-		string file_name;
-		ofstream fOut;
-		cout << "Enter a file name (without *.txt): "; cin >> file_name;
-		file_name += ".txt";
-		const char * file = file_name.c_str(); // String to const char*
-		fOut.open(file);
-		if (!fOut.is_open()) throw StreamException();
-		board->save_game(fOut);
-		fOut.close();
-	}
-	catch (StreamException& e) {
-		e.print(cerr);
-		return;
-	}
+	say("WIP");
+	//try {
+	//	string file_name;
+	//	ofstream fOut;
+	//	cout << "Enter a file name (without *.txt): "; cin >> file_name;
+	//	file_name += ".txt";
+	//	const char * file = file_name.c_str(); // String to const char*
+	//	fOut.open(file);
+	//	if (!fOut.is_open()) throw StreamException();
+	//	board->save_game(fOut);
+	//	fOut.close();
+	//}
+	//catch (StreamException& e) {
+	//	e.print(cerr);
+	//	return;
+	//}
 }
 //-------------------------------------------------------------------------
 void Game::load_game() {
-	try {
-		char type;
-		string file_name;
-		ifstream fIn;
-		cout << "Enter a file name (without *.txt): "; cin >> file_name;
-		file_name += ".txt";
-		const char * file = file_name.c_str(); // String to const char*
-		fIn.open(file);
-		if (!fIn.is_open()) throw StreamException();
-		fIn >> ws;
-		type = fIn.get();
-		if (type == 't') {
-			board = new Board(file);
+	for (;;) {
+		try {
+			char type;
+			string file_name;
+			ifstream fIn;
+			cout << "Enter a file name (without *.txt): "; cin >> file_name;
+			file_name += ".txt";
+			const char * file = file_name.c_str(); // String to const char*
+			fIn.open(file);
+			if (!fIn.is_open()) throw StreamException();
+			fIn >> ws;
+			type = fIn.get();
+			fIn.close();
+			if (type == 't') {
+				board = new Board(file);
+				BoardState* bs = new BoardState(board);
+				undo.push(bs);
+				break;
+			}
+			else if (type == 'd') {
+				board = new Diagonal_Board(file);
+				BoardState* bs = new BoardState(board);
+				undo.push(bs);
+				break;
+			}
+			else { cout << "Error: Unrecognized type." << endl; }
 		}
-		else if (type == 'd') {
-			board = new Diagonal_Board(file);
+		catch (StreamException& e) {
+			e.print(cerr);
 		}
-		else { cout << "Error: Unrecognized type." << endl; }
-		BoardState* bs = new BoardState(board);
- 		undo.push(bs);
-		fIn.close();
-	}
-	catch (StreamException& e) {
-		e.print(cerr);
-		return;
 	}
 }
 //-------------------------------------------------------------------------

@@ -15,8 +15,6 @@ Board::Board(const char* filename) {
 
 	fIn.open(filename);
 	fIn >> junk; // get the t
-	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
-	else { say("Input file found."); } // Else unecessary, but due diligence.
 
 	// Read and construct a board using the passed file. Ex. 9x9 = 81 Sq's
 	// First line will feature the puzzle type. ( (t)raditional, (d)iagonal
@@ -30,13 +28,16 @@ Board::Board(const char* filename) {
 		if (col == 9) { ++row; col = 1; }
 		else { ++col; }
 	}
-	//cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
-	//print(cout);
+
 	create_clusters();
-	//draw_board();
 	initial_shoop();
 	fIn.close();
 	
+}
+Board::~Board() {
+	for (Cluster* x : bClusts) {
+		delete x;
+	}
 }
 //-------------------------------------------------------------------------
 void Board::draw_board() {
@@ -126,11 +127,9 @@ void Board::build_cl_row() {
 		for (int k = 0; k < 9; ++board_i, ++k) { // Gathers Squares
 			cl_squares[k] = &board[board_i];
 		}
-		clusters[ci] = Cluster(ROW, cl_squares);
-		// Each Square should get a ROW cluster added to clues[].
-		for (int k = 0; k < 9; ++k) {
-			cl_squares[k]->addCluster(&clusters[ci]);
-		}
+		Cluster* temp = new Cluster(ROW, cl_squares);
+		bClusts.push_back(temp);
+
 	}
 }
 //-------------------------------------------------------------------------
@@ -148,10 +147,9 @@ void Board::build_cl_col() {
 			cl_squares[k] = &board[board_i];
 		}
 		++col_start; // 1,1 -> 1,2 -> 1,3 etc. Change columns/starting point.
-		clusters[ci] = Cluster(COL, cl_squares);
-		for (int k = 0; k < 9; ++k) {
-			cl_squares[k]->addCluster(&clusters[ci]);
-		}
+		Cluster* temp = new Cluster(COL, cl_squares);
+		bClusts.push_back( temp );
+
 	}
 }
 //-------------------------------------------------------------------------
@@ -175,10 +173,11 @@ void Board::build_cl_blk() {
 		}
 		if (!((1 + ci) % 3)) { blk_start += 3 * 7; }
 		else { blk_start += 3; }
-		clusters[ci] = Cluster(BLK, cl_squares);
-		for (int k = 0; k < 9; ++k) {
-			cl_squares[k]->addCluster(&clusters[ci]);
-		}
+
+
+		Cluster* temp = new Cluster(BLK, cl_squares);
+		bClusts.push_back(temp);
+
 	}
 }
 //-------------------------------------------------------------------------
@@ -247,12 +246,12 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 	short row = 1;
 	short col = 1;
 	dash_count = 0;
+	string junk;
 
 	say("Creating Diagonal Board");
 
 	fIn.open(filename);
-	if (!fIn.is_open()) { fatal("Error: Input file missing."); }
-	else { say("Input file found."); } // Else unecessary, but due diligence.
+	fIn >> junk; // get the d
 
 	// Read and construct a board using the passed file. Ex. 9x9 = 81 Sq's
 	// First line will feature the puzzle type. ( (t)raditional, (d)iagonal
@@ -261,7 +260,6 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 		fIn >> ws;
 		value = fIn.get();
 		if (fIn.eof()) { break; }
-		cout << "[" << row << ", " << col << "]\t" << value << endl;
 		board[k] = Square(value, row, col);
 		if (value == '-') { ++dash_count; }
 		if (col == 9) { ++row; col = 1; }
@@ -276,11 +274,8 @@ Diagonal_Board::Diagonal_Board(const char* filename) {
 void Diagonal_Board::create_clusters() {
 	// For continuity with traditional board function structure.
 	// This only has to call the diagonal cluster function.
-	say("Cluster Diag 1");
 	build_cl_diag1(); // Build Block Cluster 28. Top Down.
-	say("Clister Diag 2");
 	build_cl_diag2(); // Build Block Cluster 29. Bottom Up.
-	say("Clusters finished.");
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::build_cl_diag1() {
@@ -293,12 +288,10 @@ void Diagonal_Board::build_cl_diag1() {
 		cl_squares[k] = &board[board_i];
 		board_i = board_i + 10;
 	}
-	clusters[28] = Cluster(DIA, cl_squares);
+	Cluster* temp = new Cluster(DIA, cl_squares);
+	bClusts.push_back(temp);
 
-	// Each Square should get the first DIA cluster added to clues[].
-	for (int k = 0; k < 9; ++k) {
-		cl_squares[k]->addCluster(&clusters[28]);
-	}
+
 }
 //-------------------------------------------------------------------------
 void Diagonal_Board::build_cl_diag2() {
@@ -312,12 +305,11 @@ void Diagonal_Board::build_cl_diag2() {
 		cl_squares[k] = &board[board_i];
 		board_i = board_i + 8;
 	}
-	clusters[29] = Cluster(DIA, cl_squares);
 
-	// Each Square should get the first DIA cluster added to clues[].
-	for (int k = 0; k < 9; ++k) {
-		cl_squares[k]->addCluster(&clusters[28]);
-	}
+	Cluster* temp = new Cluster(DIA, cl_squares);
+	bClusts.push_back(temp);
+
+
 }
 //-------------------------------------------------------------------------
 ostream & Diagonal_Board::save_game(ofstream& fOut) {

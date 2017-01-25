@@ -26,7 +26,7 @@ class Board : public CanView {
 protected:
 	ifstream fIn;
 	Square board[BOARD_SIZE];
-	Cluster clusters[27];
+	vector <Cluster*> bClusts;
 	void create_clusters(); // Helper
 	void build_cl_row();	// Helper, called by create_clusters()
 	void build_cl_col();	// Helper, called by create_clusters()
@@ -34,10 +34,10 @@ protected:
 	void initial_shoop();	// Board ready, so shoop all values.
 	int sub(int row, int col) const;
 	short dash_count;
-
 public:
 	Board() = default;
 	Board(const char* filename);
+	~Board();
 	bool move(int row, int col, char val);
 	State get_square(int square_loc) const;
 	void draw_board(); // User friendly view.
@@ -56,7 +56,6 @@ public:
 // 'd'
 class Diagonal_Board : public Board {
 private:
-	Cluster clusters[29]; // Overrides Board's '27'. Replace with Ctor prob.
 	void create_clusters();
 	void build_cl_diag1();
 	void build_cl_diag2();
