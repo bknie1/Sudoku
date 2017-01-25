@@ -147,18 +147,20 @@ void Game::load_game() {
 			fIn.close();
 			if (type == 't') {
 				board = new Board(file);
+				BoardState* bs = new BoardState(board);
+				undo.push(bs);
+				break;
 			}
 			else if (type == 'd') {
 				board = new Diagonal_Board(file);
+				BoardState* bs = new BoardState(board);
+				undo.push(bs);
+				break;
 			}
 			else { cout << "Error: Unrecognized type." << endl; }
-			BoardState* bs = new BoardState(board);
-			undo.push(bs);
-			break;
 		}
 		catch (StreamException& e) {
 			e.print(cerr);
-			return;
 		}
 	}
 }
