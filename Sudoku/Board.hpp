@@ -34,10 +34,10 @@ protected:
 	void initial_shoop();	// Board ready, so shoop all values.
 	int sub(int row, int col) const;
 	short dash_count;
-
 public:
 	Board() = default;
 	Board(const char* filename);
+	~Board();
 	bool move(int row, int col, char val);
 	State get_square(int square_loc) const;
 	void draw_board(); // User friendly view.

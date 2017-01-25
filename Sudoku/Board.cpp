@@ -34,6 +34,11 @@ Board::Board(const char* filename) {
 	fIn.close();
 	
 }
+Board::~Board() {
+	for (Cluster* x : bClusts) {
+		delete x;
+	}
+}
 //-------------------------------------------------------------------------
 void Board::draw_board() {
 	char value;
