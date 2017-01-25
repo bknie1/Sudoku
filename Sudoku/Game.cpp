@@ -114,21 +114,22 @@ void Game::redo_move() {
 }
 //-------------------------------------------------------------------------
 void Game::save_game() {
-	try {
-		string file_name;
-		ofstream fOut;
-		cout << "Enter a file name (without *.txt): "; cin >> file_name;
-		file_name += ".txt";
-		const char * file = file_name.c_str(); // String to const char*
-		fOut.open(file);
-		if (!fOut.is_open()) throw StreamException();
-		board->save_game(fOut);
-		fOut.close();
-	}
-	catch (StreamException& e) {
-		e.print(cerr);
-		return;
-	}
+	say("WIP");
+	//try {
+	//	string file_name;
+	//	ofstream fOut;
+	//	cout << "Enter a file name (without *.txt): "; cin >> file_name;
+	//	file_name += ".txt";
+	//	const char * file = file_name.c_str(); // String to const char*
+	//	fOut.open(file);
+	//	if (!fOut.is_open()) throw StreamException();
+	//	board->save_game(fOut);
+	//	fOut.close();
+	//}
+	//catch (StreamException& e) {
+	//	e.print(cerr);
+	//	return;
+	//}
 }
 //-------------------------------------------------------------------------
 void Game::load_game() {

@@ -28,10 +28,8 @@ Board::Board(const char* filename) {
 		if (col == 9) { ++row; col = 1; }
 		else { ++col; }
 	}
-	//cerr << "\n\t\tBOARD TEST: BEFORE SHOOP" << endl;
-	//print(cout);
+
 	create_clusters();
-	//draw_board();
 	initial_shoop();
 	fIn.close();
 	
