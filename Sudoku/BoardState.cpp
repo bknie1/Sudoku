@@ -19,10 +19,20 @@ ostream & BoardState::print(ostream & out) {
 }
 //-------------------------------------------------------------------------
 void BoardState::serialize(ostream & out) {
-
+	try {
+		out.write((char *)&states, sizeof(states)); throw StreamException();
+	}
+	catch (StreamException e) {
+		e.print(cout);
+	}
 }
 //-------------------------------------------------------------------------
-void BoardState::realize(ostream & in) {
-
+void BoardState::realize(istream & in) {
+	try {
+		in.read((char *)&states, sizeof(states)); throw StreamException();
+	}
+	catch (StreamException e) {
+		e.print(cout);
+	}
 }
 //-------------------------------------------------------------------------

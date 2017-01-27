@@ -2,23 +2,7 @@
 
 Game::Game() {
 	// Creates a board of BOARD_SIZE squares from a validated input file.
-	char sel;
-	cout << "\t- Load (N)ew Game from a Text File" << endl;
-	cout << "\t- Load (S)aved Game from a Binary File" << endl;
-	cout << "\t- (Q)uit" << endl;
-	cout << "Selection: ";
-
-	cin >> sel;
-	cin.clear();
-	cin.ignore(numeric_limits<streamsize>::max(), '\n');
-	sel = tolower(sel);
-
-	switch (sel) {
-	case 'n': load_new_game(); break;
-	case 's': load_game(); break;
-	case 'q': exit(1);
-	default: say("Error: Invalid selection."); exit(1);
-	}
+	load_menu();
 }
 //-------------------------------------------------------------------------
 Game::~Game() {
@@ -36,6 +20,8 @@ Game::~Game() {
 void Game::run() {
 	// Print the Board, Menu, and an actions menu.
 	char sel;
+	string file_name;
+	const char * file;
 
 	const char* menu[] =
 	{ "(M)ove", "(U)ndo", "(R)edo", "(S)ave", "(L)oad", "(Q)uit" };
@@ -62,10 +48,14 @@ void Game::run() {
 				redo_move();
 				break;
 			case 's': // Save Game
-				save_game();
+				cout << "Save file name: "; cin >> file_name;
+				file = file_name.c_str();
+				save_game(file);
 				break;
 			case 'l': // Restore Game
-				load_new_game();
+				cout << "Load file name: "; cin >> file_name;
+				file = file_name.c_str();
+				load_game(file);
 				break;
 			case 'q': // Quit and Discard Game
 				return;
@@ -75,6 +65,31 @@ void Game::run() {
 			}
 		}
 	say("Congratulations, you've won! Thanks for playing.");
+}
+//-------------------------------------------------------------------------
+void Game::load_menu() {
+	char sel;
+	string file_name;
+	const char * file;
+
+	cout << "\t- Load (N)ew Game from a Text File (*.txt)" << endl;
+	cout << "\t- Load (S)aved Game from a Binary File" << endl;
+	cout << "\t- (Q)uit" << endl;
+	cout << "Selection: ";
+
+	cin >> sel;
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	sel = tolower(sel);
+
+	switch (sel) {
+	case 'n': load_new_game(); break;
+	case 's': cout << "Load file name: "; cin >> file_name;
+			  file = file_name.c_str();
+			  load_game(file);
+	case 'q': exit(1);
+	default: say("Error: Invalid selection."); exit(1);
+	}
 }
 // ----------------------------------------------------------------------------
 // Display a menu then read an alphabetic menu choice character.
@@ -129,9 +144,38 @@ void Game::redo_move() {
 	}
 }
 //-------------------------------------------------------------------------
-void Game::save_game() {
-	say("WIP");
-	
+void Game::save_game(const char* output_file) {
+	try {
+		BoardState* top = undo.top();
+		ofstream fOut(output_file, ios::binary);
+
+		if (!fOut.is_open()) throw StreamException();
+		top->serialize(fOut);
+		fOut.close();
+	}
+	catch (StreamException &e) {
+		e.print(cerr);
+	}
+}
+//-------------------------------------------------------------------------
+void Game::load_game(const char* input_file) {
+	try {
+		BoardState* first_bs = new BoardState();
+
+		cout << "Loading file: " << input_file << endl;
+		ifstream fIn(input_file, ios::binary);
+		if (!fIn.is_open()) throw StreamException();
+
+		first_bs->realize(fIn);
+		undo.zap();// Clear the way for a fresh game.
+		redo.zap();
+		undo.push(first_bs); // The first BoardState, loaded from the file.
+		board->restore_state(undo.top());
+		fIn.close();
+	}
+	catch (StreamException &e) {
+		e.print(cerr);
+	}
 }
 //-------------------------------------------------------------------------
 void Game::load_new_game() {
@@ -166,8 +210,5 @@ void Game::load_new_game() {
 			e.print(cerr);
 		}
 	}
-}
-void Game::load_game() {
-
 }
 //-------------------------------------------------------------------------

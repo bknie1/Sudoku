@@ -1,6 +1,7 @@
 #pragma once
 #include "Tools.hpp"
 #include "Square.hpp"
+#include "Exceptions.hpp"
 #define BOARD_SIZE 81
 
 class Board;
@@ -11,12 +12,13 @@ class BoardState {
 private:
 	State states[BOARD_SIZE];
 public:
+	BoardState() = default;
 	BoardState(const Board* bd);
 	~BoardState() = default;
 	ostream& print(ostream& out);
 	inline State* getStates() { return states; }
 	void serialize(ostream& out);
-	void realize(ostream& in);
+	void realize(istream& in);
 };
 
 inline ostream& operator<< (ostream& out, BoardState bs) {
