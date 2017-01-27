@@ -2,7 +2,23 @@
 
 Game::Game() {
 	// Creates a board of BOARD_SIZE squares from a validated input file.
-	load_game();
+	char sel;
+	cout << "\t- Load (N)ew Game from a Text File" << endl;
+	cout << "\t- Load (S)aved Game from a Binary File" << endl;
+	cout << "\t- (Q)uit" << endl;
+	cout << "Selection: ";
+
+	cin >> sel;
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+	sel = tolower(sel);
+
+	switch (sel) {
+	case 'n': load_new_game(); break;
+	case 's': load_game(); break;
+	case 'q': exit(1);
+	default: say("Error: Invalid selection."); exit(1);
+	}
 }
 //-------------------------------------------------------------------------
 Game::~Game() {
@@ -49,7 +65,7 @@ void Game::run() {
 				save_game();
 				break;
 			case 'l': // Restore Game
-				load_game();
+				load_new_game();
 				break;
 			case 'q': // Quit and Discard Game
 				return;
@@ -58,7 +74,7 @@ void Game::run() {
 				break;
 			}
 		}
-	say("Congratulations, you've won!");
+	say("Congratulations, you've won! Thanks for playing.");
 }
 // ----------------------------------------------------------------------------
 // Display a menu then read an alphabetic menu choice character.
@@ -115,24 +131,10 @@ void Game::redo_move() {
 //-------------------------------------------------------------------------
 void Game::save_game() {
 	say("WIP");
-	//try {
-	//	string file_name;
-	//	ofstream fOut;
-	//	cout << "Enter a file name (without *.txt): "; cin >> file_name;
-	//	file_name += ".txt";
-	//	const char * file = file_name.c_str(); // String to const char*
-	//	fOut.open(file);
-	//	if (!fOut.is_open()) throw StreamException();
-	//	board->save_game(fOut);
-	//	fOut.close();
-	//}
-	//catch (StreamException& e) {
-	//	e.print(cerr);
-	//	return;
-	//}
+	
 }
 //-------------------------------------------------------------------------
-void Game::load_game() {
+void Game::load_new_game() {
 	for (;;) {
 		try {
 			char type;
@@ -164,5 +166,8 @@ void Game::load_game() {
 			e.print(cerr);
 		}
 	}
+}
+void Game::load_game() {
+
 }
 //-------------------------------------------------------------------------

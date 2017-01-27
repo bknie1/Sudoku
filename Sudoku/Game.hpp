@@ -14,6 +14,7 @@ private:
 	void undo_move();
 	void redo_move();
 	void save_game();
+	void load_new_game();
 	void load_game();
 public:
 	Game();

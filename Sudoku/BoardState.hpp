@@ -15,6 +15,8 @@ public:
 	~BoardState() = default;
 	ostream& print(ostream& out);
 	inline State* getStates() { return states; }
+	void serialize(ostream& out);
+	void realize(ostream& in);
 };
 
 inline ostream& operator<< (ostream& out, BoardState bs) {

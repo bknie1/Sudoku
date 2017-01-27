@@ -17,3 +17,12 @@ ostream & BoardState::print(ostream & out) {
 	cout << "Print BoardState" << endl;
 	return out;
 }
+//-------------------------------------------------------------------------
+void BoardState::serialize(ostream & out) {
+
+}
+//-------------------------------------------------------------------------
+void BoardState::realize(ostream & in) {
+
+}
+//-------------------------------------------------------------------------
