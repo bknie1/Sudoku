@@ -1,6 +1,22 @@
 #include "Board.hpp"
 #include "BoardState.hpp"
 
+Board::Board() {
+	short row = 1;
+	short col = 1;
+	dash_count = 0;
+
+	for (short k = 0; k < BOARD_SIZE; ++k) {
+		board[k] = Square('-', row, col);
+		++dash_count;
+		if (col == 9) { ++row; col = 1; }
+		else { ++col; }
+	}
+
+	create_clusters();
+	initial_shoop();
+}
+
 //-------------------------------------------------------------------------
 Board::Board(const char* filename) {
 	const char* printT[] = { "Row", "Column", "Block", "Diagonal" };
@@ -75,6 +91,7 @@ void Board::restore_state(BoardState* bs) {
 	for (int k = 0; k < BOARD_SIZE; ++k) {
 		(State&)board[k] = states[k];
 	}
+	this->dash_count = bs->get_dash_count();
 }
 //-------------------------------------------------------------------------
 ostream & Board::save_game(ofstream& fOut) {

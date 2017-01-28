@@ -35,7 +35,7 @@ protected:
 	int sub(int row, int col) const;
 	short dash_count;
 public:
-	Board() = default;
+	Board();
 	Board(const char* filename);
 	~Board();
 	bool move(int row, int col, char val);
@@ -44,6 +44,7 @@ public:
 	bool is_done();
 	void restore_state(BoardState* bs);
 	ostream& save_game(ofstream& fOut);
+	inline short get_dash_count() const { return dash_count; }
 
 	char getMarkChar(int row, int col) const;
 	string getPossibilityString(int row, int col) const;
