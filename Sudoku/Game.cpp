@@ -73,7 +73,7 @@ void Game::load_menu() {
 	const char * file;
 
 	cout << "\t- Load (N)ew Game from a Text File (*.txt)" << endl;
-	cout << "\t- Load (S)aved Game from a Binary File" << endl;
+	cout << "\t- Load (S)aved Game from a Binary File (*.bin)" << endl;
 	cout << "\t- (Q)uit" << endl;
 	cout << "Selection: ";
 
@@ -87,6 +87,7 @@ void Game::load_menu() {
 	case 's': cout << "Load file name: "; cin >> file_name;
 			  file = file_name.c_str();
 			  load_game(file);
+			  break;
 	case 'q': exit(1);
 	default: say("Error: Invalid selection."); exit(1);
 	}
@@ -96,7 +97,6 @@ void Game::load_menu() {
 // Supply a title, the number of menu choices, an array of const char* 
 // for the options, and a const char* c - string that lists the first 
 // letter of each legal choice.
-
 char Game::menu_c(const char* title, int n, const char* menu[], const string valid) {
 	int k;
 	char choice;
@@ -148,7 +148,6 @@ void Game::save_game(const char* output_file) {
 	try {
 		BoardState* top = undo.top();
 		ofstream fOut(output_file, ios::binary);
-
 		if (!fOut.is_open()) throw StreamException();
 		top->serialize(fOut);
 		fOut.close();
@@ -160,12 +159,11 @@ void Game::save_game(const char* output_file) {
 //-------------------------------------------------------------------------
 void Game::load_game(const char* input_file) {
 	try {
+		board = new Board();
 		BoardState* first_bs = new BoardState();
-
 		cout << "Loading file: " << input_file << endl;
 		ifstream fIn(input_file, ios::binary);
 		if (!fIn.is_open()) throw StreamException();
-
 		first_bs->realize(fIn);
 		undo.zap();// Clear the way for a fresh game.
 		redo.zap();

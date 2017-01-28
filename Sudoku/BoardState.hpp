@@ -11,6 +11,7 @@ class Board;
 class BoardState {
 private:
 	State states[BOARD_SIZE];
+	short dash_count;
 public:
 	BoardState() = default;
 	BoardState(const Board* bd);
@@ -19,6 +20,7 @@ public:
 	inline State* getStates() { return states; }
 	void serialize(ostream& out);
 	void realize(istream& in);
+	inline short get_dash_count() { return dash_count; }
 };
 
 inline ostream& operator<< (ostream& out, BoardState bs) {
