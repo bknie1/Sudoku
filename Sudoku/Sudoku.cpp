@@ -6,14 +6,14 @@
 	Viewer.hpp/cpp, Canvas.hpp/cpp, GridChar.hpp/cpp, MixedChar.hpp/cpp
 */
 #include "Game.hpp"
-#define _CRTDBG_MAP_ALLOC  
-#include <stdlib.h>
-#include <crtdbg.h>
+//#define _CRTDBG_MAP_ALLOC  
+//#include <stdlib.h>
+//#include <crtdbg.h>
 //-------------------------------------------------------------------------
 int main() {
 	cout << "\t    SUDOKU\n" << endl;
 	Game g;
 	g.run();
-	_CrtDumpMemoryLeaks();
+	//_CrtDumpMemoryLeaks();
 }
 //-------------------------------------------------------------------------
