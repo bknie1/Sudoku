@@ -1,7 +1,6 @@
 # Sudoku
-## Brandon Knieriem
 
-### Description
+## Description
 This is my term project for OOP at UNH based on the classic, numeric logic puzzle.
 
 ## Functionality
